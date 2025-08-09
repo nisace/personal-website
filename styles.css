@@ -1,1 +1,40 @@
 /* css styles */
+
+/* Color variables */
+:root {
+  --color-bg-dark: #333333;
+  --color-text-light: #fafafa;
+  --color-text-dark: #979797;
+}
+
+/* Body font + background */
+body {
+  background-color: var(--color-bg-dark);  /* Dark background */
+  color: var(--color-text-light); /* Light text */
+}
+
+/* Navigation bar font + background */
+.navbar {
+  background-color: var(--color-bg-dark);  /* Dark background */
+  border-bottom: 1px solid var(--color-text-dark); /* Light border */
+}
+
+.navbar-brand {
+  color: var(--color-text-light);
+}
+
+.navbar-brand:hover {
+  color: var(--color-text-light);
+}
+
+.navbar-nav .nav-link {
+  color: var(--color-text-dark);
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--color-text-light);
+}
+
+.navbar-nav .nav-link.active {
+    color: var(--color-text-light);
+}
