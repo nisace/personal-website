@@ -1,10 +1,31 @@
 [
   {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "A test blog post\n\n\n\nCategory 1\n\nCategory 2\n\n\n\nPost description\n\n\n\n\n\nAug 9, 2025\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Nisace’s website",
     "section": "",
     "text": "Welcome the Nisace’s website."
+  },
+  {
+    "objectID": "posts/2025-08-09-test/index.html",
+    "href": "posts/2025-08-09-test/index.html",
+    "title": "A test blog post",
+    "section": "",
+    "text": "Text…"
+  },
+  {
+    "objectID": "posts/2025-08-09-test/index.html#heading-1",
+    "href": "posts/2025-08-09-test/index.html#heading-1",
+    "title": "A test blog post",
+    "section": "",
+    "text": "Text…"
   },
   {
     "objectID": "about.html",

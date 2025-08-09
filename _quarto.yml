@@ -4,10 +4,13 @@ project:
 website:
   title: "Nisace's website"
   navbar:
-    left:
+    right:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - text: About
+        href: about.qmd
+      - text: Blog
+        href: blog.qmd
 
 format:
   html:

@@ -38,3 +38,9 @@ body {
 .navbar-nav .nav-link.active {
     color: var(--color-text-light);
 }
+
+/* Blog posts listing styles */
+div.quarto-post a {
+    color: #fafafa;
+    text-decoration: none;
+}
