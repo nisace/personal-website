@@ -1,7 +1,5 @@
 ---
-title: "personal-website"
+title: "Nisace's website"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Welcome the Nisace's website.
