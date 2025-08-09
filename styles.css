@@ -1,1 +1,33 @@
 /* css styles */
+
+/* Body font + background */
+body {
+  background-color: #333333;  /* Dark background */
+  color: #fafafa; /* Light text */
+}
+
+/* Navigation bar font + background */
+.navbar {
+  background-color: #333333;  /* Dark background */
+  border-bottom: 1px solid #979797; /* Light border */
+}
+
+.navbar-brand {
+  color: #fafafa;
+}
+
+.navbar-brand:hover {
+  color: #fafafa;
+}
+
+.navbar-nav .nav-link {
+  color: #979797;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #fafafa;
+}
+
+.navbar-nav .nav-link.active {
+    color: #fafafa;
+}
