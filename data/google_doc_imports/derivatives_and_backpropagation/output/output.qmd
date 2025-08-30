@@ -16,7 +16,7 @@ $f:\ R \rightarrow R$, $\theta \in R,\ f(\theta) \in R$
 
 ## Multivariate scalar function
 
-![](media/drawing_1.png)
+![](media/drawing_2.png)
 
 The partial derivatives of $f:\ R^{n} \rightarrow R$ can be arranged in its gradient
 
@@ -28,7 +28,7 @@ $f:\ R^{n} \rightarrow R$, $\theta \in R^{n},\ f(\theta) \in R$
 
 ## Multivariate vector-valued function
 
-![](media/drawing_1.png)
+![](media/drawing_3.png)
 
 The partial derivatives of $f:\ R^{n} \rightarrow R^{m}$can be arranged in its Jacobian matrix $\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}$.
 
