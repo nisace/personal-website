@@ -16,7 +16,7 @@ fi
 DOCX="$1"
 HTML="$2"
 OUT_QMD_DIR="$3"
-PLACEHOLDER="${4:-DRAWING}"
+PLACEHOLDER="${4:-\[\[DRAWING\]\]}"
 ALT_TEXT="${5:-drawing}"
 
 TMP_QMD="$OUT_QMD_DIR/tmp_docx_body.qmd"
