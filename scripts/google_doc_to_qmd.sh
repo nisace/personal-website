@@ -71,14 +71,12 @@ perl -0777 -ne '
 # ------------------------------------------
 echo "→ Replacing placeholders in QMD..."
 if [ -s "$TMP_IMAGES" ]; then
-  i=1
   while IFS= read -r img; do
-    PH="$PLACEHOLDER" ALT="$ALT_TEXT" I="$i" FILE="$img" \
+    PH="$PLACEHOLDER" ALT="$ALT_TEXT" FILE="$img" \
     perl -0777 -i -pe '
       BEGIN {
         my $ph   = $ENV{PH};
         my $alt  = $ENV{ALT};
-        my $i    = $ENV{I};
         my $file = $ENV{FILE};
         # Build the exact markdown we want to insert
         our $REP = "![]($file)";
@@ -87,7 +85,6 @@ if [ -s "$TMP_IMAGES" ]; then
       # Replace only the FIRST occurrence in the entire file (no /g)
       s/\Q$PH\E/$REP/;
     ' "$TMP_QMD"
-    i=$((i+1))
   done < "$TMP_IMAGES"
 else
   echo "⚠️  No drawings found with alt text '$ALT_TEXT' in HTML."
