@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-08-09">
-<meta name="description" content="This post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs.">
+<meta name="dcterms.date" content="2025-09-02">
+<meta name="description" content="This post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.">
 
 <title>Derivatives, chain rule and backpropagation – Nisace’s website</title>
 <style>
@@ -150,42 +150,25 @@ window.Quarto = {
   <ul>
   <li><a href="#derivatives" id="toc-derivatives" class="nav-link active" data-scroll-target="#derivatives">Derivatives</a>
   <ul class="collapse">
-  <li><a href="#univariate-scalar-function" id="toc-univariate-scalar-function" class="nav-link" data-scroll-target="#univariate-scalar-function">Univariate scalar function</a>
-  <ul class="collapse">
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
-  </ul></li>
-  <li><a href="#multivariate-scalar-function" id="toc-multivariate-scalar-function" class="nav-link" data-scroll-target="#multivariate-scalar-function">Multivariate scalar function</a>
-  <ul class="collapse">
-  <li><a href="#notes-1" id="toc-notes-1" class="nav-link" data-scroll-target="#notes-1">Notes</a></li>
-  </ul></li>
+  <li><a href="#univariate-scalar-function" id="toc-univariate-scalar-function" class="nav-link" data-scroll-target="#univariate-scalar-function">Univariate scalar function</a></li>
+  <li><a href="#multivariate-scalar-function" id="toc-multivariate-scalar-function" class="nav-link" data-scroll-target="#multivariate-scalar-function">Multivariate scalar function</a></li>
   <li><a href="#multivariate-vector-valued-function" id="toc-multivariate-vector-valued-function" class="nav-link" data-scroll-target="#multivariate-vector-valued-function">Multivariate vector-valued function</a>
   <ul class="collapse">
   <li><a href="#when-m-1" id="toc-when-m-1" class="nav-link" data-scroll-target="#when-m-1">When <span class="math inline">\(m = 1\)</span></a></li>
   <li><a href="#when-m-n-1" id="toc-when-m-n-1" class="nav-link" data-scroll-target="#when-m-n-1">When <span class="math inline">\(m = n = 1\)</span></a></li>
-  <li><a href="#notes-2" id="toc-notes-2" class="nav-link" data-scroll-target="#notes-2">Notes</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#chain-rule" id="toc-chain-rule" class="nav-link" data-scroll-target="#chain-rule">Chain rule</a>
   <ul class="collapse">
-  <li><a href="#univariate-scalar-function-1" id="toc-univariate-scalar-function-1" class="nav-link" data-scroll-target="#univariate-scalar-function-1">Univariate scalar function</a>
-  <ul class="collapse">
-  <li><a href="#notes-3" id="toc-notes-3" class="nav-link" data-scroll-target="#notes-3">Notes</a></li>
-  </ul></li>
-  <li><a href="#multivariate-scalar-function-1" id="toc-multivariate-scalar-function-1" class="nav-link" data-scroll-target="#multivariate-scalar-function-1">Multivariate scalar function</a>
-  <ul class="collapse">
-  <li><a href="#notes-4" id="toc-notes-4" class="nav-link" data-scroll-target="#notes-4">Notes</a></li>
-  </ul></li>
+  <li><a href="#univariate-scalar-function-1" id="toc-univariate-scalar-function-1" class="nav-link" data-scroll-target="#univariate-scalar-function-1">Univariate scalar function</a></li>
+  <li><a href="#multivariate-scalar-function-1" id="toc-multivariate-scalar-function-1" class="nav-link" data-scroll-target="#multivariate-scalar-function-1">Multivariate scalar function</a></li>
   </ul></li>
   <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a>
   <ul class="collapse">
-  <li><a href="#generic-form" id="toc-generic-form" class="nav-link" data-scroll-target="#generic-form">Generic form</a>
-  <ul class="collapse">
-  <li><a href="#layer-l" id="toc-layer-l" class="nav-link" data-scroll-target="#layer-l">Layer <span class="math inline">\(L\)</span></a></li>
-  <li><a href="#layer-l---1" id="toc-layer-l---1" class="nav-link" data-scroll-target="#layer-l---1">Layer <span class="math inline">\(L - 1\)</span></a></li>
-  <li><a href="#layer-l-1" id="toc-layer-l-1" class="nav-link" data-scroll-target="#layer-l-1">Layer <span class="math inline">\(l\)</span></a></li>
+  <li><a href="#derivative-with-respect-to-al" id="toc-derivative-with-respect-to-al" class="nav-link" data-scroll-target="#derivative-with-respect-to-al">Derivative with respect to <span class="math inline">\(a^{l}\)</span></a></li>
+  <li><a href="#derivative-with-respect-to-zl" id="toc-derivative-with-respect-to-zl" class="nav-link" data-scroll-target="#derivative-with-respect-to-zl">Derivative with respect to <span class="math inline">\(z^{l}\)</span></a></li>
+  <li><a href="#derivative-with-respect-to-w_ijl" id="toc-derivative-with-respect-to-w_ijl" class="nav-link" data-scroll-target="#derivative-with-respect-to-w_ijl">Derivative with respect to <span class="math inline">\(w_{ij}^{l}\)</span></a></li>
   </ul></li>
-  </ul></li>
-  <li><a href="#notes-5" id="toc-notes-5" class="nav-link" data-scroll-target="#notes-5">Notes</a></li>
   <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul>
 </nav>
@@ -203,7 +186,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    <p>This post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs.</p>
+    <p>This post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.</p>
   </div>
 </div>
 
@@ -214,7 +197,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 9, 2025</p>
+      <p class="date">September 2, 2025</p>
     </div>
   </div>
   
@@ -230,29 +213,21 @@ window.Quarto = {
 <h1>Derivatives</h1>
 <section id="univariate-scalar-function" class="level2">
 <h2 class="anchored" data-anchor-id="univariate-scalar-function">Univariate scalar function</h2>
+<p><img src="media/drawing_1.png" class="img-fluid" width="200"></p>
 <p>For a univariate scalar function, the derivative is simply defined as the derivative of the function.</p>
-<p><img src="media/drawing_1.png" class="img-fluid"></p>
 <p><span class="math inline">\(\frac{df}{d\theta} \in R\)</span></p>
-<section id="notes" class="level3">
-<h3 class="anchored" data-anchor-id="notes">Notes</h3>
-<p><span class="math inline">\(f:\ R \rightarrow R\)</span>, <span class="math inline">\(\theta \in R,\ f(\theta) \in R\)</span></p>
-</section>
 </section>
 <section id="multivariate-scalar-function" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-scalar-function">Multivariate scalar function</h2>
-<p><img src="media/drawing_2.png" class="img-fluid"></p>
+<p><img src="media/drawing_2.png" class="img-fluid" width="200"></p>
 <p>For a multivariate scalar function, the partial derivatives of <span class="math inline">\(f:\ R^{n} \rightarrow R\)</span> can be arranged in its gradient:</p>
 <p><span class="math inline">\({\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}\)</span>.</p>
 <p>The gradient is a column vector where each element is the partial derivative of <span class="math inline">\(f\)</span> with respect to the corresponding input dimension.</p>
-<section id="notes-1" class="level3">
-<h3 class="anchored" data-anchor-id="notes-1">Notes</h3>
-<p><span class="math inline">\(f:\ R^{n} \rightarrow R\)</span>, <span class="math inline">\(\theta \in R^{n},\ f(\theta) \in R\)</span></p>
-</section>
 </section>
 <section id="multivariate-vector-valued-function" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-vector-valued-function">Multivariate vector-valued function</h2>
-<p><img src="media/drawing_3.png" class="img-fluid"></p>
-<p>The partial derivatives of <span class="math inline">\(f:\ R^{n} \rightarrow R^{m}\)</span>can be arranged in its Jacobian matrix <span class="math inline">\(\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}\)</span>.</p>
+<p><img src="media/drawing_3.png" class="img-fluid" width="200"></p>
+<p>The partial derivatives of <span class="math inline">\(f:\ R^{n} \rightarrow R^{m}\)</span> can be arranged in its Jacobian matrix <span class="math inline">\(\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}\)</span>.</p>
 <p><span class="math inline">\(\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}\)</span> contains</p>
 <ul>
 <li><p>In its rows, <span class="math inline">\({\nabla_{\theta}}^{T}f_{i} \in R^{n}\)</span> the transpose of the gradient of the components <span class="math inline">\(f_{i}\)</span> of <span class="math inline">\(f\)</span>.</p>
@@ -273,10 +248,6 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="when-m-n-1">When <span class="math inline">\(m = n = 1\)</span></h3>
 <p><span class="math inline">\(f\)</span> is an univariate scalar function.</p>
 </section>
-<section id="notes-2" class="level3">
-<h3 class="anchored" data-anchor-id="notes-2">Notes</h3>
-<p><span class="math inline">\(\theta \in R^{n},\ f(\theta) \in R^{m}\)</span></p>
-</section>
 </section>
 </section>
 <section id="chain-rule" class="level1">
@@ -284,17 +255,12 @@ window.Quarto = {
 <section id="univariate-scalar-function-1" class="level2">
 <h2 class="anchored" data-anchor-id="univariate-scalar-function-1">Univariate scalar function</h2>
 <p>When univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.</p>
-<p><img src="media/drawing_4.png" class="img-fluid"></p>
+<p><img src="media/drawing_4.png" class="img-fluid" width="400"></p>
 <p><span class="math inline">\(\frac{df}{d\theta} = \frac{df}{dz}\frac{dz}{d\theta}\)</span></p>
-<section id="notes-3" class="level3">
-<h3 class="anchored" data-anchor-id="notes-3">Notes</h3>
-<p><span class="math inline">\(\theta \in R,\ z = g(\theta) \in R\)</span>, <span class="math inline">\(g:\ R \rightarrow R\)</span>, <span class="math inline">\(f:\ R \rightarrow R\)</span>, <span class="math inline">\(z = g(\theta)\)</span>, <span class="math inline">\(f = g(z) \in R\)</span></p>
-</section>
 </section>
 <section id="multivariate-scalar-function-1" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-scalar-function-1">Multivariate scalar function</h2>
-<p><img src="media/drawing_5.png" class="img-fluid"></p>
-<p><img src="media/drawing_6.png" class="img-fluid"></p>
+<p><img src="media/drawing_5.png" class="img-fluid" width="300"></p>
 <p><span class="math inline">\(f:\ R^{n} \rightarrow R\)</span> is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.</p>
 <p><span class="math inline">\({\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}\)</span></p>
 <p>For each input dimension <span class="math inline">\(\theta_{i}\)</span>, the chain rule is applied to each intermediate dimension <span class="math inline">\(z_{j}\)</span> and the derivative is the sum over <span class="math inline">\(j\)</span>.</p>
@@ -306,26 +272,20 @@ window.Quarto = {
 <li><p>The gradient of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(z\)</span>: <span class="math inline">\(\nabla_{z}f \in R^{m}\)</span></p></li>
 </ul>
 <p><span class="math inline">\(\nabla_{\theta}f = \left( \frac{\partial z}{\partial\theta} \right)^{T}\nabla_{z}f\)</span></p>
-<section id="notes-4" class="level3">
-<h3 class="anchored" data-anchor-id="notes-4">Notes</h3>
-<p><span class="math inline">\(\theta \in R^{n},\ z = g(\theta) \in R^{m}\)</span>, <span class="math inline">\(z = g(\theta)\)</span>, <span class="math inline">\(g:\ R^{n} \rightarrow R^{m}\)</span>, <span class="math inline">\(f:\ R^{m} \rightarrow R\)</span></p>
-</section>
 </section>
 </section>
 <section id="backpropagation" class="level1">
 <h1>Backpropagation</h1>
 <p>The diagram below represents a simple neural network with layers <span class="math inline">\(l\)</span>, <span class="math inline">\(l + 1\)</span>,..., <span class="math inline">\(L\)</span> and a loss function <span class="math inline">\(E(\widehat{y},\ y)\)</span>.</p>
 <p><img src="media/drawing_7.png" class="img-fluid"></p>
-<section id="generic-form" class="level2">
-<h2 class="anchored" data-anchor-id="generic-form">Generic form</h2>
 <p>The sections below explain how to compute the derivatives of <span class="math inline">\(E\)</span> with respect to:</p>
 <ul>
 <li><p><span class="math inline">\(a^{l}\)</span>, the activation of layer <span class="math inline">\(l\)</span></p></li>
 <li><p><span class="math inline">\(z^{l}\)</span>, the value of layer <span class="math inline">\(l\)</span> before the activation</p></li>
 <li><p><span class="math inline">\(w_{ij}^{l}\)</span>, the weight between neuron <span class="math inline">\(i\)</span> of layer <span class="math inline">\(l - 1\)</span> and neuron <span class="math inline">\(j\)</span> of layer <span class="math inline">\(l\)</span></p></li>
 </ul>
-<section id="derivative-with-respect-to-al" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-with-respect-to-al">Derivative with respect to <span class="math inline">\(a^{l}\)</span></h4>
+<section id="derivative-with-respect-to-al" class="level2">
+<h2 class="anchored" data-anchor-id="derivative-with-respect-to-al">Derivative with respect to <span class="math inline">\(a^{l}\)</span></h2>
 <p>To compute the derivative of <span class="math inline">\(E\)</span> with respect to <span class="math inline">\(a^{l}\)</span>, the activation of layer <span class="math inline">\(l\)</span>, we express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(z^{l + 1})\)</span> and <span class="math inline">\(z^{l + 1}(a^{l},W^{l + 1})\)</span>:</p>
 <p><span class="math inline">\(E(\widehat{y},\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))\)</span></p>
 <p><span class="math inline">\(E(a^{l})\)</span> is thus a multivariate scalar function with intermediate variables <span class="math inline">\(z^{l + 1}\)</span>.</p>
@@ -337,8 +297,8 @@ window.Quarto = {
 <p><span class="math inline">\(\frac{\partial E}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}{\ w}_{ik}^{l + 1}\)</span></p>
 <p><img src="media/drawing_9.png" class="img-fluid"></p>
 </section>
-<section id="derivative-with-respect-to-zl" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-with-respect-to-zl">Derivative with respect to <span class="math inline">\(z^{l}\)</span></h4>
+<section id="derivative-with-respect-to-zl" class="level2">
+<h2 class="anchored" data-anchor-id="derivative-with-respect-to-zl">Derivative with respect to <span class="math inline">\(z^{l}\)</span></h2>
 <p>Similarly, we can express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(a^{l})\)</span> and <span class="math inline">\(a^{l}(z^{l})\)</span>:</p>
 <p><span class="math inline">\(E(\widehat{y},\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l + 1})))\)</span></p>
 <p><span class="math inline">\(E(z^{l})\)</span> is thus a multivariate scalar function and its derivative is given by its gradient:</p>
@@ -348,8 +308,8 @@ window.Quarto = {
 <p><span class="math inline">\(\frac{\partial E}{\partial z_{i}^{l}} = \frac{\partial E}{\partial a_{i}^{l}}\frac{\partial a_{i}^{l}}{\partial z_{i}^{l}}\)</span> <em>Scalar chain rule</em></p>
 <p><img src="media/drawing_10.png" class="img-fluid"></p>
 </section>
-<section id="derivative-with-respect-to-w_ijl" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-with-respect-to-w_ijl">Derivative with respect to <span class="math inline">\(w_{ij}^{l}\)</span></h4>
+<section id="derivative-with-respect-to-w_ijl" class="level2">
+<h2 class="anchored" data-anchor-id="derivative-with-respect-to-w_ijl">Derivative with respect to <span class="math inline">\(w_{ij}^{l}\)</span></h2>
 <p>Finally we can express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(z^{l})\)</span> and <span class="math inline">\(z^{l}(a^{l - 1},W^{l})\)</span>:</p>
 <p><span class="math inline">\(E(\widehat{y},\ y) = E(...z^{l}(a^{l - 1},W^{l})))\)</span></p>
 <p><span class="math inline">\(E(W^{l})\)</span> is thus a multivariate scalar function with intermediate variables <span class="math inline">\(z^{l}\)</span>.</p>
@@ -364,100 +324,6 @@ window.Quarto = {
 <p><span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}\)</span></p>
 <p><img src="media/drawing_13.png" class="img-fluid"></p>
 </section>
-<section id="layer-l" class="level3">
-<h3 class="anchored" data-anchor-id="layer-l">Layer <span class="math inline">\(L\)</span></h3>
-<section id="derivative-wrt-al" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-al">Derivative wrt <span class="math inline">\(a^{L}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(a^{L},y)\)</span></p>
-<p><span class="math inline">\(E\)</span> is a multivariate real value function <span class="math inline">\(E:\ R^{N^{L}} \rightarrow R\)</span></p>
-<p><span class="math inline">\(N^{l}\)</span>: number of neurons in layer <span class="math inline">\(l\)</span></p>
-<p>The derivative of <span class="math inline">\(E\ wrt\ a^{L}\)</span> is thus a gradient of dimension <span class="math inline">\(R^{N^{L}}\)</span></p>
-<p><span class="math inline">\(\nabla_{a^{L}}\ E = \left\lbrack \frac{\partial E}{\partial a_{I}^{L}},\frac{\partial E}{\partial a_{2}^{L}},\ ...,\frac{\partial E}{\partial a_{i}^{L}},\ ... \right\rbrack\)</span> <em>Gradient of a multivariate function</em></p>
-</section>
-<section id="derivative-wrt-zl" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-zl">Derivative wrt <span class="math inline">\(z^{L}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(a^{L}(z^{L}),y)\)</span></p>
-<p><span class="math inline">\(\nabla_{z^{L}}\ E = \left\lbrack \frac{\partial E}{\partial z_{I}^{L}},\frac{\partial E}{\partial z_{2}^{L}},\ ...,\frac{\partial E}{\partial z_{i}^{L}},\ ... \right\rbrack\)</span> <em>Gradient of a multivariate function</em></p>
-<p><span class="math inline">\(a_{i}^{L} = a_{i}^{L}(z_{i}^{L})\)</span> <em>Scalar function</em></p>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(a_{i}^{L}(z_{i}^{L}),y)\)</span></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial z_{i}^{L}} = \frac{\partial E}{\partial a_{i}^{L}}\frac{\partial a_{i}^{L}}{\partial z_{i}^{L}}\)</span> <em>Scalar chain rule</em></p>
-</section>
-<section id="derivative-wrt-w_ijl" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-w_ijl">Derivative wrt <span class="math inline">\(w_{ij}^{L}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(a^{L}(z^{L}(a^{L - 1},W^{L},b^{L})))\)</span></p>
-<p><span class="math inline">\(\nabla_{W^{L}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{L}},\ ... \right\rbrack\)</span> <em>Gradient of a multivariate function</em></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{L}} = \sum_{k = 1}^{N^{L}}\frac{\partial E}{\partial z_{k}^{L}}\frac{\partial z_{k}^{L}}{\partial w_{ij}^{L}} = \frac{\partial E}{\partial z_{j}^{L}}\frac{\partial z_{j}^{L}}{\partial w_{ij}^{L}}\)</span> <em>Multivariate chain rule</em></p>
-<p>because <span class="math inline">\(\frac{\partial z_{k}^{L}}{\partial w_{ij}^{L}} = 0\)</span> for <span class="math inline">\(k \neq j\)</span></p>
-</section>
-</section>
-<section id="layer-l---1" class="level3">
-<h3 class="anchored" data-anchor-id="layer-l---1">Layer <span class="math inline">\(L - 1\)</span></h3>
-<section id="derivative-wrt-al---1" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-al---1">Derivative wrt <span class="math inline">\(a^{L - 1}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(a^{L}(z^{L}(a^{L - 1},W^{L},b^{L})))\)</span></p>
-<p><span class="math inline">\(\nabla_{a^{L - 1}}\ E = \left\lbrack \frac{\partial E}{\partial a_{i}^{L - 1}},\ ... \right\rbrack\)</span></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial a_{i}^{L - 1}} = \sum_{k = 1}^{N^{L}}\frac{\partial E}{\partial z_{k}^{L}}\frac{\partial z_{k}^{L}}{\partial a_{i}^{L - 1}} = \sum_{k = 1}^{N^{L}}\frac{\partial E}{\partial z_{k}^{L}}{\ w}_{ik}^{L}\)</span> <em>Multivariate chain rule</em></p>
-<p><span class="math inline">\(z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\)</span></p>
-<p><span class="math inline">\(\frac{\partial z_{j}^{l}}{\partial a_{i}^{l - 1}} = w_{ij}^{l}\)</span></p>
-</section>
-<section id="derivative-wrt-zl---1" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-zl---1">Derivative wrt <span class="math inline">\(z^{L - 1}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(a^{L}(z^{L}(a^{L - 1}(z^{L - 1}),W^{L},b^{L})))\)</span></p>
-<p><span class="math inline">\(\nabla_{z^{L - 1}}\ E = \left\lbrack \frac{\partial E}{\partial z_{i}^{L - 1}},\ ... \right\rbrack\)</span></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial z_{i}^{L - 1}} = \frac{\partial E}{\partial a_{i}^{L - 1}}\frac{\partial a_{i}^{L - 1}}{\partial z_{i}^{L - 1}}\)</span> <em>Scalar chain rule</em></p>
-</section>
-<section id="derivative-wrt-w_ijl---1" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-w_ijl---1">Derivative wrt <span class="math inline">\(w_{ij}^{L - 1}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(a^{L}(z^{L}(a^{L - 1}(z^{L - 1}(a^{L - 2},W^{L - 1},b^{L - 1})),W^{L},b^{L})))\)</span></p>
-<p><span class="math inline">\(\nabla_{W^{L - 1}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{L - 1}},\ ... \right\rbrack\)</span> <em>Gradient of a multivariate function</em></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{L - 1}} = \sum_{k = 1}^{N^{L - 1}}\frac{\partial E}{\partial z_{k}^{L - 1}}\frac{\partial z_{k}^{L - 1}}{\partial w_{ij}^{L - 1}} = \frac{\partial E}{\partial z_{j}^{L - 1}}\frac{\partial z_{j}^{L - 1}}{\partial w_{ij}^{L - 1}}\)</span> <em>Multivariate chain rule</em></p>
-<p>because <span class="math inline">\(\frac{\partial z_{k}^{L - 1}}{\partial w_{ij}^{L - 1}} = 0\)</span> for <span class="math inline">\(k \neq j\)</span></p>
-</section>
-</section>
-<section id="layer-l-1" class="level3">
-<h3 class="anchored" data-anchor-id="layer-l-1">Layer <span class="math inline">\(l\)</span></h3>
-<section id="derivative-wrt-al-1" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-al-1">Derivative wrt <span class="math inline">\(a^{l}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1},b^{l + 1})))\)</span></p>
-<p><span class="math inline">\(\nabla_{a^{l}}\ E = \left\lbrack \frac{\partial E}{\partial a_{i}^{l}},\ ... \right\rbrack\)</span></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}\frac{\partial z_{k}^{l + 1}}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}{\ w}_{ik}^{l + 1}\)</span> <em>Multivariate chain rule</em></p>
-<p><span class="math inline">\(z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\)</span></p>
-<p><span class="math inline">\(\frac{\partial z_{j}^{l}}{\partial a_{i}^{l - 1}} = w_{ij}^{l}\)</span></p>
-</section>
-<section id="derivative-wrt-zl-1" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-zl-1">Derivative wrt <span class="math inline">\(z^{l}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l},b^{l})))\)</span></p>
-<p><span class="math inline">\(\nabla_{z^{l}}\ E = \left\lbrack \frac{\partial E}{\partial z_{i}^{l}},\ ... \right\rbrack\)</span></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial z_{i}^{l}} = \frac{\partial E}{\partial a_{i}^{l}}\frac{\partial a_{i}^{l}}{\partial z_{i}^{l}}\)</span> <em>Scalar chain rule</em></p>
-</section>
-<section id="derivative-wrt-w_ijl-1" class="level4">
-<h4 class="anchored" data-anchor-id="derivative-wrt-w_ijl-1">Derivative wrt <span class="math inline">\(w_{ij}^{l}\)</span></h4>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(...z^{l}(a^{l - 1},W^{l},b^{l})))\)</span></p>
-<p><span class="math inline">\(\nabla_{W^{l}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{l}},\ ... \right\rbrack\)</span> <em>Gradient of a multivariate function</em></p>
-<p><span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{l}} = \sum_{k = 1}^{N^{l}}\frac{\partial E}{\partial z_{k}^{l}}\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}\)</span> <em>Multivariate chain rule</em></p>
-<p>because <span class="math inline">\(\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = 0\)</span> for <span class="math inline">\(k \neq j\)</span></p>
-</section>
-</section>
-</section>
-</section>
-<section id="notes-5" class="level1">
-<h1>Notes</h1>
-<p><span class="math inline">\(a_{i}^{l - 1}\)</span></p>
-<p><span class="math inline">\(w_{ij}^{l}\)</span></p>
-<p><span class="math inline">\(z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\)</span></p>
-<p><span class="math inline">\(a_{j}^{l} = g^{l}(z_{j}^{l})\)</span></p>
-<p><span class="math inline">\(w_{12}^{l}\)</span></p>
-<p><span class="math inline">\(a_{1}^{l}\)</span></p>
-<p><span class="math inline">\(z_{1}^{l}\)</span></p>
-<p><span class="math inline">\(w_{ij}^{l + 1}\)</span></p>
-<p><span class="math inline">\(z_{j}^{l + 1}\)</span></p>
-<p><span class="math inline">\(a_{j}^{l + 1} = g^{l + 1}(z_{j}^{l + 1})\)</span></p>
-<p><span class="math inline">\(z_{j}^{L}\)</span></p>
-<p><span class="math inline">\(a_{j}^{L} = g^{L}(z_{j}^{L})\)</span></p>
-<p><span class="math inline">\(l\)</span></p>
-<p><span class="math inline">\({l + 1}^{}\)</span></p>
-<p><span class="math inline">\(L - 1\)</span></p>
-<p><span class="math inline">\(L\)</span></p>
 </section>
 <section id="sources" class="level1">
 <h1>Sources</h1>
