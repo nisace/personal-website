@@ -56,3 +56,19 @@ a {
 a:hover {
   color: var(--color-text-dark);
 }
+
+/* Side table of contents */
+.sidebar nav[role="doc-toc"] li a.nav-link {
+  color: var(--color-text-dark) !important;
+  border-left: 1px solid var(--color-text-dark);
+}
+
+.sidebar nav[role="doc-toc"] li a.nav-link.active {
+  color: var(--color-text-light)!important;
+  border-left: 1px solid var(--color-text-light);
+}
+
+.sidebar nav[role="doc-toc"] li a.nav-link:hover {
+  color: var(--color-text-light)!important;
+  border-left: 1px solid var(--color-text-light);
+}
