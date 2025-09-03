@@ -15,7 +15,7 @@ image-alt: "Simple neural network"
 
 ## Univariate scalar function
 
-![](media/drawing_1.png){width="200px"}
+![](media/drawing_1.png){fig-align="center" width="200px"}
 
 For a univariate scalar function, the derivative is simply defined as the derivative of the function.
 
@@ -23,7 +23,7 @@ $\frac{df}{d\theta} \in R$
 
 ## Multivariate scalar function
 
-![](media/drawing_2.png){width="200px"}
+![](media/drawing_2.png){fig-align="center" width="200px"}
 
 For a multivariate scalar function, the partial derivatives of $f:\ R^{n} \rightarrow R$ can be arranged in its gradient:
 
@@ -33,7 +33,7 @@ The gradient is a column vector where each element is the partial derivative of 
 
 ## Multivariate vector-valued function
 
-![](media/drawing_3.png){width="200px"}
+![](media/drawing_3.png){fig-align="center" width="200px"}
 
 The partial derivatives of $f:\ R^{n} \rightarrow R^{m}$ can be arranged in its Jacobian matrix $\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}$.
 
@@ -63,13 +63,13 @@ $f$ is an univariate scalar function.
 
 When univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.
 
-![](media/drawing_4.png){width="400px"}
+![](media/drawing_4.png){fig-align="center" width="400px"}
 
 $\frac{df}{d\theta} = \frac{df}{dz}\frac{dz}{d\theta}$
 
 ## Multivariate scalar function
 
-![](media/drawing_5.png){width="300px"}
+![](media/drawing_5.png){fig-align="center" width="300px"}
 
 $f:\ R^{n} \rightarrow R$ is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.
 
@@ -93,7 +93,7 @@ $\nabla_{\theta}f = \left( \frac{\partial z}{\partial\theta} \right)^{T}\nabla_{
 
 The diagram below represents a simple neural network with layers $l$, $l + 1$,\..., $L$ and a loss function $E(\widehat{y},\ y)$.
 
-![](media/drawing_7.png)
+![](media/drawing_7.png){fig-align="center"}
 
 The sections below explain how to compute the derivatives of $E$ with respect to:
 
@@ -111,7 +111,7 @@ $E(\widehat{y},\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))$
 
 $E(a^{l})$ is thus a multivariate scalar function with intermediate variables $z^{l + 1}$.
 
-![](media/drawing_8.png)
+![](media/drawing_8.png){fig-align="center"}
 
 According to the [chain rule for a multivariate scalar function](#multivariate-scalar-function-1), its derivative is given by its gradient:
 
@@ -123,7 +123,7 @@ Moreover, $z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}$, thus $\
 
 $\frac{\partial E}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}{\ w}_{ik}^{l + 1}$
 
-![](media/drawing_9.png)
+![](media/drawing_9.png){fig-align="center"}
 
 ## Derivative with respect to $z^{l}$
 
@@ -141,7 +141,7 @@ Thus, the [chain rule for univariate scalar functions](#univariate-scalar-functi
 
 $\frac{\partial E}{\partial z_{i}^{l}} = \frac{\partial E}{\partial a_{i}^{l}}\frac{\partial a_{i}^{l}}{\partial z_{i}^{l}}$ *Scalar chain rule*
 
-![](media/drawing_10.png)
+![](media/drawing_10.png){fig-align="center"}
 
 ## Derivative with respect to $w_{ij}^{l}$
 
@@ -151,7 +151,7 @@ $E(\widehat{y},\ y) = E(...z^{l}(a^{l - 1},W^{l})))$
 
 $E(W^{l})$ is thus a multivariate scalar function with intermediate variables $z^{l}$.
 
-![](media/drawing_11.png)
+![](media/drawing_11.png){fig-align="center"}
 
 According to the [chain rule for a multivariate scalar function](#multivariate-scalar-function-1), its derivative is given by its gradient:
 
@@ -159,7 +159,7 @@ $\nabla_{W^{l}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{l}},\ ... \
 
 where $\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z^{l}}\frac{\partial z^{l}}{\partial w_{ij}^{l}} = \sum_{k = 1}^{N^{l}}\frac{\partial E}{\partial z_{k}^{l}}\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}$ *Multivariate chain rule*
 
-![](media/drawing_12.png)
+![](media/drawing_12.png){fig-align="center"}
 
 Moreover, $z_{k}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}$
 
@@ -169,7 +169,7 @@ And the expression above becomes:
 
 $\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}$
 
-![](media/drawing_13.png)
+![](media/drawing_13.png){fig-align="center"} 
 
 # Sources
 

@@ -213,20 +213,32 @@ window.Quarto = {
 <h1>Derivatives</h1>
 <section id="univariate-scalar-function" class="level2">
 <h2 class="anchored" data-anchor-id="univariate-scalar-function">Univariate scalar function</h2>
-<p><img src="media/drawing_1.png" class="img-fluid" width="200"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="200"></p>
+</figure>
+</div>
 <p>For a univariate scalar function, the derivative is simply defined as the derivative of the function.</p>
 <p><span class="math inline">\(\frac{df}{d\theta} \in R\)</span></p>
 </section>
 <section id="multivariate-scalar-function" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-scalar-function">Multivariate scalar function</h2>
-<p><img src="media/drawing_2.png" class="img-fluid" width="200"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="200"></p>
+</figure>
+</div>
 <p>For a multivariate scalar function, the partial derivatives of <span class="math inline">\(f:\ R^{n} \rightarrow R\)</span> can be arranged in its gradient:</p>
 <p><span class="math inline">\({\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}\)</span>.</p>
 <p>The gradient is a column vector where each element is the partial derivative of <span class="math inline">\(f\)</span> with respect to the corresponding input dimension.</p>
 </section>
 <section id="multivariate-vector-valued-function" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-vector-valued-function">Multivariate vector-valued function</h2>
-<p><img src="media/drawing_3.png" class="img-fluid" width="200"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="200"></p>
+</figure>
+</div>
 <p>The partial derivatives of <span class="math inline">\(f:\ R^{n} \rightarrow R^{m}\)</span> can be arranged in its Jacobian matrix <span class="math inline">\(\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}\)</span>.</p>
 <p><span class="math inline">\(\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}\)</span> contains</p>
 <ul>
@@ -255,12 +267,20 @@ window.Quarto = {
 <section id="univariate-scalar-function-1" class="level2">
 <h2 class="anchored" data-anchor-id="univariate-scalar-function-1">Univariate scalar function</h2>
 <p>When univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.</p>
-<p><img src="media/drawing_4.png" class="img-fluid" width="400"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
+</figure>
+</div>
 <p><span class="math inline">\(\frac{df}{d\theta} = \frac{df}{dz}\frac{dz}{d\theta}\)</span></p>
 </section>
 <section id="multivariate-scalar-function-1" class="level2">
 <h2 class="anchored" data-anchor-id="multivariate-scalar-function-1">Multivariate scalar function</h2>
-<p><img src="media/drawing_5.png" class="img-fluid" width="300"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
+</figure>
+</div>
 <p><span class="math inline">\(f:\ R^{n} \rightarrow R\)</span> is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.</p>
 <p><span class="math inline">\({\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}\)</span></p>
 <p>For each input dimension <span class="math inline">\(\theta_{i}\)</span>, the chain rule is applied to each intermediate dimension <span class="math inline">\(z_{j}\)</span> and the derivative is the sum over <span class="math inline">\(j\)</span>.</p>
@@ -277,7 +297,11 @@ window.Quarto = {
 <section id="backpropagation" class="level1">
 <h1>Backpropagation</h1>
 <p>The diagram below represents a simple neural network with layers <span class="math inline">\(l\)</span>, <span class="math inline">\(l + 1\)</span>,..., <span class="math inline">\(L\)</span> and a loss function <span class="math inline">\(E(\widehat{y},\ y)\)</span>.</p>
-<p><img src="media/drawing_7.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_7.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 <p>The sections below explain how to compute the derivatives of <span class="math inline">\(E\)</span> with respect to:</p>
 <ul>
 <li><p><span class="math inline">\(a^{l}\)</span>, the activation of layer <span class="math inline">\(l\)</span></p></li>
@@ -289,13 +313,21 @@ window.Quarto = {
 <p>To compute the derivative of <span class="math inline">\(E\)</span> with respect to <span class="math inline">\(a^{l}\)</span>, the activation of layer <span class="math inline">\(l\)</span>, we express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(z^{l + 1})\)</span> and <span class="math inline">\(z^{l + 1}(a^{l},W^{l + 1})\)</span>:</p>
 <p><span class="math inline">\(E(\widehat{y},\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))\)</span></p>
 <p><span class="math inline">\(E(a^{l})\)</span> is thus a multivariate scalar function with intermediate variables <span class="math inline">\(z^{l + 1}\)</span>.</p>
-<p><img src="media/drawing_8.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_8.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 <p>According to the <a href="#multivariate-scalar-function-1">chain rule for a multivariate scalar function</a>, its derivative is given by its gradient:</p>
 <p><span class="math inline">\(\nabla_{a^{l}}\ E = \left\lbrack \frac{\partial E}{\partial a_{i}^{l}},\ ... \right\rbrack\)</span></p>
 <p>where <span class="math inline">\(\frac{\partial E}{\partial a_{i}^{l}} = \frac{\partial E}{\partial z^{l + 1}}\frac{\partial z^{l + 1}}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}\frac{\partial z_{k}^{l + 1}}{\partial a_{i}^{l}}\)</span> <em>Multivariate chain rule</em></p>
 <p>Moreover, <span class="math inline">\(z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\)</span>, thus <span class="math inline">\(\frac{\partial z_{j}^{l}}{\partial a_{i}^{l - 1}} = w_{ij}^{l}\)</span> and the expression above becomes:</p>
 <p><span class="math inline">\(\frac{\partial E}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}{\ w}_{ik}^{l + 1}\)</span></p>
-<p><img src="media/drawing_9.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_9.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 </section>
 <section id="derivative-with-respect-to-zl" class="level2">
 <h2 class="anchored" data-anchor-id="derivative-with-respect-to-zl">Derivative with respect to <span class="math inline">\(z^{l}\)</span></h2>
@@ -306,23 +338,39 @@ window.Quarto = {
 <p>Notice also that each function <span class="math inline">\(E(z_{i}^{l})\)</span> can be expressed as the composition of <span class="math inline">\(E(a_{i}^{l})\)</span> and <span class="math inline">\(a_{i}^{l}(z_{i}^{l})\)</span>.</p>
 <p>Thus, the <a href="#univariate-scalar-function-1">chain rule for univariate scalar functions</a> can be applied:</p>
 <p><span class="math inline">\(\frac{\partial E}{\partial z_{i}^{l}} = \frac{\partial E}{\partial a_{i}^{l}}\frac{\partial a_{i}^{l}}{\partial z_{i}^{l}}\)</span> <em>Scalar chain rule</em></p>
-<p><img src="media/drawing_10.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_10.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 </section>
 <section id="derivative-with-respect-to-w_ijl" class="level2">
 <h2 class="anchored" data-anchor-id="derivative-with-respect-to-w_ijl">Derivative with respect to <span class="math inline">\(w_{ij}^{l}\)</span></h2>
 <p>Finally we can express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(z^{l})\)</span> and <span class="math inline">\(z^{l}(a^{l - 1},W^{l})\)</span>:</p>
 <p><span class="math inline">\(E(\widehat{y},\ y) = E(...z^{l}(a^{l - 1},W^{l})))\)</span></p>
 <p><span class="math inline">\(E(W^{l})\)</span> is thus a multivariate scalar function with intermediate variables <span class="math inline">\(z^{l}\)</span>.</p>
-<p><img src="media/drawing_11.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_11.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 <p>According to the <a href="#multivariate-scalar-function-1">chain rule for a multivariate scalar function</a>, its derivative is given by its gradient:</p>
 <p><span class="math inline">\(\nabla_{W^{l}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{l}},\ ... \right\rbrack\)</span></p>
 <p>where <span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z^{l}}\frac{\partial z^{l}}{\partial w_{ij}^{l}} = \sum_{k = 1}^{N^{l}}\frac{\partial E}{\partial z_{k}^{l}}\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}\)</span> <em>Multivariate chain rule</em></p>
-<p><img src="media/drawing_12.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_12.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 <p>Moreover, <span class="math inline">\(z_{k}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}\)</span></p>
 <p>Thus <span class="math inline">\(\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = 0\)</span> for <span class="math inline">\(k \neq j\)</span></p>
 <p>And the expression above becomes:</p>
 <p><span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}\)</span></p>
-<p><img src="media/drawing_13.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_13.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 </section>
 </section>
 <section id="sources" class="level1">
