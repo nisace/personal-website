@@ -6,6 +6,8 @@ title: "[]{#_firilbjg9wdq .anchor}Derivatives and backpropagation"
 
 ## Univariate scalar function
 
+For a univariate scalar function, the derivative is simply defined as the derivative of the function.
+
 ![](media/drawing_1.png)
 
 $\frac{df}{d\theta} \in R$
@@ -18,9 +20,11 @@ $f:\ R \rightarrow R$, $\theta \in R,\ f(\theta) \in R$
 
 ![](media/drawing_2.png)
 
-The partial derivatives of $f:\ R^{n} \rightarrow R$ can be arranged in its gradient
+For a multivariate scalar function, the partial derivatives of $f:\ R^{n} \rightarrow R$ can be arranged in its gradient:
 
 ${\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}$.
+
+The gradient is a column vector where each element is the partial derivative of $f$ with respect to the corresponding input dimension.
 
 ### Notes
 
@@ -36,7 +40,11 @@ $\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}$ contains
 
 - In its rows, ${\nabla_{\theta}}^{T}f_{i} \in R^{n}$ the transpose of the gradient of the components $f_{i}$ of $f$.
 
+  - Each row $i$ contains the derivative of the component $f_{i}$ with respect to all the input dimensions.
+
 - In its columns, $\frac{\partial f}{\partial\theta_{j}}$ the partial derivatives of $f$ with respect to $\theta_{j}$.
+
+  - Each column $j$ contains the derivation of all the components of $f$ with respect to $\theta_{j}$ (the input dimension $j$).
 
 $\frac{\partial f}{\partial\theta}^{T} = \left\lbrack \nabla_{\theta}f_{1},\ \nabla_{\theta}f_{2},\ ...,\ \nabla_{\theta}f_{m} \right\rbrack \in R^{n\  \times \ m}$
 
@@ -56,6 +64,10 @@ $\theta \in R^{n},\ f(\theta) \in R^{m}$
 
 ## Univariate scalar function
 
+When univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.
+
+![](media/drawing_4.png)
+
 $\frac{df}{d\theta} = \frac{df}{dz}\frac{dz}{d\theta}$
 
 ### Notes
@@ -64,17 +76,27 @@ $\theta \in R,\ z = g(\theta) \in R$, $g:\ R \rightarrow R$, $f:\ R \rightarrow 
 
 ## Multivariate scalar function
 
+![](media/drawing_5.png)
+
+![](media/drawing_6.png)
+
 $f:\ R^{n} \rightarrow R$ is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.
 
 ${\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}$
 
-where $\frac{\partial f}{\partial\theta_{i}} = \sum_{j = 1}^{m}\frac{\partial f}{\partial z_{j}}\frac{\partial z_{j}}{\partial\theta_{i}}$.
+For each input dimension $\theta_{i}$, the chain rule is applied to each intermediate dimension $z_{j}$ and the derivative is the sum over $j$.
 
-Thus, $\nabla_{\theta}f = \left( \frac{\partial z}{\partial\theta} \right)^{T}\nabla_{z}f$
+Thus,
 
-where $\frac{\partial z}{\partial\theta} \in R^{m\  \times \ n}$ is the Jacobian of $z \in R^{m}$ with respect to $\theta \in R^{n}$
+$\frac{\partial f}{\partial\theta_{i}} = \sum_{j = 1}^{m}\frac{\partial f}{\partial z_{j}}\frac{\partial z_{j}}{\partial\theta_{i}}$
 
-and $\nabla_{z}f \in R^{m}$.
+The expression of ${\nabla_{\theta}}^{T}f$ above can also be expressed with:
+
+- The Jacobian of $z$ with respect to $\theta$: $\frac{\partial z}{\partial\theta} \in R^{m\  \times \ n}$
+
+- The gradient of $f$ with respect to $z$: $\nabla_{z}f \in R^{m}$
+
+$\nabla_{\theta}f = \left( \frac{\partial z}{\partial\theta} \right)^{T}\nabla_{z}f$
 
 ### Notes
 
@@ -82,37 +104,87 @@ $\theta \in R^{n},\ z = g(\theta) \in R^{m}$, $z = g(\theta)$, $g:\ R^{n} \right
 
 # Backpropagation
 
+The diagram below represents a simple neural network with layers $l$, $l + 1$,\..., $L$ and a loss function $E(\widehat{y},\ y)$.
+
+![](media/drawing_7.png)
+
 ## Generic form
 
-#### Derivative wrt $a^{l}$
+The sections below explain how to compute the derivatives of $E$ with respect to:
 
-$E(\widehat{y},\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1},b^{l + 1})))$
+- $a^{l}$, the activation of layer $l$
+
+- $z^{l}$, the value of layer $l$ before the activation
+
+- $w_{ij}^{l}$, the weight between neuron $i$ of layer $l - 1$ and neuron $j$ of layer $l$
+
+#### Derivative with respect to $a^{l}$
+
+To compute the derivative of $E$ with respect to $a^{l}$, the activation of layer $l$, we express $E$ as the composition of $E(z^{l + 1})$ and $z^{l + 1}(a^{l},W^{l + 1})$:
+
+$E(\widehat{y},\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))$
+
+$E(a^{l})$ is thus a multivariate scalar function with intermediate variables $z^{l + 1}$.
+
+![](media/drawing_8.png)
+
+According to the [[chain rule for a multivariate scalar function]{.underline}](#multivariate-scalar-function-1), its derivative is given by its gradient:
 
 $\nabla_{a^{l}}\ E = \left\lbrack \frac{\partial E}{\partial a_{i}^{l}},\ ... \right\rbrack$
 
-$\frac{\partial E}{\partial a_{i}^{l}} = \frac{\partial E}{\partial z^{l + 1}}\frac{\partial z^{l + 1}}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}\frac{\partial z_{k}^{l + 1}}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}{\ w}_{ik}^{l + 1}$ *Multivariate chain rule*
+where $\frac{\partial E}{\partial a_{i}^{l}} = \frac{\partial E}{\partial z^{l + 1}}\frac{\partial z^{l + 1}}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}\frac{\partial z_{k}^{l + 1}}{\partial a_{i}^{l}}$ *Multivariate chain rule*
 
-$z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}$
+Moreover, $z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}$, thus $\frac{\partial z_{j}^{l}}{\partial a_{i}^{l - 1}} = w_{ij}^{l}$ and the expression above becomes:
 
-$\frac{\partial z_{j}^{l}}{\partial a_{i}^{l - 1}} = w_{ij}^{l}$
+$\frac{\partial E}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}{\ w}_{ik}^{l + 1}$
 
-#### Derivative wrt $z^{l}$
+![](media/drawing_9.png)
 
-$E(\widehat{y},\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l},b^{l})))$
+#### Derivative with respect to $z^{l}$
+
+Similarly, we can express $E$ as the composition of $E(a^{l})$ and $a^{l}(z^{l})$:
+
+$E(\widehat{y},\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l + 1})))$
+
+$E(z^{l})$ is thus a multivariate scalar function and its derivative is given by its gradient:
 
 $\nabla_{z^{l}}\ E = \left\lbrack \frac{\partial E}{\partial z_{i}^{l}},\ ... \right\rbrack$
 
+Notice also that each function $E(z_{i}^{l})$ can be expressed as the composition of $E(a_{i}^{l})$ and $a_{i}^{l}(z_{i}^{l})$.
+
+Thus, the [[chain rule for univariate scalar functions]{.underline}](#univariate-scalar-function-1) can be applied:
+
 $\frac{\partial E}{\partial z_{i}^{l}} = \frac{\partial E}{\partial a_{i}^{l}}\frac{\partial a_{i}^{l}}{\partial z_{i}^{l}}$ *Scalar chain rule*
 
-#### Derivative wrt $w_{ij}^{l}$
+![](media/drawing_10.png)
 
-$E(\widehat{y},\ y) = E(...z^{l}(a^{l - 1},W^{l},b^{l})))$
+#### Derivative with respect to $w_{ij}^{l}$
 
-$\nabla_{W^{l}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{l}},\ ... \right\rbrack$ *Gradient of a multivariate function*
+Finally we can express $E$ as the composition of $E(z^{l})$ and $z^{l}(a^{l - 1},W^{l})$:
 
-$\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z^{l}}\frac{\partial z^{l}}{\partial w_{ij}^{l}} = \sum_{k = 1}^{N^{l}}\frac{\partial E}{\partial z_{k}^{l}}\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}$ *Multivariate chain rule*
+$E(\widehat{y},\ y) = E(...z^{l}(a^{l - 1},W^{l})))$
 
-because $\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = 0$ for $k \neq j$
+$E(W^{l})$ is thus a multivariate scalar function with intermediate variables $z^{l}$.
+
+![](media/drawing_11.png)
+
+According to the [[chain rule for a multivariate scalar function]{.underline}](#multivariate-scalar-function-1), its derivative is given by its gradient:
+
+$\nabla_{W^{l}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{l}},\ ... \right\rbrack$
+
+where $\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z^{l}}\frac{\partial z^{l}}{\partial w_{ij}^{l}} = \sum_{k = 1}^{N^{l}}\frac{\partial E}{\partial z_{k}^{l}}\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}$ *Multivariate chain rule*
+
+![](media/drawing_12.png)
+
+Moreover, $z_{k}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}$
+
+Thus $\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = 0$ for $k \neq j$
+
+And the expression above becomes:
+
+$\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}$
+
+![](media/drawing_13.png)
 
 ### Layer $L$
 
@@ -216,6 +288,8 @@ because $\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = 0$ for $k \neq j$
 
 # Notes
 
+$a_{i}^{l - 1}$
+
 $w_{ij}^{l}$
 
 $z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}$
@@ -240,6 +314,12 @@ $a_{j}^{L} = g^{L}(z_{j}^{L})$
 
 $l$
 
+${l + 1}^{}$
+
 $L - 1$
 
 $L$
+
+# Sources
+
+[[https://brilliant.org/wiki/backpropagation/]{.underline}](https://brilliant.org/wiki/backpropagation/)
