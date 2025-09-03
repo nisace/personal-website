@@ -1,5 +1,9 @@
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "!CHANGELOG.md"
+    - "!data/"
 
 website:
   title: "Nisace's website"
