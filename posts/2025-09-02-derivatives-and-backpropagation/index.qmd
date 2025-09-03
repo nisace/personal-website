@@ -113,7 +113,7 @@ $E(a^{l})$ is thus a multivariate scalar function with intermediate variables $z
 
 ![](media/drawing_8.png)
 
-According to the [[chain rule for a multivariate scalar function]{.underline}](#multivariate-scalar-function-1), its derivative is given by its gradient:
+According to the [chain rule for a multivariate scalar function](#multivariate-scalar-function-1), its derivative is given by its gradient:
 
 $\nabla_{a^{l}}\ E = \left\lbrack \frac{\partial E}{\partial a_{i}^{l}},\ ... \right\rbrack$
 
@@ -137,7 +137,7 @@ $\nabla_{z^{l}}\ E = \left\lbrack \frac{\partial E}{\partial z_{i}^{l}},\ ... \r
 
 Notice also that each function $E(z_{i}^{l})$ can be expressed as the composition of $E(a_{i}^{l})$ and $a_{i}^{l}(z_{i}^{l})$.
 
-Thus, the [[chain rule for univariate scalar functions]{.underline}](#univariate-scalar-function-1) can be applied:
+Thus, the [chain rule for univariate scalar functions](#univariate-scalar-function-1) can be applied:
 
 $\frac{\partial E}{\partial z_{i}^{l}} = \frac{\partial E}{\partial a_{i}^{l}}\frac{\partial a_{i}^{l}}{\partial z_{i}^{l}}$ *Scalar chain rule*
 
@@ -153,7 +153,7 @@ $E(W^{l})$ is thus a multivariate scalar function with intermediate variables $z
 
 ![](media/drawing_11.png)
 
-According to the [[chain rule for a multivariate scalar function]{.underline}](#multivariate-scalar-function-1), its derivative is given by its gradient:
+According to the [chain rule for a multivariate scalar function](#multivariate-scalar-function-1), its derivative is given by its gradient:
 
 $\nabla_{W^{l}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{l}},\ ... \right\rbrack$
 
@@ -173,4 +173,4 @@ $\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\
 
 # Sources
 
-[[https://brilliant.org/wiki/backpropagation/]{.underline}](https://brilliant.org/wiki/backpropagation/)
+[https://brilliant.org/wiki/backpropagation](https://brilliant.org/wiki/backpropagation/)

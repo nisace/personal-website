@@ -44,3 +44,15 @@ div.quarto-post a {
     color: var(--color-text-light);
     text-decoration: none;
 }
+
+/* Normal link */
+a {
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+/* Hover link */
+a:hover {
+  color: var(--color-text-dark);
+}
