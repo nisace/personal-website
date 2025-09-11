@@ -4,13 +4,13 @@ title: "[]{#_oi9bdj8ytytd .anchor}Information theory"
 
 This document is an introduction to information theory and concepts such as:
 
-- Information content
+- [Information content](#information-content)
 
-- Entropy
+- [Entropy](#entropy)
 
-- Cross-entropy
+- [Cross-entropy](#cross-entropy)
 
-- Kullback--Leibler divergence
+- [Kullback--Leibler divergence](#kullbackleibler-divergence)
 
 It also explains how these concepts are related to Maximum Likelihood Estimation.
 
@@ -82,13 +82,13 @@ It can be thought of as an alternative way of expressing probability.
 
 - Expected value of $I(X)$:
 
-$H(X)$
+  $H(X)$
 
-$= E(I(X))$
+  $= E(I(X))$
 
-$= \ E( - log(p(X)))$
+  $= \ E( - log(p(X)))$
 
-$= \ \sum_{\chi}^{} - p(x)\ log(p(x))$
+  $= \ \sum_{\chi}^{} - p(x)\ log(p(x))$
 
 ## Interpretations
 
@@ -104,7 +104,7 @@ $= \ \sum_{\chi}^{} - p(x)\ log(p(x))$
 
   - Each character can take a value in an alphabet of size $b$.
 
-  - See [[Relationship to encoding]{.underline}](#relationship-to-encoding) for more details.
+  - See [relationship to encoding](#relationship-to-encoding) for more details.
 
 - This can also be viewed as the expected amount of information needed to describe the state of the variable, considering the distribution of probabilities across all potential states.
 
@@ -144,11 +144,11 @@ $= \ \sum_{\chi}^{} - p(x)\ log(p(x))$
 
 - Thus, it is computed as $Cross\ Entropy - Entropy$:
 
-$D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)$
+  $D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)$
 
-> $= \sum_{\chi}^{} - p(x)\ log(q(x)) - \sum_{\chi}^{} - p(x)\ log(p(x))$
->
-> $= \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})$
+  $= \sum_{\chi}^{} - p(x)\ log(q(x)) - \sum_{\chi}^{} - p(x)\ log(p(x))$
+
+  $= \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})$
 
 - Also called **relative entropy** (code length relative to the optimal one).
 
@@ -187,7 +187,7 @@ $D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)$
 
 - The relationship between entropy, cross-entropy and Kullback--Leibler divergence can also be summarized with the following diagram:
 
-![](media/drawing_1.png)
+![](media/drawing_1.png){fig-align="center" width="700px"}
 
 - For a fixed $p$
 
@@ -197,9 +197,9 @@ $D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)$
 
 # Where does the name of the cross entropy loss come from?
 
-In a supervised classification problem with $C$ classes, the following loss, called the [[cross entropy loss]{.underline}](https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss), is often used
+In a supervised classification problem with $C$ classes, the following loss, called the [cross entropy loss](https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss), is often used
 
-> $Loss(y_{i},\ \widehat{y_{i}}) = \  - \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}$
+$Loss(y_{i},\ \widehat{y_{i}}) = \  - \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}$
 
 Where
 
@@ -221,17 +221,17 @@ Where
 
 - The cross entropy between the probability distributions $p$ and $q$ is
 
-$H(p,\ q) = \ \sum_{k = 1}^{C} - p(y_{i,k} = c_{i})\ log(q(y_{i,k} = c_{i}))$
+  $H(p,\ q) = \ \sum_{k = 1}^{C} - p(y_{i,k} = c_{i})\ log(q(y_{i,k} = c_{i}))$
 
 - Which is the same as
 
-> $\sum_{k = 1}^{C} - y_{i,k}\ log\ \widehat{y_{i,k}}$
+  $\sum_{k = 1}^{C} - y_{i,k}\ log\ \widehat{y_{i,k}}$
 
 - Which is the definition of the loss $Loss(y_{i},\ \widehat{y_{i}})$ given above, which is hence named the cross entropy loss.
 
 - Thus, **minimizing the cross entropy loss** is equivalent to **minimizing the cross-entropy** (or equivalently the **KL divergence)** between the true and the estimated probability distributions.
 
-![](media/drawing_2.png)
+![](media/drawing_2.png){fig-align="center" width="500px"}
 
 # Sources
 
