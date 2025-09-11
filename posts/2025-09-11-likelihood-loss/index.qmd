@@ -1,0 +1,126 @@
+---
+title: "Maximum Likelihood Estimation and loss functions"
+description: |
+  Introduction to Maximum Likelihood Estimation (MLE) and its relationship with
+  the cross-entropy and mean squared error (MSE) loss functions.
+date: "2025-09-11"
+categories: [Statistics]
+---
+
+In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we show that maximizing the likelihood (MLE) of the observed data is equivalent to minimizing:
+
+- The cross entropy loss in a supervised classification setting.
+
+- The mean squared error (MSE) in a regression setting and under the assumption of normally distributed errors.
+
+# Maximum Likelihood Estimation
+
+## General setting
+
+The Maximum Likelihood Estimation (MLE) seeks to find the parameters $\theta$ of a probabilistic model that maximize the likelihood $L$ of the observed data $x$. If we consider that $x$ is composed of $n$ independent and identically distributed samples $x_{i}$, $L$ can be expressed as:
+
+$L(\theta) = \prod_{i = 1}^{n}p(x_{i}\ |\ \theta)$
+
+By convenience and for numerical stability reasons, the $\log$ of $L(\theta)$ is often maximized instead of $L(\theta)$ directly.
+
+$log(L(\theta)) = \sum_{i = 1}^{n}log\ p(x_{i}\ |\ \theta)$
+
+## Supervised learning setting
+
+In a supervised learning setting:
+
+- The samples are pairs $(x_{i},y_{i})$ of observed sample $x_{i}$ and label $y_{i}$.
+
+Thus, the likelihood is expressed as:
+
+$L(\theta) = \prod_{i = 1}^{n}p(x_{i},\ y_{i}\ |\ \theta)$
+
+which can be rearranged as
+
+$L(\theta) = \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)$
+
+- Moreover, in a supervised learning setting, the model does not try to model the data $x_{i}$ but only the label $y_{i}$ based on $x_{i}$.
+
+Thus, $p(x_{i})$ does not depend on $\theta$ and maximizing $p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)$ with respect to $\theta$ is equivalent to maximizing $p(y_{i}\ |\ x_{i},\ \theta)$.
+
+$L(\theta)\  \propto \ \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)$
+
+# Relationship to loss functions
+
+## Classification setting
+
+In a classification setting with $C$ classes:
+
+- The label $c_{i}$ is the class index for sample $i$.
+
+  - We note $y_{i}$ the corresponding one-hot vector of size $C$ with elements
+
+    - $y_{i,k} = 1$ for $k = c_{i}$
+
+    - $y_{i,k} = 0$ for $k \neq c_{i}$
+
+- The model outputs the estimated probabilities of each class in a vector $\widehat{y_{i}} = f(x_{i})$ of size $C$, i.e.
+
+  - $p(c_{i}\ |\ x_{i},\ \theta)\  \triangleq \ \widehat{y_{i,c_{i}}}$
+
+  - Which can also be written as
+
+    $p(c_{i}\ |\ x_{i},\ \theta)\  = \prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}$
+
+- Thus, $L(\theta)\  \propto \ \prod_{i = 1}^{n}\prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}$
+
+- Taking the $\log$ of the expression above gives
+
+  $\sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}$
+
+- Finally, maximizing the expression above is equivalent to minimizing its negative, i.e
+
+  $- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}$
+
+- We can recognize above the expression of the [cross entropy loss](https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss).
+
+  - Using the fact that $y_{i,k} = 1$ if $k = c_{i}$ and $y_{i,k} = O$ for $k \neq c_{i}$, the expression can be simplified to
+
+    $- \sum_{i = 1}^{n}log\ \widehat{y_{i,c_{i}}}$
+
+- Thus, **in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss**.
+
+- To understand why the formula $- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}$ is called the cross entropy loss, refer to 
+the [dedicated section](/posts/2025-09-11-information-theory/index.qmd#where-does-the-name-of-the-cross-entropy-loss-come-from)
+in the [Information Theory](/posts/2025-09-11-information-theory/index.qmd) blog post.
+
+## Regression setting
+
+In a regression setting
+
+- The label is $y_{i}$ for sample $i$.
+
+- The model outputs a prediction $\widehat{y_{i}} = f(x_{i})$.
+
+  - If we assume that the error follows a normal distribution, we have
+
+    $y_{i} \sim N(\widehat{y_{i}},\sigma^{2})$
+
+    and
+
+    $p(y_{i}\ |\ x_{i},\ \theta)\  = \frac{1}{}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}$
+
+- Thus, $L(\theta)\  \propto \ \prod_{i = 1}^{n}\frac{1}{}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}$
+
+- And maximizing the expression above is equivalent to minimizing ${(y_{i} - \widehat{y_{i}})}^{2}$
+
+- Taking the $\log$ of the expression above gives
+
+  $\sum_{i = 1}^{n}\log\frac{1}{} - \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}$
+
+- Finally, because only $\widehat{y_{i}}$ depends on $\theta$, maximizing the expression above is equivalent to minimizing
+
+  $\sum_{i = 1}^{n}{(y_{i} - \widehat{y_{i}})}^{2}$
+
+- We can recognize above the expression of the mean squared error (MSE).
+
+- Thus, **in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error**.
+
+# Sources
+
+[[https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss]{.underline}](https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss)
