@@ -78,3 +78,9 @@ div.quarto-post:hover a,
 div.quarto-post:hover .body {
   color: var(--color-text-dark);
 }
+
+/* Table styles */
+table, th, td {
+  border: 2px solid var(--color-text-dark);
+  border-collapse: collapse;
+}
