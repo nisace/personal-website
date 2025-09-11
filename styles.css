@@ -72,3 +72,9 @@ a:hover {
   color: var(--color-text-light)!important;
   border-left: 1px solid var(--color-text-light);
 }
+
+/* Blog posts listing styles */
+div.quarto-post:hover a,
+div.quarto-post:hover .body {
+  color: var(--color-text-dark);
+}
