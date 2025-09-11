@@ -154,36 +154,36 @@ It can be thought of as an alternative way of expressing probability.
 
 # Summary
 
-+-------------------+------------------+-----------------------------------------------------------------+---------------+
-|                   | Definition       | Formula                                                         | Applied to    |
-+-------------------+------------------+-----------------------------------------------------------------+---------------+
-| Self information  | \- Level of      | $I(x) = - \log_{b}(p(x))$                                       | Individual    |
-|                   | \"surprise\" of  |                                                                 | event $x$     |
-|                   | event $x$.       |                                                                 |               |
-+-------------------+------------------+-----------------------------------------------------------------+---------------+
-| Entropy           | \- Expected      | $H(X) = \ \sum_{\chi}^{} - p(x)\ log(p(x))$                     | Random        |
-|                   | value of         |                                                                 | variable $X$  |
-|                   | information      |                                                                 |               |
-|                   | content.\        |                                                                 |               |
-|                   | - Lower bound of |                                                                 |               |
-|                   | the expected     |                                                                 |               |
-|                   | length of a code |                                                                 |               |
-|                   | that encodes     |                                                                 |               |
-|                   | events of $X$.   |                                                                 |               |
-+-------------------+------------------+-----------------------------------------------------------------+---------------+
-| Cross-entropy     | \- Entropy but   | $H(p,\ q) = \ \sum_{\chi}^{} - p(x)\ log(q(x))$                 | Probability   |
-|                   | with a coding    |                                                                 | distributions |
-|                   | scheme optimized |                                                                 | $p$ and $q$   |
-|                   | for $q$ instead  |                                                                 |               |
-|                   | of $p$.          |                                                                 |               |
-+-------------------+------------------+-----------------------------------------------------------------+               |
-| Kullback--Leibler | \- Additional    | $D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)$                            |               |
-| divergence        | code length when |                                                                 |               |
-|                   | using a coding   | $D_{KL}(p\ ||\ q) = \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})$ |               |
-|                   | scheme optimized |                                                                 |               |
-|                   | for $q$ instead  |                                                                 |               |
-|                   | of $p$.          |                                                                 |               |
-+===================+==================+=================================================================+===============+
++-------------------+----------------------------------------------------------+-----------------------------------------------------------------+---------------+
+|                   | Definition                                               | Formula                                                         | Applied to    |
++===================+==========================================================+=================================================================+===============+
+| Self information  | \- Level of \"surprise\" of event $x$.                   | $I(x) = - \log_{b}(p(x))$                                       | Individual    |
+|                   |                                                          |                                                                 | event $x$     |
+|                   |                                                          |                                                                 |               |
++-------------------+----------------------------------------------------------+-----------------------------------------------------------------+---------------+
+| Entropy           | \- Expected value of information content.                | $H(X) = \ \sum_{\chi}^{} - p(x)\ log(p(x))$                     | Random        |
+|                   | \- Lower bound of the expected length of a code that     |                                                                 | variable $X$  |
+|                   | encodes events of $X$.                                   |                                                                 |               |
+|                   |                                                          |                                                                 |               |
+|                   |                                                          |                                                                 |               |
+|                   |                                                          |                                                                 |               |
+|                   |                                                          |                                                                 |               |
+|                   |                                                          |                                                                 |               |
+|                   |                                                          |                                                                 |               |
++-------------------+----------------------------------------------------------+-----------------------------------------------------------------+---------------+
+| Cross-entropy     | \- Entropy but                                           | $H(p,\ q) = \ \sum_{\chi}^{} - p(x)\ log(q(x))$                 | Probability   |
+|                   | with a coding                                            |                                                                 | distributions |
+|                   | scheme optimized                                         |                                                                 | $p$ and $q$   |
+|                   | for $q$ instead                                          |                                                                 |               |
+|                   | of $p$.                                                  |                                                                 |               |
++-------------------+----------------------------------------------------------+-----------------------------------------------------------------+               |
+| Kullback--Leibler | \- Additional                                            | $D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)$                            |               |
+| divergence        | code length when                                         |                                                                 |               |
+|                   | using a coding                                           | $D_{KL}(p\ ||\ q) = \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})$ |               |
+|                   | scheme optimized                                         |                                                                 |               |
+|                   | for $q$ instead                                          |                                                                 |               |
+|                   | of $p$.                                                  |                                                                 |               |
++-------------------+----------------------------------------------------------+-----------------------------------------------------------------+---------------+
 
 - The relationship between entropy, cross-entropy and Kullback--Leibler divergence can also be summarized with the following diagram:
 
