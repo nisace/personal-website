@@ -1,5 +1,12 @@
 ---
-title: "[]{#_oi9bdj8ytytd .anchor}Information theory"
+title: "Information theory"
+description: |
+  Introduction to information theory, entropy, cross-entropy and
+  Kullback--Leibler divergence.
+date: "2025-09-11"
+categories: [Information theory]
+image: media/drawing_1.png
+image-alt: "entropy-kl-divergence-and-cross-entropy"
 ---
 
 This document is an introduction to information theory and concepts such as:
