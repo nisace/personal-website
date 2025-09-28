@@ -2,11 +2,15 @@
 title: "[]{#_eydiu1mvc69l .anchor}Maximum Likelihood Estimation and loss functions"
 ---
 
-In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we show that maximizing the likelihood (MLE) of the observed data is equivalent to minimizing:
+In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we will show that in a supervised learning setting, maximizing the likelihood (MLE) of the observed data $p(x,\ y\ |\ \theta)$ is equivalent to:
 
-- The cross entropy loss in a supervised classification setting.
+- Maximizing $p(y\ |\ x,\ \theta)$.
 
-- The mean squared error (MSE) in a regression setting and under the assumption of normally distributed errors.
+<!-- -->
+
+- Minimizing the cross entropy loss in a classification setting.
+
+- Minimizing the mean squared error (MSE) in a regression setting and under the assumption of normally distributed errors.
 
 # Maximum Likelihood Estimation
 
@@ -34,11 +38,13 @@ which can be rearranged as
 
 $L(\theta) = \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)$
 
-- Moreover, in a supervised learning setting, the model does not try to model the data $x_{i}$ but only the label $y_{i}$ based on $x_{i}$.
+- Moreover, in a supervised learning setting, **the model does not try to model the data** $x_{i}$ but only the label $y_{i}$ based on $x_{i}$.
 
 Thus, $p(x_{i})$ does not depend on $\theta$ and maximizing $p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)$ with respect to $\theta$ is equivalent to maximizing $p(y_{i}\ |\ x_{i},\ \theta)$.
 
 $L(\theta)\  \propto \ \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)$
+
+In other terms, in a supervised learning setting, **maximizing the likelihood** $p(x,\ y\ |\ \theta)$ **is equivalent to maximizing** $p(y\ |\ x,\ \theta)$**.**
 
 # Relationship to loss functions
 
