@@ -475,7 +475,7 @@ Here is a summary of different possible applications.
 | Data type  | Problem type   | Decoder       | Loss function | Example of          |
 | for $x$    |                | outputs       | corresponding | application         |
 |            |                |               | to MLE        |                     |
-+------------+----------------+---------------+---------------+---------------------+
++============+================+===============+===============+=====================+
 | Continuous | Regression     | Predicted     | MSE           | Images (pixels      |
 | data       |                | value         |               | intensities)        |
 |            |                |               |               |                     |
@@ -486,7 +486,7 @@ Here is a summary of different possible applications.
 +------------+----------------+---------------+---------------+---------------------+
 | Discrete   | Classification | Class         | Cross entropy | Text tokens         |
 | data       |                | probabilities |               |                     |
-+============+================+===============+===============+=====================+
++------------+----------------+---------------+---------------+---------------------+
 
 ## Consequences of minimizing the reversed Kullback-Leibler divergence between the posteriors
 
