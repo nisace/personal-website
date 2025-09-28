@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-02">
-<meta name="description" content="This post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.">
+<meta name="dcterms.date" content="2025-09-11">
+<meta name="description" content="Introduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.">
 
-<title>Derivatives, chain rule and backpropagation – Nisace’s website</title>
+<title>Information theory – Nisace’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -140,26 +140,30 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#derivatives" id="toc-derivatives" class="nav-link active" data-scroll-target="#derivatives">Derivatives</a>
+  <li><a href="#information-content" id="toc-information-content" class="nav-link active" data-scroll-target="#information-content">Information content</a>
   <ul class="collapse">
-  <li><a href="#univariate-scalar-function" id="toc-univariate-scalar-function" class="nav-link" data-scroll-target="#univariate-scalar-function">Univariate scalar function</a></li>
-  <li><a href="#multivariate-scalar-function" id="toc-multivariate-scalar-function" class="nav-link" data-scroll-target="#multivariate-scalar-function">Multivariate scalar function</a></li>
-  <li><a href="#multivariate-vector-valued-function" id="toc-multivariate-vector-valued-function" class="nav-link" data-scroll-target="#multivariate-vector-valued-function">Multivariate vector-valued function</a>
-  <ul class="collapse">
-  <li><a href="#when-m-1" id="toc-when-m-1" class="nav-link" data-scroll-target="#when-m-1">When <span class="math inline">\(m = 1\)</span></a></li>
-  <li><a href="#when-m-n-1" id="toc-when-m-n-1" class="nav-link" data-scroll-target="#when-m-n-1">When <span class="math inline">\(m = n = 1\)</span></a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#origin" id="toc-origin" class="nav-link" data-scroll-target="#origin">Origin</a></li>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
   </ul></li>
-  </ul></li>
-  <li><a href="#chain-rule" id="toc-chain-rule" class="nav-link" data-scroll-target="#chain-rule">Chain rule</a>
+  <li><a href="#entropy" id="toc-entropy" class="nav-link" data-scroll-target="#entropy">Entropy</a>
   <ul class="collapse">
-  <li><a href="#univariate-scalar-function-1" id="toc-univariate-scalar-function-1" class="nav-link" data-scroll-target="#univariate-scalar-function-1">Univariate scalar function</a></li>
-  <li><a href="#multivariate-scalar-function-1" id="toc-multivariate-scalar-function-1" class="nav-link" data-scroll-target="#multivariate-scalar-function-1">Multivariate scalar function</a></li>
-  </ul></li>
-  <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a>
+  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
+  <li><a href="#interpretations" id="toc-interpretations" class="nav-link" data-scroll-target="#interpretations">Interpretations</a>
   <ul class="collapse">
-  <li><a href="#derivative-with-respect-to-al" id="toc-derivative-with-respect-to-al" class="nav-link" data-scroll-target="#derivative-with-respect-to-al">Derivative with respect to <span class="math inline">\(a^{l}\)</span></a></li>
-  <li><a href="#derivative-with-respect-to-zl" id="toc-derivative-with-respect-to-zl" class="nav-link" data-scroll-target="#derivative-with-respect-to-zl">Derivative with respect to <span class="math inline">\(z^{l}\)</span></a></li>
-  <li><a href="#derivative-with-respect-to-w_ijl" id="toc-derivative-with-respect-to-w_ijl" class="nav-link" data-scroll-target="#derivative-with-respect-to-w_ijl">Derivative with respect to <span class="math inline">\(w_{ij}^{l}\)</span></a></li>
+  <li><a href="#relationship-to-encoding" id="toc-relationship-to-encoding" class="nav-link" data-scroll-target="#relationship-to-encoding">Relationship to encoding</a></li>
+  </ul></li>
+  <li><a href="#properties" id="toc-properties" class="nav-link" data-scroll-target="#properties">Properties</a></li>
+  <li><a href="#history" id="toc-history" class="nav-link" data-scroll-target="#history">History</a></li>
+  </ul></li>
+  <li><a href="#cross-entropy" id="toc-cross-entropy" class="nav-link" data-scroll-target="#cross-entropy">Cross-entropy</a></li>
+  <li><a href="#kullbackleibler-divergence" id="toc-kullbackleibler-divergence" class="nav-link" data-scroll-target="#kullbackleibler-divergence">Kullback–Leibler divergence</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#where-does-the-name-of-the-cross-entropy-loss-come-from" id="toc-where-does-the-name-of-the-cross-entropy-loss-come-from" class="nav-link" data-scroll-target="#where-does-the-name-of-the-cross-entropy-loss-come-from">Where does the name of the cross entropy loss come from?</a></li>
+  <li><a href="#forward-vs-reversed-kullback-leibler-divergence" id="toc-forward-vs-reversed-kullback-leibler-divergence" class="nav-link" data-scroll-target="#forward-vs-reversed-kullback-leibler-divergence">Forward vs reversed Kullback-Leibler divergence</a>
+  <ul class="collapse">
+  <li><a href="#forward-kullback-leibler-divergence" id="toc-forward-kullback-leibler-divergence" class="nav-link" data-scroll-target="#forward-kullback-leibler-divergence">Forward Kullback-Leibler divergence</a></li>
+  <li><a href="#reversed-kullback-leibler-divergence" id="toc-reversed-kullback-leibler-divergence" class="nav-link" data-scroll-target="#reversed-kullback-leibler-divergence">Reversed Kullback-Leibler divergence</a></li>
   </ul></li>
   <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul>
@@ -170,15 +174,15 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Derivatives, chain rule and backpropagation</h1>
+<h1 class="title">Information theory</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Calculus</div>
+    <div class="quarto-category">Information theory</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    <p>This post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.</p>
+    <p>Introduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.</p>
   </div>
 </div>
 
@@ -189,7 +193,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 2, 2025</p>
+      <p class="date">September 11, 2025</p>
     </div>
   </div>
   
@@ -201,173 +205,293 @@ window.Quarto = {
 </header>
 
 
-<section id="derivatives" class="level1">
-<h1>Derivatives</h1>
-<section id="univariate-scalar-function" class="level2">
-<h2 class="anchored" data-anchor-id="univariate-scalar-function">Univariate scalar function</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="200"></p>
-</figure>
-</div>
-<p>For a univariate scalar function, the derivative is simply defined as the derivative of the function.</p>
-<p><span class="math inline">\(\frac{df}{d\theta} \in R\)</span></p>
+<p>This document is an introduction to information theory and concepts such as:</p>
+<ul>
+<li><p><a href="#information-content">Information content</a></p></li>
+<li><p><a href="#entropy">Entropy</a></p></li>
+<li><p><a href="#cross-entropy">Cross-entropy</a></p></li>
+<li><p><a href="#kullbackleibler-divergence">Kullback–Leibler divergence</a></p></li>
+</ul>
+<p>It also explains how these concepts are related to Maximum Likelihood Estimation.</p>
+<section id="information-content" class="level1">
+<h1>Information content</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In information theory, the information content quantifies the level of <em>surprise</em> of an event.</p>
+<p>It is derived from the probability of occurrence of a particular event.</p>
+<p>Its different names are:</p>
+<ul>
+<li>Information content</li>
+</ul>
+<!-- -->
+<ul>
+<li><p>Self-information</p></li>
+<li><p>Surprisal</p></li>
+<li><p>Shannon information</p></li>
+</ul>
+<p>It can be thought of as an alternative way of expressing probability.</p>
 </section>
-<section id="multivariate-scalar-function" class="level2">
-<h2 class="anchored" data-anchor-id="multivariate-scalar-function">Multivariate scalar function</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="200"></p>
-</figure>
-</div>
-<p>For a multivariate scalar function, the partial derivatives of <span class="math inline">\(f:\ R^{n} \rightarrow R\)</span> can be arranged in its gradient:</p>
-<p><span class="math inline">\({\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}\)</span>.</p>
-<p>The gradient is a column vector where each element is the partial derivative of <span class="math inline">\(f\)</span> with respect to the corresponding input dimension.</p>
-</section>
-<section id="multivariate-vector-valued-function" class="level2">
-<h2 class="anchored" data-anchor-id="multivariate-vector-valued-function">Multivariate vector-valued function</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="200"></p>
-</figure>
-</div>
-<p>The partial derivatives of <span class="math inline">\(f:\ R^{n} \rightarrow R^{m}\)</span> can be arranged in its Jacobian matrix <span class="math inline">\(\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}\)</span>.</p>
-<p><span class="math inline">\(\frac{\partial f}{\partial\theta} \in R^{m\  \times \ n}\)</span> contains</p>
+<section id="origin" class="level2">
+<h2 class="anchored" data-anchor-id="origin">Origin</h2>
 <ul>
-<li><p>In its rows, <span class="math inline">\({\nabla_{\theta}}^{T}f_{i} \in R^{n}\)</span> the transpose of the gradient of the components <span class="math inline">\(f_{i}\)</span> of <span class="math inline">\(f\)</span>.</p>
+<li><p>The self-information of an event <span class="math inline">\(x\)</span> is noted <span class="math inline">\(I(x)\)</span>.</p>
 <ul>
-<li>Each row <span class="math inline">\(i\)</span> contains the derivative of the component <span class="math inline">\(f_{i}\)</span> with respect to all the input dimensions.</li>
-</ul></li>
-<li><p>In its columns, <span class="math inline">\(\frac{\partial f}{\partial\theta_{j}}\)</span> the partial derivatives of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(\theta_{j}\)</span>.</p>
-<ul>
-<li>Each column <span class="math inline">\(j\)</span> contains the derivation of all the components of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(\theta_{j}\)</span> (the input dimension <span class="math inline">\(j\)</span>).</li>
+<li><p>It is a function <span class="math inline">\(f\)</span> of the probability <span class="math inline">\(p\)</span> that <span class="math inline">\(x\)</span> occurs.</p></li>
+<li><p>i.e.&nbsp;<span class="math inline">\(I(x) = f(p(x))\)</span></p></li>
 </ul></li>
 </ul>
-<p><span class="math inline">\(\frac{\partial f}{\partial\theta}^{T} = \left\lbrack \nabla_{\theta}f_{1},\ \nabla_{\theta}f_{2},\ ...,\ \nabla_{\theta}f_{m} \right\rbrack \in R^{n\  \times \ m}\)</span></p>
-<section id="when-m-1" class="level3">
-<h3 class="anchored" data-anchor-id="when-m-1">When <span class="math inline">\(m = 1\)</span></h3>
-<p><span class="math inline">\(f\)</span> is a multivariate scalar function and its Jacobian is the transpose of its gradient.</p>
-</section>
-<section id="when-m-n-1" class="level3">
-<h3 class="anchored" data-anchor-id="when-m-n-1">When <span class="math inline">\(m = n = 1\)</span></h3>
-<p><span class="math inline">\(f\)</span> is an univariate scalar function.</p>
-</section>
-</section>
-</section>
-<section id="chain-rule" class="level1">
-<h1>Chain rule</h1>
-<section id="univariate-scalar-function-1" class="level2">
-<h2 class="anchored" data-anchor-id="univariate-scalar-function-1">Univariate scalar function</h2>
-<p>When univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
-</figure>
-</div>
-<p><span class="math inline">\(\frac{df}{d\theta} = \frac{df}{dz}\frac{dz}{d\theta}\)</span></p>
-</section>
-<section id="multivariate-scalar-function-1" class="level2">
-<h2 class="anchored" data-anchor-id="multivariate-scalar-function-1">Multivariate scalar function</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_5.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
-</figure>
-</div>
-<p><span class="math inline">\(f:\ R^{n} \rightarrow R\)</span> is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.</p>
-<p><span class="math inline">\({\nabla_{\theta}}^{T}f = \left\lbrack \frac{\partial f}{\partial\theta_{1}},\ \frac{\partial f}{\partial\theta_{2}},\ ...,\ \frac{\partial f}{\partial\theta_{n}} \right\rbrack \in R^{n}\)</span></p>
-<p>For each input dimension <span class="math inline">\(\theta_{i}\)</span>, the chain rule is applied to each intermediate dimension <span class="math inline">\(z_{j}\)</span> and the derivative is the sum over <span class="math inline">\(j\)</span>.</p>
-<p>Thus,</p>
-<p><span class="math inline">\(\frac{\partial f}{\partial\theta_{i}} = \sum_{j = 1}^{m}\frac{\partial f}{\partial z_{j}}\frac{\partial z_{j}}{\partial\theta_{i}}\)</span></p>
-<p>The expression of <span class="math inline">\({\nabla_{\theta}}^{T}f\)</span> above can also be expressed with:</p>
+<!-- -->
 <ul>
-<li><p>The Jacobian of <span class="math inline">\(z\)</span> with respect to <span class="math inline">\(\theta\)</span>: <span class="math inline">\(\frac{\partial z}{\partial\theta} \in R^{m\  \times \ n}\)</span></p></li>
-<li><p>The gradient of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(z\)</span>: <span class="math inline">\(\nabla_{z}f \in R^{m}\)</span></p></li>
-</ul>
-<p><span class="math inline">\(\nabla_{\theta}f = \left( \frac{\partial z}{\partial\theta} \right)^{T}\nabla_{z}f\)</span></p>
-</section>
-</section>
-<section id="backpropagation" class="level1">
-<h1>Backpropagation</h1>
-<p>The diagram below represents a simple neural network with layers <span class="math inline">\(l\)</span>, <span class="math inline">\(l + 1\)</span>,..., <span class="math inline">\(L\)</span> and a loss function <span class="math inline">\(E(\widehat{y},\ y)\)</span>.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_7.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>The sections below explain how to compute the derivatives of <span class="math inline">\(E\)</span> with respect to:</p>
+<li><p>Claude Shannon's definition of self-information was chosen to meet several axioms</p>
 <ul>
-<li><p><span class="math inline">\(a^{l}\)</span>, the activation of layer <span class="math inline">\(l\)</span></p></li>
-<li><p><span class="math inline">\(z^{l}\)</span>, the value of layer <span class="math inline">\(l\)</span> before the activation</p></li>
-<li><p><span class="math inline">\(w_{ij}^{l}\)</span>, the weight between neuron <span class="math inline">\(i\)</span> of layer <span class="math inline">\(l - 1\)</span> and neuron <span class="math inline">\(j\)</span> of layer <span class="math inline">\(l\)</span></p></li>
+<li><p><span class="math inline">\(f(p)\)</span> is monotonically decreasing in <span class="math inline">\(p\)</span>.</p>
+<ul>
+<li>The more probable an event is, the less surprising it is and the less information it yields.</li>
+</ul></li>
+<li><p><span class="math inline">\(f(1) = 0\)</span></p>
+<ul>
+<li>An event with probability 1 is perfectly unsurprising and yields no information.</li>
+</ul></li>
+<li><p><span class="math inline">\(f(p_{1}\ p_{2}) = f(p_{1}) + f(p_{2})\)</span></p>
+<ul>
+<li>The information from independent events is the sum of the information of each event.</li>
+</ul></li>
+</ul></li>
 </ul>
-<section id="derivative-with-respect-to-al" class="level2">
-<h2 class="anchored" data-anchor-id="derivative-with-respect-to-al">Derivative with respect to <span class="math inline">\(a^{l}\)</span></h2>
-<p>To compute the derivative of <span class="math inline">\(E\)</span> with respect to <span class="math inline">\(a^{l}\)</span>, the activation of layer <span class="math inline">\(l\)</span>, we express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(z^{l + 1})\)</span> and <span class="math inline">\(z^{l + 1}(a^{l},W^{l + 1})\)</span>:</p>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))\)</span></p>
-<p><span class="math inline">\(E(a^{l})\)</span> is thus a multivariate scalar function with intermediate variables <span class="math inline">\(z^{l + 1}\)</span>.</p>
+</section>
+<section id="definition" class="level2">
+<h2 class="anchored" data-anchor-id="definition">Definition</h2>
+<ul>
+<li><p>There is a unique function <span class="math inline">\(f\)</span> that meets the 3 axioms, up to a scaling factor <span class="math inline">\(b\)</span>.</p></li>
+<li><p><span class="math inline">\(I(x) = - \log_{b}(p(x))\)</span></p></li>
+<li><p>Different choices of <span class="math inline">\(b\)</span> correspond to different units of information:</p>
+<ul>
+<li><p><span class="math inline">\(b = 2\)</span>: Shannon or bit.</p></li>
+<li><p><span class="math inline">\(b = e\)</span>: natural unit of information.</p></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="entropy" class="level1">
+<h1>Entropy</h1>
+<section id="definition-1" class="level2">
+<h2 class="anchored" data-anchor-id="definition-1">Definition</h2>
+<ul>
+<li><p>Noted <span class="math inline">\(H(X)\)</span>.</p></li>
+<li><p>Expected value of the self-information of a random variable.</p></li>
+<li><p>Expected value of <span class="math inline">\(I(X)\)</span>:</p>
+<p><span class="math inline">\(H(X)\)</span></p>
+<p><span class="math inline">\(= E(I(X))\)</span></p>
+<p><span class="math inline">\(= \ E( - log(p(X)))\)</span></p>
+<p><span class="math inline">\(= \ \sum_{\chi}^{} - p(x)\ log(p(x))\)</span></p></li>
+</ul>
+</section>
+<section id="interpretations" class="level2">
+<h2 class="anchored" data-anchor-id="interpretations">Interpretations</h2>
+<ul>
+<li><p>The entropy <span class="math inline">\(H_{b}(X)\)</span> in base <span class="math inline">\(b\)</span> is the lower bound of the expected length of any code with an alphabet size of <span class="math inline">\(b\)</span> that encodes events of <span class="math inline">\(X\)</span>.</p>
+<ul>
+<li><p>The length is the number of characters, i.e.&nbsp;the number of units of information.</p></li>
+<li><p>Thus, its unit is the unit set by the choice of <span class="math inline">\(b\)</span>:</p>
+<ul>
+<li><p><span class="math inline">\(b = 2\)</span>: number of bits.</p></li>
+<li><p><span class="math inline">\(b = 10\)</span>: number of decimal digits.</p></li>
+</ul></li>
+<li><p>Each character can take a value in an alphabet of size <span class="math inline">\(b\)</span>.</p></li>
+<li><p>See <a href="#relationship-to-encoding">relationship to encoding</a> for more details.</p></li>
+</ul></li>
+<li><p>This can also be viewed as the expected amount of information needed to describe the state of the variable, considering the distribution of probabilities across all potential states.</p></li>
+</ul>
+<section id="relationship-to-encoding" class="level3">
+<h3 class="anchored" data-anchor-id="relationship-to-encoding">Relationship to encoding</h3>
+<ul>
+<li><p>Proved by Claude Shannon.</p></li>
+<li><p>For optimal encoding, the number of characters (bits for <span class="math inline">\(b = 2\)</span>) used per symbol should reflect its information content.</p>
+<ul>
+<li><p>More probable symbols require fewer bits, while less probable symbols require more bits.</p></li>
+<li><p>This forms the basis of variable-length codes like Huffman coding or arithmetic coding.</p></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="properties" class="level2">
+<h2 class="anchored" data-anchor-id="properties">Properties</h2>
+<ul>
+<li><p>The entropy is maximized when the probability distribution is uniform.</p>
+<ul>
+<li>The uncertainty (i.e.&nbsp;surprise or information content) is maximized as all events are equally probable.</li>
+</ul></li>
+</ul>
+</section>
+<section id="history" class="level2">
+<h2 class="anchored" data-anchor-id="history">History</h2>
+<ul>
+<li><p>Discovered by Claude Shannon.</p></li>
+<li><p>Named after the thermodynamics entropy definition by Boltzmann (and generalized by Gibbs).</p></li>
+<li><p>Von Neumann realized first that relation.</p></li>
+</ul>
+</section>
+</section>
+<section id="cross-entropy" class="level1">
+<h1>Cross-entropy</h1>
+<ul>
+<li><p>Measure the entropy but with a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</p></li>
+<li><p><span class="math inline">\(H(p,\ q) = \ \sum_{\chi}^{} - p(x)\ log(q(x))\)</span></p></li>
+</ul>
+</section>
+<section id="kullbackleibler-divergence" class="level1">
+<h1>Kullback–Leibler divergence</h1>
+<ul>
+<li><p>Measure the additional code length when using a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</p></li>
+<li><p>Thus, it is computed as <span class="math inline">\(Cross\ Entropy - Entropy\)</span>:</p>
+<p><span class="math inline">\(D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)\)</span></p>
+<p><span class="math inline">\(= \sum_{\chi}^{} - p(x)\ log(q(x)) - \sum_{\chi}^{} - p(x)\ log(p(x))\)</span></p>
+<p><span class="math inline">\(= \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})\)</span></p></li>
+<li><p>Also called <strong>relative entropy</strong> (code length relative to the optimal one).</p></li>
+</ul>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 36%">
+<col style="width: 40%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Definition</th>
+<th>Formula</th>
+<th>Applied to</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Self information</td>
+<td>- Level of "surprise" of event <span class="math inline">\(x\)</span>.</td>
+<td><span class="math inline">\(I(x) = - \log_{b}(p(x))\)</span></td>
+<td>Individual event <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td>Entropy</td>
+<td>- Expected value of information content. - Lower bound of the expected length of a code that encodes events of <span class="math inline">\(X\)</span>.</td>
+<td><span class="math inline">\(H(X) = \ \sum_{\chi}^{} - p(x)\ log(p(x))\)</span></td>
+<td>Random variable <span class="math inline">\(X\)</span></td>
+</tr>
+<tr class="odd">
+<td>Cross-entropy</td>
+<td>- Entropy but with a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</td>
+<td><span class="math inline">\(H(p,\ q) = \ \sum_{\chi}^{} - p(x)\ log(q(x))\)</span></td>
+<td rowspan="2">Probability distributions <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span></td>
+</tr>
+<tr class="even">
+<td>Kullback–Leibler divergence</td>
+<td>- Additional code length when using a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</td>
+<td><p><span class="math inline">\(D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)\)</span></p>
+<p><span class="math inline">\(D_{KL}(p\ ||\ q) = \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The relationship between entropy, cross-entropy and Kullback–Leibler divergence can also be summarized with the following diagram:</li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="media/drawing_8.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="media/drawing_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
 </figure>
 </div>
-<p>According to the <a href="#multivariate-scalar-function-1">chain rule for a multivariate scalar function</a>, its derivative is given by its gradient:</p>
-<p><span class="math inline">\(\nabla_{a^{l}}\ E = \left\lbrack \frac{\partial E}{\partial a_{i}^{l}},\ ... \right\rbrack\)</span></p>
-<p>where <span class="math inline">\(\frac{\partial E}{\partial a_{i}^{l}} = \frac{\partial E}{\partial z^{l + 1}}\frac{\partial z^{l + 1}}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}\frac{\partial z_{k}^{l + 1}}{\partial a_{i}^{l}}\)</span> <em>Multivariate chain rule</em></p>
-<p>Moreover, <span class="math inline">\(z_{j}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\)</span>, thus <span class="math inline">\(\frac{\partial z_{j}^{l}}{\partial a_{i}^{l - 1}} = w_{ij}^{l}\)</span> and the expression above becomes:</p>
-<p><span class="math inline">\(\frac{\partial E}{\partial a_{i}^{l}} = \sum_{k = 1}^{N^{l + 1}}\frac{\partial E}{\partial z_{k}^{l + 1}}{\ w}_{ik}^{l + 1}\)</span></p>
+<ul>
+<li><p>For a fixed <span class="math inline">\(p\)</span></p>
+<ul>
+<li><p><span class="math inline">\(H(p)\)</span> is constant and</p></li>
+<li><p><strong>Minimizing the cross-entropy</strong> is equivalent to <strong>minimizing the KL divergence</strong>.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="where-does-the-name-of-the-cross-entropy-loss-come-from" class="level1">
+<h1>Where does the name of the cross entropy loss come from?</h1>
+<p>In a supervised classification problem with <span class="math inline">\(C\)</span> classes, the following loss, called the <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss">cross entropy loss</a>, is often used</p>
+<p><span class="math inline">\(Loss(y_{i},\ \widehat{y_{i}}) = \  - \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p>
+<p>Where</p>
+<ul>
+<li><p>The label <span class="math inline">\(c_{i}\)</span> is the class index for sample <span class="math inline">\(i\)</span>.</p>
+<ul>
+<li><p>We note <span class="math inline">\(y_{i}\)</span> the corresponding one-hot vector of size <span class="math inline">\(C\)</span> with elements</p>
+<ul>
+<li><p><span class="math inline">\(y_{i,k} = 1\)</span> for <span class="math inline">\(k = c_{i}\)</span></p></li>
+<li><p><span class="math inline">\(y_{i,k} = 0\)</span> for <span class="math inline">\(k \neq c_{i}\)</span></p></li>
+</ul></li>
+</ul></li>
+<li><p>The model outputs the estimated probabilities of each class in a vector <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span> of size <span class="math inline">\(C\)</span></p></li>
+<li><p>Thus,</p>
+<ul>
+<li><p>The true probability that <span class="math inline">\(y_{i,k} = c_{i}\)</span> is given by <span class="math inline">\(y_{i,k} = p(y_{i,k} = c_{i})\)</span></p></li>
+<li><p>The estimated probability that <span class="math inline">\(y_{i,k} = c_{i}\)</span> is given by <span class="math inline">\(\widehat{y_{i,k}} = q(y_{i,k} = c_{i})\)</span></p></li>
+</ul></li>
+<li><p>The cross entropy between the probability distributions <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> is</p>
+<p><span class="math inline">\(H(p,\ q) = \ \sum_{k = 1}^{C} - p(y_{i,k} = c_{i})\ log(q(y_{i,k} = c_{i}))\)</span></p></li>
+<li><p>Which is the same as</p>
+<p><span class="math inline">\(\sum_{k = 1}^{C} - y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
+<li><p>Which is the definition of the loss <span class="math inline">\(Loss(y_{i},\ \widehat{y_{i}})\)</span> given above, which is hence named the cross entropy loss.</p></li>
+<li><p>Thus, <strong>minimizing the cross entropy loss</strong> is equivalent to <strong>minimizing the cross-entropy</strong> (or equivalently the <strong>KL divergence)</strong> between the true and the estimated probability distributions.</p></li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="media/drawing_9.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="media/drawing_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
 </figure>
 </div>
 </section>
-<section id="derivative-with-respect-to-zl" class="level2">
-<h2 class="anchored" data-anchor-id="derivative-with-respect-to-zl">Derivative with respect to <span class="math inline">\(z^{l}\)</span></h2>
-<p>Similarly, we can express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(a^{l})\)</span> and <span class="math inline">\(a^{l}(z^{l})\)</span>:</p>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l + 1})))\)</span></p>
-<p><span class="math inline">\(E(z^{l})\)</span> is thus a multivariate scalar function and its derivative is given by its gradient:</p>
-<p><span class="math inline">\(\nabla_{z^{l}}\ E = \left\lbrack \frac{\partial E}{\partial z_{i}^{l}},\ ... \right\rbrack\)</span></p>
-<p>Notice also that each function <span class="math inline">\(E(z_{i}^{l})\)</span> can be expressed as the composition of <span class="math inline">\(E(a_{i}^{l})\)</span> and <span class="math inline">\(a_{i}^{l}(z_{i}^{l})\)</span>.</p>
-<p>Thus, the <a href="#univariate-scalar-function-1">chain rule for univariate scalar functions</a> can be applied:</p>
-<p><span class="math inline">\(\frac{\partial E}{\partial z_{i}^{l}} = \frac{\partial E}{\partial a_{i}^{l}}\frac{\partial a_{i}^{l}}{\partial z_{i}^{l}}\)</span> <em>Scalar chain rule</em></p>
+<section id="forward-vs-reversed-kullback-leibler-divergence" class="level1">
+<h1>Forward vs reversed Kullback-Leibler divergence</h1>
+<p>The Kullback-Leibler divergence is not symmetric. This means that the Kullback-Leibler divergence between two distributions <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> can be computed in two ways.</p>
+<ul>
+<li><p>Forward: <span class="math inline">\(D_{KL}(p\ ||\ q)\)</span></p></li>
+<li><p>Reversed: <span class="math inline">\(D_{KL}(q\ ||\ p)\)</span></p></li>
+</ul>
+<p><span class="math inline">\(p\)</span> usually denotes the true distribution while <span class="math inline">\(q\)</span> is the approximated distribution.</p>
+<p>A mnemonic way to remember which of the two expressions above is the forward <span class="math inline">\(D_{KL}\)</span> or the reversed <span class="math inline">\(D_{KL}\)</span> is explained is this <a href="https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html">blog post</a>:</p>
+<ul>
+<li><p>In the forward <span class="math inline">\(D_{KL}(p\ ||\ q)\)</span>, the bump of the first letter <span class="math inline">\(p\)</span> points forward.</p></li>
+<li><p>In the reversed (or backward) <span class="math inline">\(D_{KL}(q\ ||\ p)\)</span>, the bump of the first letter <span class="math inline">\(q\)</span> points backward.</p></li>
+</ul>
+<section id="forward-kullback-leibler-divergence" class="level2">
+<h2 class="anchored" data-anchor-id="forward-kullback-leibler-divergence">Forward Kullback-Leibler divergence</h2>
+<ul>
+<li><p><span class="math inline">\(D_{KL}(p\ ||\ q) = \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})\)</span></p></li>
+<li><p>The sum or expectation is weighted by the distribution <span class="math inline">\(p\)</span>.</p></li>
+<li><p>Differences between <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> produce large <span class="math inline">\(D_{KL}\)</span> on the mass of <span class="math inline">\(p\)</span> (where <span class="math inline">\(p &gt; 0\)</span>) but not where <span class="math inline">\(p\)</span> is small (<span class="math inline">\(p \simeq 0\)</span>).</p></li>
+<li><p>Minimizing the forward Kullback-Leibler divergence <span class="math inline">\(D_{KL}(p\ ||\ q)\)</span> encourages <span class="math inline">\(q\)</span> to put its mass wherever the mass of <span class="math inline">\(p\)</span> is (putting its mass outside the mass of <span class="math inline">\(p\)</span> is not penalized).</p></li>
+<li><p>This results in mode covering behavior.</p></li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="media/drawing_10.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="media/drawing_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
 </figure>
 </div>
 </section>
-<section id="derivative-with-respect-to-w_ijl" class="level2">
-<h2 class="anchored" data-anchor-id="derivative-with-respect-to-w_ijl">Derivative with respect to <span class="math inline">\(w_{ij}^{l}\)</span></h2>
-<p>Finally we can express <span class="math inline">\(E\)</span> as the composition of <span class="math inline">\(E(z^{l})\)</span> and <span class="math inline">\(z^{l}(a^{l - 1},W^{l})\)</span>:</p>
-<p><span class="math inline">\(E(\widehat{y},\ y) = E(...z^{l}(a^{l - 1},W^{l})))\)</span></p>
-<p><span class="math inline">\(E(W^{l})\)</span> is thus a multivariate scalar function with intermediate variables <span class="math inline">\(z^{l}\)</span>.</p>
+<section id="reversed-kullback-leibler-divergence" class="level2">
+<h2 class="anchored" data-anchor-id="reversed-kullback-leibler-divergence">Reversed Kullback-Leibler divergence</h2>
+<ul>
+<li><p><span class="math inline">\(D_{KL}(q\ ||\ p) = \sum_{\chi}^{}q(x)\ log(\frac{q(x)}{p(x)})\)</span></p></li>
+<li><p>The sum or expectation is weighted by the distribution <span class="math inline">\(q\)</span>.</p></li>
+<li><p>Differences between <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> produce large <span class="math inline">\(D_{KL}\)</span> on the mass of <span class="math inline">\(q\)</span> (where <span class="math inline">\(q &gt; 0\)</span>) but not where <span class="math inline">\(q\)</span> is small (<span class="math inline">\(q \simeq 0\)</span>).</p></li>
+<li><p>Minimizing the reversed Kullback-Leibler divergence <span class="math inline">\(D_{KL}(q\ ||\ p)\)</span> encourages <span class="math inline">\(q\)</span> not to put its mass outside the mass of <span class="math inline">\(p\)</span> (missing parts of the mass <span class="math inline">\(p\)</span> is not penalized).</p></li>
+<li><p>This results in mode seeking behavior.</p></li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="media/drawing_11.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>According to the <a href="#multivariate-scalar-function-1">chain rule for a multivariate scalar function</a>, its derivative is given by its gradient:</p>
-<p><span class="math inline">\(\nabla_{W^{l}}\ E = \left\lbrack \frac{\partial E}{\partial w_{ij}^{l}},\ ... \right\rbrack\)</span></p>
-<p>where <span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z^{l}}\frac{\partial z^{l}}{\partial w_{ij}^{l}} = \sum_{k = 1}^{N^{l}}\frac{\partial E}{\partial z_{k}^{l}}\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}\)</span> <em>Multivariate chain rule</em></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_12.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>Moreover, <span class="math inline">\(z_{k}^{l} = \sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}\)</span></p>
-<p>Thus <span class="math inline">\(\frac{\partial z_{k}^{l}}{\partial w_{ij}^{l}} = 0\)</span> for <span class="math inline">\(k \neq j\)</span></p>
-<p>And the expression above becomes:</p>
-<p><span class="math inline">\(\frac{\partial E}{\partial w_{ij}^{l}} = \frac{\partial E}{\partial z_{j}^{l}}\frac{\partial z_{j}^{l}}{\partial w_{ij}^{l}}\)</span></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="media/drawing_13.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="media/drawing_4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
 </figure>
 </div>
 </section>
 </section>
 <section id="sources" class="level1">
 <h1>Sources</h1>
-<p><a href="https://brilliant.org/wiki/backpropagation/">https://brilliant.org/wiki/backpropagation</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Information_content"><u>https://en.wikipedia.org/wiki/Information_content</u></a></p>
+<p><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss"><u>https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss</u></a></p>
+<p><a href="https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html"><u>https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html</u></a></p>
 
 
 </section>
