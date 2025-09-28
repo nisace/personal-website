@@ -70,20 +70,6 @@ One approach could be to
 
 - Thus, we cannot compute $p(x)$ which prevents us from computing $p(z|x)$.
 
-Another approach could be to
-
-- Find the maximum a posteriori (MAP)
-
-${argmax}_{z\ }p(z|x)$
-
-$= {argmax}_{z\ }\frac{p(x|z)p(z)}{p(x)}$
-
-$= {argmax}_{z\ }p(x|z)p(z)$
-
-- Again $p(x|z)$ is unknown and the MAP usually has no closed form solution for a parameterized $p_{\theta}(x|z)$, for example if $p_{\theta}(x|z)$ is a neural network.
-
-- It would be possible to perform gradient descent with respect to $z$ but it would be computation expensive and it would require an new optimization for each new sample from $x$.
-
 ## Strategy
 
 Model $p(z|x)$ by a parametric distribution $q_{\phi}(z|x)$ and minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ (see [Kullback--Leibler divergence](/posts/2025-09-11-information-theory/index.qmd#kullback--leibler-divergence)).
@@ -180,7 +166,7 @@ $= KL(q_{\phi}(z|x)\ ||\ p(z)) - E_{q_{\phi}(z|x)}\lbrack log\ p(x|z)\rbrack + l
 
 ## Equivalent objective
 
-## $KL(q_{\phi}(z|x)\ ||\ p(z|x)) = KL(q_{\phi}(z|x)\ ||\ p(z)) - E_{q_{\phi}(z|x)}\lbrack log\ p(x|z)\rbrack + log\ p(x)$
+$KL(q_{\phi}(z|x)\ ||\ p(z|x)) = KL(q_{\phi}(z|x)\ ||\ p(z)) - E_{q_{\phi}(z|x)}\lbrack log\ p(x|z)\rbrack + log\ p(x)$
 
 - $p(x)$ does not depend on $\phi$, thus minimizing $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ with respect to $\phi$ is equivalent to maximizing $KL(q_{\phi}(z|x)\ ||\ p(z)) - E_{q_{\phi}(z|x)}\lbrack log\ p(x|z)\rbrack$.
 
@@ -275,11 +261,11 @@ The objective is to maximize the $ELBO = E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta
 
   - [Expectation part](#expectation-part)
 
-> $\nabla_{\phi}E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack \simeq \frac{1}{N}\sum_{i = 1}^{N}\nabla_{\phi}(log\ p_{\theta}(x|g_{\phi}(\varepsilon_{i})))$ with $\varepsilon_{i} \sim q(\varepsilon)$
+  $\nabla_{\phi}E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack \simeq \frac{1}{N}\sum_{i = 1}^{N}\nabla_{\phi}(log\ p_{\theta}(x|g_{\phi}(\varepsilon_{i})))$ with $\varepsilon_{i} \sim q(\varepsilon)$
 
 - Kullback-Leibler divergence part
 
-> $p(z)$ and $q_{\phi}(z|x)$ can be chosen in a way that allows the Kullback-Leibler divergence part to be analytically derived (see [Kullback-Leibler divergence part](#derive-the-gradient-of-the-kullback-leibler-divergence-part) in the [Practical application](#practical-application) section).
+  $p(z)$ and $q_{\phi}(z|x)$ can be chosen in a way that allows the Kullback-Leibler divergence part to be analytically derived (see [Kullback-Leibler divergence part](#derive-the-gradient-of-the-kullback-leibler-divergence-part) in the [Practical application](#practical-application) section).
 
 - $\nabla_{\phi}ELBO \simeq \frac{1}{N}\sum_{i = 1}^{N}\nabla_{\phi}(log\ p_{\theta}(x|g_{\phi}(\varepsilon_{i}))) - \nabla_{\phi}KL(q_{\phi}(z|x)\ ||\ p(z))$ with $\varepsilon_{i} \sim q(\varepsilon)$
 
@@ -293,8 +279,6 @@ $\nabla_{\theta}ELBO = E_{q_{\phi}(z|x)}\lbrack\nabla_{\theta}log\ p_{\theta}(x|
 
 Which can be estimated with a Monte Carlo estimation of the expectation with the mean:\
 $\nabla_{\theta}ELBO \simeq \frac{1}{N}\sum_{i = 1}^{N}\nabla_{\theta}log\ p_{\theta}(x|z_{i})\rbrack$ with $z_{i} \sim q_{\phi}(z|x)$
-
-### 
 
 ## Gradient with respect to $\phi$
 
@@ -327,13 +311,13 @@ We can
 
   - $z = g_{\phi}(\varepsilon)$ with $\varepsilon \sim n(\varepsilon)$
 
-Then the [Law of the Unconscious Statistician (LOTUS)](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-(lotus)) tells us that
+Then the [Law of the Unconscious Statistician (LOTUS)](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus) tells us that
 
 - The expectation of $z$ can be computed with the distribution of $\varepsilon$
 
   - $\nabla_{\phi}E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack$
 
-> $= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$
+  $= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$
 
 With this new formulation, the distribution no longer depends on $\phi$. Thus we are in a [Fixed distribution](/posts/2025-09-28-expectation-and-derivative/index.qmd#fixed-distribution) setting.
 
@@ -341,7 +325,7 @@ Thus,
 
 $\nabla_{\phi}E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack$
 
-$= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$ ([LOTUS](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-(lotus))
+$= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$ ([LOTUS](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus))
 
 ${= E}_{n(\varepsilon)}\lbrack\nabla_{\phi}(log\ p_{\theta}(x|g_{\phi}(\varepsilon)))\rbrack$ ($n$ does not depend on $\phi$)
 
@@ -377,7 +361,7 @@ More specifically,
 
 - For $p(z) = N(z;0,\ I)$ and
 
-> $\nabla_{\phi}KL(q_{\phi}(z|x)\ ||\ p(z)) = \nabla_{\phi}\frac{1}{2}\sum_{i = 1}^{k}(\mu_{i}^{2} + \sigma_{i}^{2} - log\ \sigma_{i}^{2} - 1)$
+  $\nabla_{\phi}KL(q_{\phi}(z|x)\ ||\ p(z)) = \nabla_{\phi}\frac{1}{2}\sum_{i = 1}^{k}(\mu_{i}^{2} + \sigma_{i}^{2} - log\ \sigma_{i}^{2} - 1)$
 
 And thus,
 
