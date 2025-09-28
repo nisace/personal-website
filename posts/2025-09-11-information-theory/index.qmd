@@ -240,8 +240,54 @@ Where
 
 ![](media/drawing_2.png){fig-align="center" width="500px"}
 
+# Forward vs reversed Kullback-Leibler divergence
+
+The Kullback-Leibler divergence is not symmetric. This means that the Kullback-Leibler divergence between two distributions $p$ and $q$ can be computed in two ways.
+
+- Forward: $D_{KL}(p\ ||\ q)$
+
+- Reversed: $D_{KL}(q\ ||\ p)$
+
+$p$ usually denotes the true distribution while $q$ is the approximated distribution.
+
+A mnemonic way to remember which of the two expressions above is the forward $D_{KL}$ or the reversed $D_{KL}$ is explained is this [blog post](https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html):
+
+- In the forward $D_{KL}(p\ ||\ q)$, the bump of the first letter $p$ points forward.
+
+- In the reversed (or backward) $D_{KL}(q\ ||\ p)$, the bump of the first letter $q$ points backward.
+
+## Forward Kullback-Leibler divergence
+
+- $D_{KL}(p\ ||\ q) = \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})$
+
+- The sum or expectation is weighted by the distribution $p$.
+
+- Differences between $p$ and $q$ produce large $D_{KL}$ on the mass of $p$ (where $p > 0$) but not where $p$ is small ($p \simeq 0$).
+
+- Minimizing the forward Kullback-Leibler divergence $D_{KL}(p\ ||\ q)$ encourages $q$ to put its mass wherever the mass of $p$ is (putting its mass outside the mass of $p$ is not penalized).
+
+- This results in mode covering behavior.
+
+![](media/drawing_3.png){fig-align="center" width="500px"}
+
+## Reversed Kullback-Leibler divergence
+
+- $D_{KL}(q\ ||\ p) = \sum_{\chi}^{}q(x)\ log(\frac{q(x)}{p(x)})$
+
+- The sum or expectation is weighted by the distribution $q$.
+
+- Differences between $p$ and $q$ produce large $D_{KL}$ on the mass of $q$ (where $q > 0$) but not where $q$ is small ($q \simeq 0$).
+
+- Minimizing the reversed Kullback-Leibler divergence $D_{KL}(q\ ||\ p)$ encourages $q$ not to put its mass outside the mass of $p$ (missing parts of the mass $p$ is not penalized).
+
+- This results in mode seeking behavior.
+
+![](media/drawing_4.png){fig-align="center" width="500px"}
+
 # Sources
 
 [[https://en.wikipedia.org/wiki/Information_content]{.underline}](https://en.wikipedia.org/wiki/Information_content)
 
 [[https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss]{.underline}](https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss)
+
+[[https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html]{.underline}](https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html)
