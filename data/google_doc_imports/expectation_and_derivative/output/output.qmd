@@ -1,0 +1,249 @@
+---
+title: "[]{#_dnnyymmkwar1 .anchor}Expectation and derivative"
+---
+
+# Introduction
+
+In this document, we explore how to compute the gradient of an expectation or in other terms, the gradient of a stochastic process.
+
+In the most general form, let's define:
+
+- $x$ in a random variable
+
+- which follows a distribution $p_{\theta}(x)$ parametrized by $\theta$
+
+- $f_{\theta}$ is a function of $x$ and is also parametrized by $\theta$
+
+The question is then how to compute
+
+- $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f_{\theta}(x)\rbrack$
+
+# Fixed distribution
+
+Let us first consider a simpler configuration where the probability distribution does not depend on the parameters $\theta$ of the gradient.
+
+In this case, $p_{\theta} = p$ and
+
+- $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f_{\theta}(x)\rbrack = E_{p(x)}\lbrack\nabla_{\theta}\ f_{\theta}(x)\rbrack$ see [[Fixed distribution proof]{.underline}](#fixed-distribution-proof) below
+
+And the expectation can be estimated with Monte Carlo:
+
+- $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f_{\theta}(x)\rbrack \simeq \frac{1}{N}\sum_{i = 1}^{N}\nabla_{\theta}\ f_{\theta}(x_{i})$ with $x_{i} \sim p(x)$
+
+## Fixed distribution proof
+
+$\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f_{\theta}(x)\rbrack$
+
+$= \nabla_{\theta}E_{p_{\theta}(x)}\lbrack f_{\theta}(x)\rbrack$
+
+$= \nabla_{\theta}\int_{}^{}p(x)\ f_{\theta}(x)\ dx$
+
+$= \int_{}^{}\nabla_{\theta}\ \lbrack p(x){\ f}_{\theta}(x)\rbrack\ dx$
+
+$= \int_{}^{}p(x)\ \nabla_{\theta}\ f_{\theta}(x)\ dx$ (because $p(x)$ does not depend on $\theta$)
+
+$= E_{p(x)}\lbrack\nabla_{\theta}\ f_{\theta}(x)\rbrack$
+
+# Distribution dependent on $\theta$
+
+## Introduction
+
+In the general setting where the probability distribution depends on the parameters $\theta$ of the gradient, the general form is
+
+- $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f_{\theta}(x)\rbrack = E_{p_{\theta}(x)}\lbrack\nabla_{\theta}\ log\ p_{\theta}(x){\ f}_{\theta}(x)\rbrack + E_{p_{\theta}(x)}\lbrack\nabla_{\theta}\ f_{\theta}(x)\rbrack$
+
+> see [[Distribution dependent on]{.underline}](#distribution-dependent-on-theta-proof) $\theta$ [[proof]{.underline}](#distribution-dependent-on-theta-proof) below.
+
+Notice that if the distribution is fixed, i.e. $p_{\theta}$ does not depend on $\theta$ ($p_{\theta} = p$), the first term disappears and we find back the formula from the previous [[Fixed distribution]{.underline}](#fixed-distribution) section.
+
+The general form above can also be estimated with Monte Carlo.
+
+### Distribution dependent on $\theta$ proof
+
+$\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f_{\theta}(x)\rbrack$
+
+$= \nabla_{\theta}\int_{}^{}p_{\theta}(x)\ f_{\theta}(x)\ dx$
+
+$= \int_{}^{}\nabla_{\theta}\ \lbrack p_{\theta}(x){\ f}_{\theta}(x)\rbrack\ dx$
+
+$= \int_{}^{}\nabla_{\theta}\ p_{\theta}(x){\ f}_{\theta}(x)\ dx + \int_{}^{}p_{\theta}(x)\ \nabla_{\theta}\ f_{\theta}(x)\ dx$
+
+$= \int_{}^{}p_{\theta}(x)\ \nabla_{\theta}\ log\ p_{\theta}(x){\ f}_{\theta}(x)\ dx + E_{p_{\theta}(x)}\lbrack\nabla_{\theta}\ f_{\theta}(x)\rbrack$ (see [[Log derivative trick]{.underline}](#log-derivative-trick))
+
+$= E_{p_{\theta}(x)}\lbrack\nabla_{\theta}\ log\ p_{\theta}(x){\ f}_{\theta}(x)\rbrack + E_{p_{\theta}(x)}\lbrack\nabla_{\theta}\ f_{\theta}(x)\rbrack$
+
+### Log derivative trick
+
+- The log derivative trick above is the fact that $\nabla_{\theta}\ p_{\theta}(x) = p_{\theta}(x)\ \nabla_{\theta}\ log\ p_{\theta}(x)$.
+
+- This comes from the application of the chain rule to the $\log$ function:
+
+  - $\nabla_{x}\ log(f(x))$
+
+> $= \nabla_{f}\ log(f)\ \nabla_{x}\ f(x)$
+>
+> $= \frac{1}{f(x)}\ \nabla_{x}\ f(x)$
+
+- Thus, $\nabla_{x}\ f(x) = f(x){\ \nabla}_{x}\ log(f(x))$
+
+For the following, let us simplify our problem by making the function $f_{\theta}$ independent on $\theta$ (i.e. $f_{\theta} = f$). This independence is verified in common use cases such as variational autoencoders or reinforcement learning.
+
+- $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack = E_{p_{\theta}(x)}\lbrack{f(x)\ \nabla}_{\theta}\ log\ p_{\theta}(x)\rbrack$
+
+The term above (or the first term in the general form if we keep $f_{\theta}$ dependent on $\theta$) can be estimated with Monte Carlo but it has high variance (see [[Score function estimator vs Reparameterization trick]{.underline}](#score-function-estimator-vs-reparameterization-trick)).
+
+This leaves us with two choices in order to compute the gradient of an expectation when the probability distribution depends on the parameters $\theta$ of the gradient:
+
+- Use this Monte Carlo estimator anyway. This is known as the [[Score function estimator]{.underline}](#score-function-estimator).
+
+- Use another technique. One of them is called the [[Reparameterization trick]{.underline}](#reparameterization-trick).
+
+We explore both techniques in the [[Score function estimator]{.underline}](#score-function-estimator) and [[Reparameterization trick]{.underline}](#reparameterization-trick) sections below.
+
+## Score function estimator
+
+In this technique, the Monte Carlo estimator from the previous section is used directly.
+
+$\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack \simeq \frac{1}{N}\sum_{i = 1}^{N}{f(x)\ \nabla}_{\theta}\ log\ p_{\theta}(x)\rbrack$
+
+with $x \sim p_{\theta}(x)$
+
+- This estimator is called (see [[Glossary]{.underline}](#glossary))
+
+  - The score function estimator
+
+  - The likelihood ratio
+
+  - The REINFORCE estimator
+
+- The name comes from the fact that in statistics, $\nabla_{\theta}\ log\ p_{\theta}(x)$ is called the score or the score function (see [[Glossary]{.underline}](#glossary)).
+
+- This is the technique used in reinforcement learning and in the REINFORCE algorithm.
+
+- It is obtained using the log derivative trick (see [[Distribution dependent on]{.underline}](#distribution-dependent-on-theta-proof) $\theta$ [[proof]{.underline}](#distribution-dependent-on-theta-proof)).
+
+## Reparameterization trick
+
+- Also called the pathwise estimator.
+
+As a reminder, the goal is to compute $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack$ but because the probability distribution depends on $\theta$, we cannot directly swap $\nabla_{\theta}$ and $E_{p_{\theta}(x)}$.
+
+In the reparametrization trick, the [[Law of the Unconscious Statistician (LOTUS)]{.underline}](#law-of-the-unconscious-statistician-lotus) is used to reformulate the problem in such a way that the gradient parameters $\theta$ are moved out of the expectation.
+
+We can
+
+- Express our random variable $x$
+
+  - $x \sim p_{\theta}(x)$
+
+- As a function $g_{\theta}$ of another random variable $\varepsilon$
+
+  - $x = g_{\theta}(\varepsilon)$ with $\varepsilon \sim q(\varepsilon)$
+
+Then the [[Law of the Unconscious Statistician (LOTUS)]{.underline}](#law-of-the-unconscious-statistician-lotus) tells us that
+
+- The expectation of $x$ can be computed with the distribution of $\varepsilon$
+
+  - $E_{p_{\theta}(x)}\lbrack f(x)\rbrack = E_{q(\varepsilon)}\lbrack f(g_{\theta}(\varepsilon))\rbrack$
+
+With this new formulation, the distribution no longer depends on $\theta$. Thus we are again in a [[Fixed distribution]{.underline}](#fixed-distribution) setting.
+
+Thus,
+
+$\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack$
+
+$= \nabla_{\theta}E_{p_{\theta}(x)}\lbrack f{(\ g}_{\theta}(\varepsilon))\rbrack$ ([[LOTUS]{.underline}](https://docs.google.com/document/d/1bgsMYJV8xzBlf0J-lD0PKpuT3Ylt6hNZNji4Ydzc7t0/edit?tab=t.0#heading=h.uib10aoy31jh))
+
+$= E_{q(\varepsilon)}\lbrack\nabla_{\theta}(f{(\ g}_{\theta}(\varepsilon)))\rbrack$ ($q$ does not depend on $\theta$)
+
+which can be estimated with Monte Carlo
+
+$\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack$
+
+$\simeq \frac{1}{N}\sum_{i = 1}^{N}\nabla_{\theta}(f{(\ g}_{\theta}(\varepsilon_{i})))$ with $\varepsilon_{i} \sim q(\varepsilon)$
+
+## Score function estimator vs Reparameterization trick
+
++-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Score function estimator                                                                                                          | Reparameterization trick                                                                                                                |
++-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack = E_{p_{\theta}(x)}\lbrack f(x)\ \nabla_{\theta}\ log\ p_{\theta}(x)\rbrack$ | $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack = E_{q(\varepsilon)}\lbrack\nabla_{\theta}(f{(\ g}_{\theta}(\varepsilon)))\rbrack$ |
++-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Can work with a non-differentiable model.                                                                                         | Requires $f$ and $g_{\theta}$ to be differentiable.                                                                                     |
+|                                                                                                                                   |                                                                                                                                         |
+| Thus, often used in reinforcement learning where the environment dynamics are usually non-differentiable.                         | Thus, requires a differentiable model.                                                                                                  |
++-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Gradient has high variance because the gradient term $\nabla_{\theta}$ is multiplied by an unrelated quantity $f(x)$.             | Gradient has low variance because it only contains gradient terms $\nabla_{\theta}$.                                                    |
+|                                                                                                                                   |                                                                                                                                         |
+| \- $f(x)$ might be large, noisy or high-variance.                                                                                 |                                                                                                                                         |
+|                                                                                                                                   |                                                                                                                                         |
+| \- the gradient term $\nabla_{\theta}$ gets scaled unpredictably by $f(x)$.                                                       |                                                                                                                                         |
++===================================================================================================================================+=========================================================================================================================================+
+
+Below is a graphical comparison of the score function estimator vs the reparameterization trick.
+
+![](media/drawing_1.png)
+
+We can see that the gradient obtained with reparameterization trick is direct while the one obtained with the score function estimator contains one part with $\nabla_{\theta}$ but can be perturbed by the other part $f(x)$.
+
+# Summary
+
++----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Fixed distribution                                                                                             | Distribution dependent on $\theta$, fixed function $f$                                                                                                                                                                                                                      |
+|                                                                                                                |                                                                                                                                                                                                                                                                             |
+| $f$ dependent on $\theta$                                                                                      |                                                                                                                                                                                                                                                                             |
+|                                                                                                                +-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                | Score function estimator                                                                                                          | Reparameterization trick                                                                                                                |
++----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| ${\nabla_{\theta}E}_{p(x)}\lbrack f_{\theta}(x)\rbrack = E_{p(x)}\lbrack\nabla_{\theta}\ f_{\theta}(x)\rbrack$ | $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack = E_{p_{\theta}(x)}\lbrack f(x)\ \nabla_{\theta}\ log\ p_{\theta}(x)\rbrack$ | $\nabla_{\theta}E_{p_{\theta}(x)}\lbrack f(x)\rbrack = E_{q(\varepsilon)}\lbrack\nabla_{\theta}(f{(\ g}_{\theta}(\varepsilon)))\rbrack$ |
++----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                | Can work with a non-differentiable model.                                                                                         | Requires $f$ and $g_{\theta}$ to be differentiable.                                                                                     |
+|                                                                                                                |                                                                                                                                   |                                                                                                                                         |
+|                                                                                                                | Thus, often used in reinforcement learning where the environment dynamics are usually non-differentiable.                         | Thus, requires a differentiable model.                                                                                                  |
++----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                | Gradient has high variance because the gradient term $\nabla_{\theta}$ is multiplied by an unrelated quantity $f(x)$.             | Gradient has low variance because it only contains gradient terms $\nabla_{\theta}$.                                                    |
+|                                                                                                                |                                                                                                                                   |                                                                                                                                         |
+|                                                                                                                | \- $f(x)$ might be large, noisy or high-variance.                                                                                 |                                                                                                                                         |
+|                                                                                                                |                                                                                                                                   |                                                                                                                                         |
+|                                                                                                                | \- the gradient term $\nabla_{\theta}$ gets scaled unpredictably by $f(x)$.                                                       |                                                                                                                                         |
++================================================================================================================+===================================================================================================================================+=========================================================================================================================================+
+
+# Law of the Unconscious Statistician (LOTUS)
+
+The Law of the Unconscious Statistician (LOTUS) says that:
+
+- For a random variable $x$
+
+  - $x \sim p(x)$
+
+- If we define $x$ as a function $f$ of another random variable $\varepsilon$
+
+  - $x = f(\varepsilon)$ with $\varepsilon \sim q(\varepsilon)$
+
+- The expectation of $x$ can be computed with the distribution of $\varepsilon$
+
+  - $E_{p(x)}\lbrack x\rbrack = E_{q(\varepsilon)}\lbrack f(\varepsilon)\rbrack$
+
+# Glossary
+
+## Score / Score function
+
+Gradient of the log-likelihood $= \nabla_{\theta}\ log\ p_{\theta}(x)$
+
+## Score function estimator / Likelihood ratio / REINFORCE estimator
+
+Monte Carlo estimator of the gradient of an expectation (when the distribution depends on the gradient parameters).
+
+${\nabla_{\theta}E}_{p(x)}\lbrack f(x)\rbrack \simeq \frac{1}{N}\sum_{i = 1}^{N}{f(x)\ \nabla}_{\theta}\ log\ p_{\theta}(x)\rbrack$ with $x \sim p_{\theta}(x)$
+
+The name comes from the fact that the score function $\nabla_{\theta}\ log\ p_{\theta}(x)$ appears in the formula.
+
+# Sources
+
+## Score function vs reparametrization trick
+
+[[https://stillbreeze.github.io/REINFORCE-vs-Reparameterization-trick/]{.underline}](https://stillbreeze.github.io/REINFORCE-vs-Reparameterization-trick/)
+
+[[https://mpatacchiola.github.io/blog/2021/02/08/intro-variational-inference-2.html]{.underline}](https://mpatacchiola.github.io/blog/2021/02/08/intro-variational-inference-2.html)
+
+[[https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html]{.underline}](https://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html)
