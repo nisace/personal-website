@@ -92,7 +92,10 @@ Here is a summary of the different steps to estimate $q_{\phi}(z|x)$. The detail
 
 - The goal is
 
-Minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ with respect to $\phi$ (Objective 1)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>Minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ with respect to $\phi$</div>
+  <div>(Objective 1)</div>
+</div>
 
 - $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ still contains the intractable $p(z|x)$ we are looking for but it can be expressed differently.
 
@@ -101,7 +104,10 @@ Minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ with respect to $\phi$ (Objective 1)
 
 - This gives the [equivalent objective](#equivalent-objective)
 
-Minimize $KL(q_{\phi}(z|x)\ ||\ p(z)) - E_{q_{\phi}(z|x)}\lbrack log\ p(x|z)\rbrack$ with respect to $\phi$ (Objective 2)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>Minimize $KL(q_{\phi}(z|x)\ ||\ p(z)) - E_{q_{\phi}(z|x)}\lbrack log\ p(x|z)\rbrack$ with respect to $\phi$</div>
+  <div>(Objective 2)</div>
+</div>
 
 - However, $p(x|z)$ is unknown.
 
@@ -109,8 +115,11 @@ Minimize $KL(q_{\phi}(z|x)\ ||\ p(z)) - E_{q_{\phi}(z|x)}\lbrack log\ p(x|z)\rbr
 
 - Focus on the tractable terms and define a new objective (see [details below](#focus-on-the-tractable-terms-and-define-a-new-objective)).
 
-Maximize$E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack - KL(q_{\phi}(z|x)\ ||\ p(z)) = log\ p_{\theta}(x) - KL(q_{\phi}(z|x)\ ||\ p_{\theta}(z|x))$\
-with respect to $\phi$ and $\theta$ (Objective 3)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>Maximize$E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack - KL(q_{\phi}(z|x)\ ||\ p(z)) = log\ p_{\theta}(x) - KL(q_{\phi}(z|x)\ ||\ p_{\theta}(z|x))$\
+with respect to $\phi$ and $\theta$</div>
+  <div>(Objective 3)</div>
+</div>
 
 - (Objective 3) is not equivalent to (Objective 1) and (Objective 2), it is an approximation.
 
@@ -120,7 +129,10 @@ with respect to $\phi$ and $\theta$ (Objective 3)
 
 - The initial objective was
 
-Minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ with respect to $\phi$ (Objective 1)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>Minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ with respect to $\phi$</div>
+  <div>(Objective 1)</div>
+</div>
 
 - It is intractable thus, an approximate objective is used instead
 
@@ -156,7 +168,10 @@ $KL(q_{\phi}(z|x)\ ||\ p(z|x))$
 
 $= \ E_{q_{\phi}(z|x)}\lbrack log\ \frac{q_{\phi}(z|x)}{p(z|x)}\rbrack$
 
-$= \ E_{q_{\phi}(z|x)}\lbrack log\ \frac{q_{\phi}(z|x)\ p(x)}{p(x|z)p(z)}\rbrack$ (by Bayes' rule $p(z|x)p(x) = p(x|z)p(z)$)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>$= \ E_{q_{\phi}(z|x)}\lbrack log\ \frac{q_{\phi}(z|x)\ p(x)}{p(x|z)p(z)}\rbrack$</div>
+  <div>(by Bayes' rule $p(z|x)p(x) = p(x|z)p(z)$)</div>
+</div>
 
 $= \ E_{q_{\phi}(z|x)}\lbrack log\ \frac{q_{\phi}(z|x)}{p(z)} - log\ p(x|z) + log\ p(x)\rbrack$
 
@@ -202,12 +217,22 @@ $E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack - KL(q_{\phi}(z|x)\ ||\ p(
 
 The new objective is
 
-Maximize (Objective 3)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>Maximize</div>
+  <div>(Objective 3)</div>
+</div>
 
 $ELBO$\
-$= log\ p_{\theta}(x) - KL(q_{\phi}(z|x)\ ||\ p_{\theta}(z|x))$ (1)
 
-$= E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack - KL(q_{\phi}(z|x)\ ||\ p(z))$ (2)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>$= log\ p_{\theta}(x) - KL(q_{\phi}(z|x)\ ||\ p_{\theta}(z|x))$</div>
+  <div>(1)</div>
+</div>
+
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>$= E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack - KL(q_{\phi}(z|x)\ ||\ p(z))$</div>
+  <div>(2)</div>
+</div>
 
 with respect to $\phi$ and $\theta$
 
@@ -325,9 +350,15 @@ Thus,
 
 $\nabla_{\phi}E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack$
 
-$= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$ ([LOTUS](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus))
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>$= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$</div>
+  <div>([LOTUS](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus))</div>
+</div>
 
-${= E}_{n(\varepsilon)}\lbrack\nabla_{\phi}(log\ p_{\theta}(x|g_{\phi}(\varepsilon)))\rbrack$ ($n$ does not depend on $\phi$)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>${= E}_{n(\varepsilon)}\lbrack\nabla_{\phi}(log\ p_{\theta}(x|g_{\phi}(\varepsilon)))\rbrack$</div>
+  <div>($n$ does not depend on $\phi$)</div>
+</div>
 
 which can be estimated with Monte Carlo
 
@@ -403,9 +434,15 @@ $= \frac{1}{2}E_{q_{\phi}(z|x)}\lbrack z^{T}z\  - {(z - \mu)}^{T}\Sigma^{- 1}(z 
 
 $E_{q_{\phi}(z|x)}\lbrack{(z - \mu)}^{T}\Sigma^{- 1}(z - \mu)\rbrack$
 
-$= tr(E_{q_{\phi}(z|x)}\lbrack{(z - \mu)}^{T}\Sigma^{- 1}(z - \mu)\rbrack)$ (because $E_{q_{\phi}(z|x)}\lbrack{(z - \mu)}^{T}\Sigma^{- 1}(z - \mu)\rbrack$ is a scalar)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>$= tr(E_{q_{\phi}(z|x)}\lbrack{(z - \mu)}^{T}\Sigma^{- 1}(z - \mu)\rbrack)$</div>
+  <div>(because $E_{q_{\phi}(z|x)}\lbrack{(z - \mu)}^{T}\Sigma^{- 1}(z - \mu)\rbrack$ is a scalar)</div>
+</div>
 
-$= tr(\Sigma^{- 1}E_{q_{\phi}(z|x)}\lbrack(z - \mu){(z - \mu)}^{T}\rbrack)$ (by the [cyclic property of the trace](https://en.wikipedia.org/wiki/Trace_(linear_algebra)#Cyclic_property))
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>$= tr(\Sigma^{- 1}E_{q_{\phi}(z|x)}\lbrack(z - \mu){(z - \mu)}^{T}\rbrack)$</div>
+  <div>(by the [cyclic property of the trace](https://en.wikipedia.org/wiki/Trace_(linear_algebra)#Cyclic_property))</div>
+</div>
 
 $= tr(\Sigma^{- 1}\Sigma\rbrack)$
 
@@ -512,7 +549,10 @@ This results in mode seeking behavior (see [Forward vs reversed Kullback-Leibler
 
 Minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$
 
-with respect to $\phi$ (Objective 1)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>with respect to $\phi$</div>
+  <div>(Objective 1)</div>
+</div>
 
 - Approximate the true posterior $p(z|x)$ with $q_{\phi}(z|x)$.
 
@@ -520,7 +560,10 @@ with respect to $\phi$ (Objective 1)
 
 $ELBO = E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack - KL(q_{\phi}(z|x)\ ||\ p(z)) = log\ p_{\theta}(x) - KL(q_{\phi}(z|x)\ ||\ p_{\theta}(z|x))$
 
-with respect to $\phi$ and $\theta$ (Objective 3)
+<div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
+  <div>with respect to $\phi$ and $\theta$</div>
+  <div>(Objective 3)</div>
+</div>
 
 Interpreted as
 
