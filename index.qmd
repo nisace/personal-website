@@ -1,5 +1,11 @@
 ---
-title: "Nisace's website"
+title: "Blog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  fields: [title, subtitle, image, description, categories]
 ---
-
-Welcome the Nisace's website.

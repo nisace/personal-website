@@ -9,12 +9,8 @@ website:
   title: "Nisace's website"
   navbar:
     right:
-      - href: index.qmd
-        text: Home
-      - text: About
-        href: about.qmd
       - text: Blog
-        href: blog.qmd
+        href: index.qmd
 
 format:
   html:
