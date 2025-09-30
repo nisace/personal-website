@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-09-11">
+<meta name="description" content="Introduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.">
+
+<title>Information theory – Nisace’s website</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Nisace’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#information-content" id="toc-information-content" class="nav-link active" data-scroll-target="#information-content">Information content</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#origin" id="toc-origin" class="nav-link" data-scroll-target="#origin">Origin</a></li>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  </ul></li>
+  <li><a href="#entropy" id="toc-entropy" class="nav-link" data-scroll-target="#entropy">Entropy</a>
+  <ul class="collapse">
+  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
+  <li><a href="#interpretations" id="toc-interpretations" class="nav-link" data-scroll-target="#interpretations">Interpretations</a>
+  <ul class="collapse">
+  <li><a href="#relationship-to-encoding" id="toc-relationship-to-encoding" class="nav-link" data-scroll-target="#relationship-to-encoding">Relationship to encoding</a></li>
+  </ul></li>
+  <li><a href="#properties" id="toc-properties" class="nav-link" data-scroll-target="#properties">Properties</a></li>
+  <li><a href="#history" id="toc-history" class="nav-link" data-scroll-target="#history">History</a></li>
+  </ul></li>
+  <li><a href="#cross-entropy" id="toc-cross-entropy" class="nav-link" data-scroll-target="#cross-entropy">Cross-entropy</a></li>
+  <li><a href="#kullbackleibler-divergence" id="toc-kullbackleibler-divergence" class="nav-link" data-scroll-target="#kullbackleibler-divergence">Kullback–Leibler divergence</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#where-does-the-name-of-the-cross-entropy-loss-come-from" id="toc-where-does-the-name-of-the-cross-entropy-loss-come-from" class="nav-link" data-scroll-target="#where-does-the-name-of-the-cross-entropy-loss-come-from">Where does the name of the cross entropy loss come from?</a></li>
+  <li><a href="#forward-vs-reversed-kullback-leibler-divergence" id="toc-forward-vs-reversed-kullback-leibler-divergence" class="nav-link" data-scroll-target="#forward-vs-reversed-kullback-leibler-divergence">Forward vs reversed Kullback-Leibler divergence</a>
+  <ul class="collapse">
+  <li><a href="#forward-kullback-leibler-divergence" id="toc-forward-kullback-leibler-divergence" class="nav-link" data-scroll-target="#forward-kullback-leibler-divergence">Forward Kullback-Leibler divergence</a></li>
+  <li><a href="#reversed-kullback-leibler-divergence" id="toc-reversed-kullback-leibler-divergence" class="nav-link" data-scroll-target="#reversed-kullback-leibler-divergence">Reversed Kullback-Leibler divergence</a></li>
+  </ul></li>
+  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Information theory</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Information theory</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    <p>Introduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.</p>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 11, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This document is an introduction to information theory and concepts such as:</p>
+<ul>
+<li><p><a href="#information-content">Information content</a></p></li>
+<li><p><a href="#entropy">Entropy</a></p></li>
+<li><p><a href="#cross-entropy">Cross-entropy</a></p></li>
+<li><p><a href="#kullbackleibler-divergence">Kullback–Leibler divergence</a></p></li>
+</ul>
+<p>It also explains how these concepts are related to Maximum Likelihood Estimation.</p>
+<section id="information-content" class="level1">
+<h1>Information content</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In information theory, the information content quantifies the level of <em>surprise</em> of an event.</p>
+<p>It is derived from the probability of occurrence of a particular event.</p>
+<p>Its different names are:</p>
+<ul>
+<li>Information content</li>
+</ul>
+<!-- -->
+<ul>
+<li><p>Self-information</p></li>
+<li><p>Surprisal</p></li>
+<li><p>Shannon information</p></li>
+</ul>
+<p>It can be thought of as an alternative way of expressing probability.</p>
+</section>
+<section id="origin" class="level2">
+<h2 class="anchored" data-anchor-id="origin">Origin</h2>
+<ul>
+<li><p>The self-information of an event <span class="math inline">\(x\)</span> is noted <span class="math inline">\(I(x)\)</span>.</p>
+<ul>
+<li><p>It is a function <span class="math inline">\(f\)</span> of the probability <span class="math inline">\(p\)</span> that <span class="math inline">\(x\)</span> occurs.</p></li>
+<li><p>i.e.&nbsp;<span class="math inline">\(I(x) = f(p(x))\)</span></p></li>
+</ul></li>
+</ul>
+<!-- -->
+<ul>
+<li><p>Claude Shannon's definition of self-information was chosen to meet several axioms</p>
+<ul>
+<li><p><span class="math inline">\(f(p)\)</span> is monotonically decreasing in <span class="math inline">\(p\)</span>.</p>
+<ul>
+<li>The more probable an event is, the less surprising it is and the less information it yields.</li>
+</ul></li>
+<li><p><span class="math inline">\(f(1) = 0\)</span></p>
+<ul>
+<li>An event with probability 1 is perfectly unsurprising and yields no information.</li>
+</ul></li>
+<li><p><span class="math inline">\(f(p_{1}\ p_{2}) = f(p_{1}) + f(p_{2})\)</span></p>
+<ul>
+<li>The information from independent events is the sum of the information of each event.</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="definition" class="level2">
+<h2 class="anchored" data-anchor-id="definition">Definition</h2>
+<ul>
+<li><p>There is a unique function <span class="math inline">\(f\)</span> that meets the 3 axioms, up to a scaling factor <span class="math inline">\(b\)</span>.</p></li>
+<li><p><span class="math inline">\(I(x) = - \log_{b}(p(x))\)</span></p></li>
+<li><p>Different choices of <span class="math inline">\(b\)</span> correspond to different units of information:</p>
+<ul>
+<li><p><span class="math inline">\(b = 2\)</span>: Shannon or bit.</p></li>
+<li><p><span class="math inline">\(b = e\)</span>: natural unit of information.</p></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="entropy" class="level1">
+<h1>Entropy</h1>
+<section id="definition-1" class="level2">
+<h2 class="anchored" data-anchor-id="definition-1">Definition</h2>
+<ul>
+<li><p>Noted <span class="math inline">\(H(X)\)</span>.</p></li>
+<li><p>Expected value of the self-information of a random variable.</p></li>
+<li><p>Expected value of <span class="math inline">\(I(X)\)</span>:</p>
+<p><span class="math inline">\(H(X)\)</span></p>
+<p><span class="math inline">\(= E(I(X))\)</span></p>
+<p><span class="math inline">\(= \ E( - log(p(X)))\)</span></p>
+<p><span class="math inline">\(= \ \sum_{\chi}^{} - p(x)\ log(p(x))\)</span></p></li>
+</ul>
+</section>
+<section id="interpretations" class="level2">
+<h2 class="anchored" data-anchor-id="interpretations">Interpretations</h2>
+<ul>
+<li><p>The entropy <span class="math inline">\(H_{b}(X)\)</span> in base <span class="math inline">\(b\)</span> is the lower bound of the expected length of any code with an alphabet size of <span class="math inline">\(b\)</span> that encodes events of <span class="math inline">\(X\)</span>.</p>
+<ul>
+<li><p>The length is the number of characters, i.e.&nbsp;the number of units of information.</p></li>
+<li><p>Thus, its unit is the unit set by the choice of <span class="math inline">\(b\)</span>:</p>
+<ul>
+<li><p><span class="math inline">\(b = 2\)</span>: number of bits.</p></li>
+<li><p><span class="math inline">\(b = 10\)</span>: number of decimal digits.</p></li>
+</ul></li>
+<li><p>Each character can take a value in an alphabet of size <span class="math inline">\(b\)</span>.</p></li>
+<li><p>See <a href="#relationship-to-encoding">relationship to encoding</a> for more details.</p></li>
+</ul></li>
+<li><p>This can also be viewed as the expected amount of information needed to describe the state of the variable, considering the distribution of probabilities across all potential states.</p></li>
+</ul>
+<section id="relationship-to-encoding" class="level3">
+<h3 class="anchored" data-anchor-id="relationship-to-encoding">Relationship to encoding</h3>
+<ul>
+<li><p>Proved by Claude Shannon.</p></li>
+<li><p>For optimal encoding, the number of characters (bits for <span class="math inline">\(b = 2\)</span>) used per symbol should reflect its information content.</p>
+<ul>
+<li><p>More probable symbols require fewer bits, while less probable symbols require more bits.</p></li>
+<li><p>This forms the basis of variable-length codes like Huffman coding or arithmetic coding.</p></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="properties" class="level2">
+<h2 class="anchored" data-anchor-id="properties">Properties</h2>
+<ul>
+<li><p>The entropy is maximized when the probability distribution is uniform.</p>
+<ul>
+<li>The uncertainty (i.e.&nbsp;surprise or information content) is maximized as all events are equally probable.</li>
+</ul></li>
+</ul>
+</section>
+<section id="history" class="level2">
+<h2 class="anchored" data-anchor-id="history">History</h2>
+<ul>
+<li><p>Discovered by Claude Shannon.</p></li>
+<li><p>Named after the thermodynamics entropy definition by Boltzmann (and generalized by Gibbs).</p></li>
+<li><p>Von Neumann realized first that relation.</p></li>
+</ul>
+</section>
+</section>
+<section id="cross-entropy" class="level1">
+<h1>Cross-entropy</h1>
+<ul>
+<li><p>Measure the entropy but with a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</p></li>
+<li><p><span class="math inline">\(H(p,\ q) = \ \sum_{\chi}^{} - p(x)\ log(q(x))\)</span></p></li>
+</ul>
+</section>
+<section id="kullbackleibler-divergence" class="level1">
+<h1>Kullback–Leibler divergence</h1>
+<ul>
+<li><p>Measure the additional code length when using a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</p></li>
+<li><p>Thus, it is computed as <span class="math inline">\(Cross\ Entropy - Entropy\)</span>:</p>
+<p><span class="math inline">\(D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)\)</span></p>
+<p><span class="math inline">\(= \sum_{\chi}^{} - p(x)\ log(q(x)) - \sum_{\chi}^{} - p(x)\ log(p(x))\)</span></p>
+<p><span class="math inline">\(= \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})\)</span></p></li>
+<li><p>Also called <strong>relative entropy</strong> (code length relative to the optimal one).</p></li>
+</ul>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 36%">
+<col style="width: 40%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Definition</th>
+<th>Formula</th>
+<th>Applied to</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Self information</td>
+<td>- Level of "surprise" of event <span class="math inline">\(x\)</span>.</td>
+<td><span class="math inline">\(I(x) = - \log_{b}(p(x))\)</span></td>
+<td>Individual event <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td>Entropy</td>
+<td>- Expected value of information content. - Lower bound of the expected length of a code that encodes events of <span class="math inline">\(X\)</span>.</td>
+<td><span class="math inline">\(H(X) = \ \sum_{\chi}^{} - p(x)\ log(p(x))\)</span></td>
+<td>Random variable <span class="math inline">\(X\)</span></td>
+</tr>
+<tr class="odd">
+<td>Cross-entropy</td>
+<td>- Entropy but with a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</td>
+<td><span class="math inline">\(H(p,\ q) = \ \sum_{\chi}^{} - p(x)\ log(q(x))\)</span></td>
+<td rowspan="2">Probability distributions <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span></td>
+</tr>
+<tr class="even">
+<td>Kullback–Leibler divergence</td>
+<td>- Additional code length when using a coding scheme optimized for <span class="math inline">\(q\)</span> instead of <span class="math inline">\(p\)</span>.</td>
+<td><p><span class="math inline">\(D_{KL}(p\ ||\ q) = H(p,\ q) - H(p)\)</span></p>
+<p><span class="math inline">\(D_{KL}(p\ ||\ q) = \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The relationship between entropy, cross-entropy and Kullback–Leibler divergence can also be summarized with the following diagram:</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
+</figure>
+</div>
+<ul>
+<li><p>For a fixed <span class="math inline">\(p\)</span></p>
+<ul>
+<li><p><span class="math inline">\(H(p)\)</span> is constant and</p></li>
+<li><p><strong>Minimizing the cross-entropy</strong> is equivalent to <strong>minimizing the KL divergence</strong>.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="where-does-the-name-of-the-cross-entropy-loss-come-from" class="level1">
+<h1>Where does the name of the cross entropy loss come from?</h1>
+<p>In a supervised classification problem with <span class="math inline">\(C\)</span> classes, the following loss, called the <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss">cross entropy loss</a>, is often used</p>
+<p><span class="math inline">\(Loss(y_{i},\ \widehat{y_{i}}) = \  - \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p>
+<p>Where</p>
+<ul>
+<li><p>The label <span class="math inline">\(c_{i}\)</span> is the class index for sample <span class="math inline">\(i\)</span>.</p>
+<ul>
+<li><p>We note <span class="math inline">\(y_{i}\)</span> the corresponding one-hot vector of size <span class="math inline">\(C\)</span> with elements</p>
+<ul>
+<li><p><span class="math inline">\(y_{i,k} = 1\)</span> for <span class="math inline">\(k = c_{i}\)</span></p></li>
+<li><p><span class="math inline">\(y_{i,k} = 0\)</span> for <span class="math inline">\(k \neq c_{i}\)</span></p></li>
+</ul></li>
+</ul></li>
+<li><p>The model outputs the estimated probabilities of each class in a vector <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span> of size <span class="math inline">\(C\)</span></p></li>
+<li><p>Thus,</p>
+<ul>
+<li><p>The true probability that <span class="math inline">\(y_{i,k} = c_{i}\)</span> is given by <span class="math inline">\(y_{i,k} = p(y_{i,k} = c_{i})\)</span></p></li>
+<li><p>The estimated probability that <span class="math inline">\(y_{i,k} = c_{i}\)</span> is given by <span class="math inline">\(\widehat{y_{i,k}} = q(y_{i,k} = c_{i})\)</span></p></li>
+</ul></li>
+<li><p>The cross entropy between the probability distributions <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> is</p>
+<p><span class="math inline">\(H(p,\ q) = \ \sum_{k = 1}^{C} - p(y_{i,k} = c_{i})\ log(q(y_{i,k} = c_{i}))\)</span></p></li>
+<li><p>Which is the same as</p>
+<p><span class="math inline">\(\sum_{k = 1}^{C} - y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
+<li><p>Which is the definition of the loss <span class="math inline">\(Loss(y_{i},\ \widehat{y_{i}})\)</span> given above, which is hence named the cross entropy loss.</p></li>
+<li><p>Thus, <strong>minimizing the cross entropy loss</strong> is equivalent to <strong>minimizing the cross-entropy</strong> (or equivalently the <strong>KL divergence)</strong> between the true and the estimated probability distributions.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+</figure>
+</div>
+</section>
+<section id="forward-vs-reversed-kullback-leibler-divergence" class="level1">
+<h1>Forward vs reversed Kullback-Leibler divergence</h1>
+<p>The Kullback-Leibler divergence is not symmetric. This means that the Kullback-Leibler divergence between two distributions <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> can be computed in two ways.</p>
+<ul>
+<li><p>Forward: <span class="math inline">\(D_{KL}(p\ ||\ q)\)</span></p></li>
+<li><p>Reversed: <span class="math inline">\(D_{KL}(q\ ||\ p)\)</span></p></li>
+</ul>
+<p><span class="math inline">\(p\)</span> usually denotes the true distribution while <span class="math inline">\(q\)</span> is the approximated distribution.</p>
+<p>A mnemonic way to remember which of the two expressions above is the forward <span class="math inline">\(D_{KL}\)</span> or the reversed <span class="math inline">\(D_{KL}\)</span> is explained is this <a href="https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html">blog post</a>:</p>
+<ul>
+<li><p>In the forward <span class="math inline">\(D_{KL}(p\ ||\ q)\)</span>, the bump of the first letter <span class="math inline">\(p\)</span> points forward.</p></li>
+<li><p>In the reversed (or backward) <span class="math inline">\(D_{KL}(q\ ||\ p)\)</span>, the bump of the first letter <span class="math inline">\(q\)</span> points backward.</p></li>
+</ul>
+<section id="forward-kullback-leibler-divergence" class="level2">
+<h2 class="anchored" data-anchor-id="forward-kullback-leibler-divergence">Forward Kullback-Leibler divergence</h2>
+<ul>
+<li><p><span class="math inline">\(D_{KL}(p\ ||\ q) = \sum_{\chi}^{}p(x)\ log(\frac{p(x)}{q(x)})\)</span></p></li>
+<li><p>The sum or expectation is weighted by the distribution <span class="math inline">\(p\)</span>.</p></li>
+<li><p>Differences between <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> produce large <span class="math inline">\(D_{KL}\)</span> on the mass of <span class="math inline">\(p\)</span> (where <span class="math inline">\(p &gt; 0\)</span>) but not where <span class="math inline">\(p\)</span> is small (<span class="math inline">\(p \simeq 0\)</span>).</p></li>
+<li><p>Minimizing the forward Kullback-Leibler divergence <span class="math inline">\(D_{KL}(p\ ||\ q)\)</span> encourages <span class="math inline">\(q\)</span> to put its mass wherever the mass of <span class="math inline">\(p\)</span> is (putting its mass outside the mass of <span class="math inline">\(p\)</span> is not penalized).</p></li>
+<li><p>This results in mode covering behavior.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+</figure>
+</div>
+</section>
+<section id="reversed-kullback-leibler-divergence" class="level2">
+<h2 class="anchored" data-anchor-id="reversed-kullback-leibler-divergence">Reversed Kullback-Leibler divergence</h2>
+<ul>
+<li><p><span class="math inline">\(D_{KL}(q\ ||\ p) = \sum_{\chi}^{}q(x)\ log(\frac{q(x)}{p(x)})\)</span></p></li>
+<li><p>The sum or expectation is weighted by the distribution <span class="math inline">\(q\)</span>.</p></li>
+<li><p>Differences between <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> produce large <span class="math inline">\(D_{KL}\)</span> on the mass of <span class="math inline">\(q\)</span> (where <span class="math inline">\(q &gt; 0\)</span>) but not where <span class="math inline">\(q\)</span> is small (<span class="math inline">\(q \simeq 0\)</span>).</p></li>
+<li><p>Minimizing the reversed Kullback-Leibler divergence <span class="math inline">\(D_{KL}(q\ ||\ p)\)</span> encourages <span class="math inline">\(q\)</span> not to put its mass outside the mass of <span class="math inline">\(p\)</span> (missing parts of the mass <span class="math inline">\(p\)</span> is not penalized).</p></li>
+<li><p>This results in mode seeking behavior.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/drawing_4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="500"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="sources" class="level1">
+<h1>Sources</h1>
+<p><a href="https://en.wikipedia.org/wiki/Information_content"><u>https://en.wikipedia.org/wiki/Information_content</u></a></p>
+<p><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss"><u>https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss</u></a></p>
+<p><a href="https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html"><u>https://mpatacchiola.github.io/blog/2021/01/25/intro-variational-inference.html</u></a></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/nisace\.github\.io\/personal-website\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
