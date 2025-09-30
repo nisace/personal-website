@@ -90,8 +90,8 @@ In a classification setting with $C$ classes:
 - Thus, **in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss**.
 
 - To understand why the formula $- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}$ is called the cross entropy loss, refer to 
-the [dedicated section](/posts/2025-09-11-information-theory/index.qmd#where-does-the-name-of-the-cross-entropy-loss-come-from)
-in the [Information Theory](/posts/2025-09-11-information-theory/index.qmd) blog post.
+the [dedicated section](/posts/information-theory/index.qmd#where-does-the-name-of-the-cross-entropy-loss-come-from)
+in the [Information Theory](/posts/information-theory/index.qmd) blog post.
 
 ## Regression setting
 

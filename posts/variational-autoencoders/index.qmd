@@ -72,7 +72,7 @@ One approach could be to
 
 ## Strategy
 
-Model $p(z|x)$ by a parametric distribution $q_{\phi}(z|x)$ and minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ (see [Kullback--Leibler divergence](/posts/2025-09-11-information-theory/index.qmd#kullback--leibler-divergence)).
+Model $p(z|x)$ by a parametric distribution $q_{\phi}(z|x)$ and minimize $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ (see [Kullback--Leibler divergence](/posts/information-theory/index.qmd#kullback--leibler-divergence)).
 
 $q_{\phi}(z|x)$ is sometimes called the *variational distribution* (see [Glossary](#glossary)).
 
@@ -80,7 +80,7 @@ Minimize the reversed $KL(q_{\phi}(z|x)\ ||\ p(z|x))$ and not the forward $KL(p(
 
 This results in mode seeking behavior. See:
 
-- [Forward vs reversed Kullback-Leibler divergence](/posts/2025-09-11-information-theory/index.qmd#forward-vs-reversed-kullback-leibler-divergence)
+- [Forward vs reversed Kullback-Leibler divergence](/posts/information-theory/index.qmd#forward-vs-reversed-kullback-leibler-divergence)
 
 - and [Consequences of minimizing the reversed Kullback-Leibler divergence between the posteriors](#consequences-of-minimizing-the-reversed-kullback-leibler-divergence-between-the-posteriors)
 
@@ -298,7 +298,7 @@ The objective is to maximize the $ELBO = E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta
 
 $\nabla_{\theta}ELBO = \nabla_{\theta}E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack$
 
-$q_{\phi}(z|x)$ does not depend on $\theta$ thus (see [Expectation and derivative](/posts/2025-09-28-expectation-and-derivative/index.qmd)):
+$q_{\phi}(z|x)$ does not depend on $\theta$ thus (see [Expectation and derivative](/posts/expectation-and-derivative/index.qmd)):
 
 $\nabla_{\theta}ELBO = E_{q_{\phi}(z|x)}\lbrack\nabla_{\theta}log\ p_{\theta}(x|z)\rbrack$
 
@@ -314,11 +314,11 @@ The gradient above contains two terms. Let us treat them separately.
 ### Expectation part
 
 The expectation depends on $\phi$, thus, the gradient cannot be written as $E_{q_{\phi}(z|x)}\lbrack\nabla_{\phi}log\ p_{\theta}(x|z)\rbrack$.\
-As explained in [Expectation and derivative](/posts/2025-09-28-expectation-and-derivative/index.qmd), there are several solutions. Two of them are:
+As explained in [Expectation and derivative](/posts/expectation-and-derivative/index.qmd), there are several solutions. Two of them are:
 
-- Use the [score function estimator](/posts/2025-09-28-expectation-and-derivative/index.qmd#score-function-estimator)
+- Use the [score function estimator](/posts/expectation-and-derivative/index.qmd#score-function-estimator)
 
-- Or the [reparametrization trick](/posts/2025-09-28-expectation-and-derivative/index.qmd#reparameterization-trick)
+- Or the [reparametrization trick](/posts/expectation-and-derivative/index.qmd#reparameterization-trick)
 
 The reparameterization is used because is offers a lower gradient variance than the score function estimator and because $p_{\theta}(x|z)$ is differentiable.
 
@@ -336,7 +336,7 @@ We can
 
   - $z = g_{\phi}(\varepsilon)$ with $\varepsilon \sim n(\varepsilon)$
 
-Then the [Law of the Unconscious Statistician (LOTUS)](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus) tells us that
+Then the [Law of the Unconscious Statistician (LOTUS)](/posts/expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus) tells us that
 
 - The expectation of $z$ can be computed with the distribution of $\varepsilon$
 
@@ -344,7 +344,7 @@ Then the [Law of the Unconscious Statistician (LOTUS)](/posts/2025-09-28-expecta
 
   $= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$
 
-With this new formulation, the distribution no longer depends on $\phi$. Thus we are in a [Fixed distribution](/posts/2025-09-28-expectation-and-derivative/index.qmd#fixed-distribution) setting.
+With this new formulation, the distribution no longer depends on $\phi$. Thus we are in a [Fixed distribution](/posts/expectation-and-derivative/index.qmd#fixed-distribution) setting.
 
 Thus,
 
@@ -352,7 +352,7 @@ $\nabla_{\phi}E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack$
 
 <div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
   <div>$= \nabla_{\phi}E_{n(\varepsilon)}\lbrack log\ p_{\theta}(x|g_{\phi}(\varepsilon))\rbrack$</div>
-  <div>([LOTUS](/posts/2025-09-28-expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus))</div>
+  <div>([LOTUS](/posts/expectation-and-derivative/index.qmd#law-of-the-unconscious-statistician-lotus))</div>
 </div>
 
 <div style="display: flex; justify-content: space-between; margin-bottom: 1em;">
@@ -498,7 +498,7 @@ The $\nabla_{\phi}KL(q_{\phi}(z|x)\ ||\ p(z))$ is addressed in the [Derive the g
 
 The remaining two terms $\frac{1}{N}\sum_{i = 1}^{N}\nabla_{\theta}log\ p_{\theta}(x|z_{i})\rbrack$ and $\frac{1}{N}\sum_{i = 1}^{N}\nabla_{\phi}(log\ p_{\theta}(x|g_{\phi}(\varepsilon_{i})))$ both involve the log likelihood of the data $x$.
 
-As explained in [Maximum Likelihood Estimation and loss functions](/posts/2025-09-11-likelihood-loss/index.qmd), maximizing the likelihood (Maximum Likelihood Estimation or MLE) of the observed data is equivalent to minimizing:
+As explained in [Maximum Likelihood Estimation and loss functions](/posts/likelihood-loss/index.qmd), maximizing the likelihood (Maximum Likelihood Estimation or MLE) of the observed data is equivalent to minimizing:
 
 - The cross entropy loss in a supervised classification setting.
 
@@ -529,7 +529,7 @@ Here is a summary of different possible applications.
 
 As explained in [Strategy](#strategy), the original objective is to minimize the reversed Kullback-Leibler divergence between the posteriors $KL(q_{\phi}(z|x)\ ||\ p(z|x))$.
 
-This results in mode seeking behavior (see [Forward vs reversed Kullback-Leibler divergence](/posts/2025-09-11-information-theory/index.qmd#forward-vs-reversed-kullback-leibler-divergence) to understand why) and has the following consequences:
+This results in mode seeking behavior (see [Forward vs reversed Kullback-Leibler divergence](/posts/information-theory/index.qmd#forward-vs-reversed-kullback-leibler-divergence) to understand why) and has the following consequences:
 
 - Mode collapse
 
