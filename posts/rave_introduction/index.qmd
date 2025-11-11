@@ -1,12 +1,17 @@
 ---
-title: "[]{#_7awb6bchetj0 .anchor}Short introduction to the RAVE model"
+title: "A short introduction to the RAVE model"
+description: |
+  A short introduction to RAVE model proposed by the paper RAVE: A variational
+  autoencoder for fast and high-quality neural audio synthesis.
+date: "2025-11-11"
+categories: [Machine Learning, Neural Audio Synthesis]
 ---
 
 # Introduction
 
-This post is a short introduction to the RAVE model proposed by the paper [[RAVE: A variational autoencoder for fast and high-quality neural audio synthesis]{.underline}](https://arxiv.org/abs/2111.05011).
+This post is a short introduction to the RAVE model proposed by the paper [RAVE: A variational autoencoder for fast and high-quality neural audio synthesis](https://arxiv.org/abs/2111.05011).
 
-The RAVE model is a [[variational autoencoder]{.underline}](https://docs.google.com/document/u/0/d/1bgsMYJV8xzBlf0J-lD0PKpuT3Ylt6hNZNji4Ydzc7t0/edit) trained in two stages:
+The RAVE model is a [variational autoencoder](/posts/variational-autoencoders/index.qmd) trained in two stages:
 
 - First the regular variational autoencoder training,
 
@@ -16,7 +21,7 @@ The RAVE model is a [[variational autoencoder]{.underline}](https://docs.google.
 
 ## Stage 1: Regular variational autoencoder training
 
-The first stage is a regular variational autoencoder training which, as a remainder, aims at maximizing the following quantity (see the [[variational autoencoder]{.underline}](https://docs.google.com/document/u/0/d/1bgsMYJV8xzBlf0J-lD0PKpuT3Ylt6hNZNji4Ydzc7t0/edit) post):
+The first stage is a regular variational autoencoder training which, as a remainder, aims at maximizing the following quantity (see the [variational autoencoder](/posts/variational-autoencoders/index.qmd) post):
 
 $ELBO = E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack - KL(q_{\phi}(z|x)\ ||\ p(z))$
 
@@ -24,7 +29,7 @@ which gives for the loss
 
 $\mathcal{L}_{VAE} = - E_{q_{\phi}(z|x)}\lbrack log\ p_{\theta}(x|z)\rbrack + KL(q_{\phi}(z|x)\ ||\ p(z))$
 
-For the reconstruction part, the RAVE paper proposes to use the spectral distance from the [[DDSP: Differentiable Digital Signal Processing]{.underline}](https://arxiv.org/abs/2001.04643) paper:
+For the reconstruction part, the RAVE paper proposes to use the spectral distance from the [DDSP: Differentiable Digital Signal Processing](https://arxiv.org/abs/2001.04643) paper:
 
 $S(x,y) = \sum_{n\  \in \ N}^{}\left\lbrack \frac{{||{\ STFT}_{n}(x)\  - \ {STFT}_{n}(y)\ ||}_{F}}{{||{\ STFT}_{n}(x)\ \ ||}_{F}} + log({||{\ STFT}_{n}(x) - {STFT}_{n}(y)\ ||}_{1}) \right\rbrack$
 
@@ -48,7 +53,7 @@ As explained in the RAVE paper, this amplitude spectrum-based distance does not 
 
 - The second stage aims at improving the synthesized audio quality by training the decoder using an adversarial objective (the encoder is frozen).
 
-- Following the [[Generative Adversarial Networks]{.underline}](https://arxiv.org/abs/1406.2661) framework, a discriminator $D$ is introduced.
+- Following the [Generative Adversarial Networks](https://arxiv.org/abs/1406.2661) framework, a discriminator $D$ is introduced.
 
 - The decoder and the discriminator are trained with the following objectives
 
@@ -60,21 +65,17 @@ As explained in the RAVE paper, this amplitude spectrum-based distance does not 
 
   - Keep minimizing the spectral distance $S(x,\widehat{x})$.
 
-  - Add the feature matching loss $L_{FM}$ proposed in [[MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis]{.underline}](https://arxiv.org/abs/1910.06711).
+  - Add the feature matching loss $L_{FM}$ proposed in [MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis](https://arxiv.org/abs/1910.06711).
 
   - This gives the final decoder objective
 
     - $L_{total}(x,z) = L_{generator}(z) + E_{\widehat{x} \sim p(x|z)}\lbrack S(x,\widehat{x}) + L_{FM}(x,\widehat{x})\rbrack$
 
-<!-- -->
-
-- Latent representation compactness
-
 # Model architecture
 
 ## Encoder
 
-- The encoder of RAVE is a 1D convolutional neural network with $N$ input channels (see the original implementation [[here]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L304)).
+- The encoder of RAVE is a 1D convolutional neural network with $N$ input channels (see the original implementation [here](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L304)).
 
   - In order to improve the model speed, the RAVE paper performs a multiband decomposition of the raw waveform before feeding it to the encoder.
 
@@ -82,7 +83,7 @@ As explained in the RAVE paper, this amplitude spectrum-based distance does not 
 
 - In order to preserve the time alignment between the encoder inputs and the decoder outputs, all the convolutional layers use half padding (also called \`same\` padding).
 
-  - See [[Time alignment between inputs and outputs]{.underline}](#time-alignment-between-inputs-and-outputs) for more details.
+  - See [Time alignment between inputs and outputs](#time-alignment-between-inputs-and-outputs) for more details.
 
 - No downsampling along the temporal axis is introduced by the convolutions with a unit stride (stride = 1).
 
@@ -105,41 +106,6 @@ As explained in the RAVE paper, this amplitude spectrum-based distance does not 
 - The decoder of RAVE is composed of 1D transposed convolutions and residual connections.
 
 - It produces outputs of the same length and dimension as the input.
-
-# Implementation
-
-## Encoder
-
-- The encoder of the RAVE paper has the following architecture
-
-+---------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
-|                                                                                 | Length\                                                                                           | Stride                                                                            | $N$ channels                                                                                      |
-|                                                                                 | (temporal axis)                                                                                   |                                                                                   |                                                                                                   |
-|                                                                                 +------------+--------------------------------------------------------------------------------------+                                                                                   +------------+--------------------------------------------------------------------------------------+
-|                                                                                 | Input      | Output                                                                               |                                                                                   | Input      | Output                                                                               |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| Input                                                                           | \-         | [[65536]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/train_rave.py#L57) | \-                                                                                | \-         | [[16]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/train_rave.py#L24)    |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| [[Convolution                                                                   | 65536      | 65536                                                                                | [[1]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L304) | 16         | [[64]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/train_rave.py#L25)    |
-| 1]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L304) |            |                                                                                      |                                                                                   |            |                                                                                      |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| [[Convolution                                                                   | 65536      | 16384                                                                                | [[4]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/train_rave.py#L30)  | 64         | [[128]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L313)  |
-| 2]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L318) |            |                                                                                      |                                                                                   |            |                                                                                      |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| [[Convolution                                                                   | 16384      | 4096                                                                                 | [[4]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/train_rave.py#L30)  | 128        | [[256]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L313)  |
-| 3]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L318) |            |                                                                                      |                                                                                   |            |                                                                                      |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| [[Convolution                                                                   | 4096       | 1024                                                                                 | [[4]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/train_rave.py#L30)  | 256        | [[512]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L313)  |
-| 4]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L318) |            |                                                                                      |                                                                                   |            |                                                                                      |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| [[Convolution                                                                   | 1024       | 512                                                                                  | [[2]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/train_rave.py#L30)  | 512        | [[1024]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L313) |
-| 5]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L318) |            |                                                                                      |                                                                                   |            |                                                                                      |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| [[Convolution                                                                   | 512        | 512                                                                                  | [[1]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L330) | 1024       | [[256]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L332)  |
-| 6]{.underline}](https://github.com/acids-ircam/RAVE/blob/v1/rave/model.py#L330) |            |                                                                                      |                                                                                   |            |                                                                                      |
-+---------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------+--------------------------------------------------------------------------------------+
-| Output                                                                          | 512        | \-                                                                                   | \-                                                                                | 256        | \-                                                                                   |
-+=================================================================================+============+======================================================================================+===================================================================================+============+======================================================================================+
 
 # Time alignment between inputs and outputs
 
@@ -169,9 +135,9 @@ For both figures, the decoder transposed convolution layer matches the encoder c
 
 When there is no padding, the transposed convolution that allows to produce outputs with the same dimensionality as the encoder inputs must be done with a full padding.
 
-The figure below shows the time alignment between the inputs and outputs of the model is not maintained (red lines).
+The figure below shows that the time alignment between the inputs and outputs of the model is not maintained (red lines).
 
-![](media/drawing_1.png)
+![](media/drawing_1.png){fig-align="center" width="1000px"}
 
 ## With half padding ("same" padding)
 
@@ -195,6 +161,4 @@ The figure below shows in this configuration the time alignment between the inpu
 
 ![](media/drawing_4.png)
 
-- The [[Streamable Neural Audio Synthesis With Non-Causal Convolutions]{.underline}](https://arxiv.org/abs/2204.07064) paper addresses this issue and the [[Streamable Neural Audio Synthesis With Non-Causal Convolutions]{.underline}](https://docs.google.com/document/u/0/d/1QT2NOUo5dCNezgzxttuNtateXHGIQBJscV_ES-FmIQM/edit) post dives into it.
-
-# Notes
+- The [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064) paper addresses this issue and the [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://docs.google.com/document/u/0/d/1QT2NOUo5dCNezgzxttuNtateXHGIQBJscV_ES-FmIQM/edit) post dives into it.
