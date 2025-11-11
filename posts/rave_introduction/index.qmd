@@ -137,7 +137,9 @@ When there is no padding, the transposed convolution that allows to produce outp
 
 The figure below shows that the time alignment between the inputs and outputs of the model is not maintained (red lines).
 
-![](media/drawing_1.png){fig-align="center" width="1000px"}
+![](media/drawing_1.png){fig-align="center" width="600px"}
+
+![](media/drawing_2.png){fig-align="center" width="350px"}
 
 ## With half padding ("same" padding)
 
@@ -145,7 +147,9 @@ When a half padding is used, the transposed convolution that allows to produce o
 
 The figure below shows in this configuration the time alignment between the inputs and outputs of the model is maintained (green lines).
 
-![](media/drawing_2.png)
+![](media/drawing_3.png){fig-align="center" width="600px"}
+
+![](media/drawing_4.png){fig-align="center" width="350px"}
 
 # Streamability
 
@@ -157,8 +161,32 @@ The figure below shows in this configuration the time alignment between the inpu
 
 - If we consider a stream of audio input, this means that there will be a discontinuity between two consecutive audio chunks.
 
-![](media/drawing_3.png)
+![](media/drawing_5.png){fig-align="center" width="1000px"}
 
-![](media/drawing_4.png)
+![](media/drawing_6.png){width="350px"}
 
 - The [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064) paper addresses this issue and the [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://docs.google.com/document/u/0/d/1QT2NOUo5dCNezgzxttuNtateXHGIQBJscV_ES-FmIQM/edit) post dives into it.
+
+# Sources
+
+## RAVE model
+
+- [[RAVE: A variational autoencoder for fast and high-quality neural audio synthesis]{.underline}](https://arxiv.org/abs/2111.05011)
+
+### Spectral distance
+
+- [[DDSP: Differentiable Digital Signal Processing]{.underline}](https://arxiv.org/abs/2001.04643)
+
+### Feature matching loss
+
+- [[MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis]{.underline}](https://arxiv.org/abs/1910.06711)
+
+### Other
+
+- [[Generative Adversarial Networks]{.underline}](https://arxiv.org/abs/1406.2661)
+
+## Dilated convolutions
+
+[[https://medium.com/data-science/types-of-convolutions-in-deep-learning-717013397f4d]{.underline}](https://medium.com/data-science/types-of-convolutions-in-deep-learning-717013397f4d)
+
+[[https://medium.com/@akp83540/dilation-rate-in-a-convolution-operation-a7143e437654]{.underline}](https://medium.com/@akp83540/dilation-rate-in-a-convolution-operation-a7143e437654)
