@@ -98,6 +98,8 @@ Below are some detailed explanations for different layer configurations.
 
 - The following color legend is used
 
+![](media/drawing_4.png)
+
 ## Convolution layers with $stride = 1$
 
 The figure below represents 2 convolution layers before the causal reconfiguration
@@ -118,7 +120,7 @@ The figure below represents 2 convolution layers before the causal reconfigurati
 
   - $padding = (2,\ 2)$
 
-![](media/drawing_4.png)
+![](media/drawing_5.png)
 
 Let us see how the causal reconfiguration is applied to each layer.
 
@@ -128,7 +130,7 @@ Let us see how the causal reconfiguration is applied to each layer.
 
 The reconfiguration moves the right padding to the left of the graph and thus, introduces a delay $D_{1} = right\ pad = 1$ compared to the initial non causal graph.
 
-![](media/drawing_5.png)
+![](media/drawing_6.png)
 
 #### Inference
 
@@ -148,7 +150,7 @@ During inference, these 3 steps are applied:
 
 Each step corresponds to one line in the figure below, see [here](https://github.com/acids-ircam/cached_conv/blob/v2.3.6/cached_conv/convs.py#L119) for the original implementation.
 
-![](media/drawing_6.png)
+![](media/drawing_7.png)
 
 #### Cumulated delay
 
@@ -170,7 +172,7 @@ Which gives at layer 1
 
 The reconfiguration again moves the right padding to the left of the graph and thus, introduces a delay $D_{2} = right\ pad = 2$.
 
-![](media/drawing_7.png)
+![](media/drawing_8.png)
 
 #### Inference
 
@@ -180,7 +182,7 @@ For layer 2
 
 During inference, the same 3 steps as for layer 1 are applied.
 
-![](media/drawing_8.png)
+![](media/drawing_9.png)
 
 #### Cumulated delay
 
@@ -194,7 +196,7 @@ The $Cumulated\ Delay$ at layer 2 is
 
 Below is a summary of all the steps explained above.
 
-![](media/drawing_9.png)
+![](media/drawing_10.png)
 
 For convolution layers with $stride = 1$
 
@@ -222,7 +224,7 @@ The figure below represents 2 convolution layers before the causal reconfigurati
 
   - $padding = (2,\ 2)$
 
-![](media/drawing_10.png)
+![](media/drawing_11.png)
 
 Let us see how the causal reconfiguration is applied to each layer.
 
@@ -236,11 +238,11 @@ However, as can be seen below, this delay breaks the time alignment between the 
 
 This means that without additional reconfiguration, the time alignment between the layer input and output is not preserved.
 
-![](media/drawing_11.png)
+![](media/drawing_12.png)
 
 In order to align again the initial first value of the input tensor with the convolution stride, an additional $stride\ delay$ needs to be introduced
 
-![](media/drawing_12.png)
+![](media/drawing_13.png)
 
 This additional $stride\ delay$ is computed as follows
 
@@ -329,7 +331,7 @@ The 6 steps are:
 
 Each step corresponds to one line in the figure below, see [here](https://github.com/acids-ircam/cached_conv/blob/v2.3.6/cached_conv/convs.py#L119) for the original implementation.
 
-![](media/drawing_13.png)
+![](media/drawing_14.png)
 
 #### Cumulated delay
 
@@ -358,7 +360,7 @@ This gives at layer 1
 
 As for layer 1, in order to align again the initial first value of the input tensor with the convolution stride, an additional $stride\ delay$ needs to be introduced
 
-![](media/drawing_14.png)
+![](media/drawing_15.png)
 
 This additional $stride\ delay$ is computed as follows
 
@@ -379,7 +381,7 @@ For layer 2
 
 During inference, the same 6 steps as for layer 1 are applied.
 
-![](media/drawing_15.png)
+![](media/drawing_16.png)
 
 #### Cumulated delay
 
@@ -396,7 +398,7 @@ The $Cumulated\ Delay$ at layer 2 is
 
 Below is a summary of all the steps explained above.
 
-![](media/drawing_16.png)
+![](media/drawing_17.png)
 
 For convolution layers with $stride > 1$
 
@@ -422,7 +424,7 @@ For convolution layers with $stride > 1$
 
   - However, the stride between the receptive fields of the layers over their input stream seems not to be constant around the point of contact between two buffers (red rectangles).
 
-![](media/drawing_17.png)
+![](media/drawing_18.png)
 
 - Despite this possible discontinuity, the [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064) paper reports no difference between the outputs of the studied RAVE model before and after the causal reconfiguration (figure 8 of the paper).
 
