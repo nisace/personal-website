@@ -1,5 +1,5 @@
 ---
-title: "[]{#_7awb6bchetj0 .anchor}Short introduction to the RAVE model"
+title: "[]{#_7awb6bchetj0 .anchor}A short introduction to the RAVE model"
 ---
 
 # Introduction
@@ -69,6 +69,20 @@ As explained in the RAVE paper, this amplitude spectrum-based distance does not 
 <!-- -->
 
 - Latent representation compactness
+
+## Notes about the phase
+
+The spectral distance does not directly force the model to reproduce the phase of the input audio signal. However, the model is encouraged to produce plausible phase in two ways:
+
+- The fact that the spectral distance is computed at multiple scales.
+
+  - The only way to reproduce the correct magnitude patterns across multiple STFT window sizes is to generate time-domain signals with realistic, coherent phase.
+
+- The adversarial loss.
+
+  - The discriminator doesn't directly evaluate the phase but it evaluates if the output signal is realistic.
+
+  - To fool the discriminator, the decoder must learn to produce phase-coherent signals because inconsistent or unnatural phase (e.g. "swishy", "metallic", "blurry" artifacts) would be easy to detect.
 
 # Model architecture
 
@@ -173,7 +187,7 @@ The figure below shows that the time alignment between the inputs and outputs of
 
 ![](media/drawing_1.png)
 
-## ![](media/drawing_2.png)
+![](media/drawing_2.png)
 
 ## With half padding ("same" padding)
 

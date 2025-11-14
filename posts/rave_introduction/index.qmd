@@ -71,6 +71,20 @@ As explained in the RAVE paper, this amplitude spectrum-based distance does not 
 
     - $L_{total}(x,z) = L_{generator}(z) + E_{\widehat{x} \sim p(x|z)}\lbrack S(x,\widehat{x}) + L_{FM}(x,\widehat{x})\rbrack$
 
+## Notes about the phase
+
+The spectral distance does not directly force the model to reproduce the phase of the input audio signal. However, the model is encouraged to produce plausible phase in two ways:
+
+- The fact that the spectral distance is computed at multiple scales.
+
+  - The only way to reproduce the correct magnitude patterns across multiple STFT window sizes is to generate time-domain signals with realistic, coherent phase.
+
+- The adversarial loss.
+
+  - The discriminator doesn't directly evaluate the phase but it evaluates if the output signal is realistic.
+
+  - To fool the discriminator, the decoder must learn to produce phase-coherent signals because inconsistent or unnatural phase (e.g. "swishy", "metallic", "blurry" artifacts) would be easy to detect.
+
 # Model architecture
 
 ## Encoder
