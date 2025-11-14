@@ -2,6 +2,25 @@
 
 ## v0
 
+### v0.2
+
+#### v0.2.0
+
+### Added
+- [BLOG] Posts:
+    - Information theory
+    - Likelihood and maximum likelihood estimation
+    - Expectation and derivative
+    - Variational autoencoders
+    - Short introduction to the RAVE model
+    - Streamable neural audio aynthesis with non-causal convolutions
+
+### Changed
+- [SCRIPTS] Format links in google_doc_to_qmd.sh
+
+### Removed
+- [BLOG] Home and about pages
+
 ### v0.1
 
 #### v0.1.0
