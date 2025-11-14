@@ -200,7 +200,7 @@ The $Cumulated\ Delay$ at layer 2 is
 
 Below is a summary of all the steps explained above.
 
-![](media/drawing_10.png){fig-align="center" width="1000px"}
+![](media/drawing_10.svg){fig-align="center" width="1000px"}
 
 For convolution layers with $stride = 1$
 
@@ -400,7 +400,7 @@ The $Cumulated\ Delay$ at layer 2 is
 
 Below is a summary of all the steps explained above.
 
-![](media/drawing_17.png){fig-align="center" width="1000px"}
+![](media/drawing_17.svg){fig-align="center" width="1000px"}
 
 For convolution layers with $stride > 1$
 
@@ -426,7 +426,7 @@ For convolution layers with $stride > 1$
 
   - However, the stride between the receptive fields of the layers over their input stream seems not to be constant around the point of contact between two buffers (red rectangles).
 
-![](media/drawing_18.png){fig-align="center" width="1000px"}
+![](media/drawing_18.svg){fig-align="center" width="1000px"}
 
 - Despite this possible discontinuity, the [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064) paper reports no difference between the outputs of the studied RAVE model before and after the causal reconfiguration (figure 8 of the paper).
 
