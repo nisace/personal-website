@@ -177,9 +177,9 @@ The figure below shows in this configuration the time alignment between the inpu
 
 ![](media/drawing_5.png){fig-align="center" width="1000px"}
 
-![](media/drawing_6.png){width="350px"}
+![](media/drawing_6.png){fig-align="center" width="350px"}
 
-- The [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064) paper addresses this issue and the [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://docs.google.com/document/u/0/d/1QT2NOUo5dCNezgzxttuNtateXHGIQBJscV_ES-FmIQM/edit) post dives into it.
+- The [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064) paper addresses this issue and the [Streamable Neural Audio Synthesis With Non-Causal Convolutions](/posts/streamable-audio-synthesis/index.qmd) post dives into it.
 
 # Sources
 
