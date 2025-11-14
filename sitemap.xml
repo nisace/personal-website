@@ -2,26 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nisace.github.io/personal-website/posts/variational-autoencoders/index.html</loc>
-    <lastmod>2025-09-30T17:10:40.647Z</lastmod>
+    <lastmod>2025-11-14T11:12:20.444Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nisace.github.io/personal-website/posts/rave_introduction/index.html</loc>
+    <lastmod>2025-11-14T11:12:20.409Z</lastmod>
   </url>
   <url>
     <loc>https://nisace.github.io/personal-website/posts/information-theory/index.html</loc>
-    <lastmod>2025-09-28T15:13:48.475Z</lastmod>
+    <lastmod>2025-11-14T11:12:20.405Z</lastmod>
   </url>
   <url>
     <loc>https://nisace.github.io/personal-website/posts/derivatives-and-backpropagation/index.html</loc>
-    <lastmod>2025-09-04T21:49:39.423Z</lastmod>
+    <lastmod>2025-11-14T11:12:20.392Z</lastmod>
   </url>
   <url>
     <loc>https://nisace.github.io/personal-website/index.html</loc>
-    <lastmod>2025-09-28T17:35:32.059Z</lastmod>
+    <lastmod>2025-11-14T11:12:20.391Z</lastmod>
   </url>
   <url>
     <loc>https://nisace.github.io/personal-website/posts/expectation-and-derivative/index.html</loc>
-    <lastmod>2025-09-28T16:11:42.994Z</lastmod>
+    <lastmod>2025-11-14T11:12:20.404Z</lastmod>
   </url>
   <url>
     <loc>https://nisace.github.io/personal-website/posts/likelihood-loss/index.html</loc>
-    <lastmod>2025-09-30T17:09:04.814Z</lastmod>
+    <lastmod>2025-11-14T11:12:20.408Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nisace.github.io/personal-website/posts/streamable-audio-synthesis/index.html</loc>
+    <lastmod>2025-11-14T11:12:20.414Z</lastmod>
   </url>
 </urlset>
