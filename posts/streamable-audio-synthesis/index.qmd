@@ -1,5 +1,9 @@
 ---
-title: "[]{#_7awb6bchetj0 .anchor}Streamable Neural Audio Synthesis With Non-Causal Convolutions"
+title: "Streamable Neural Audio Synthesis With Non-Causal Convolutions"
+description: |
+  Post about how to perform streamable neural audio synthesis.
+date: "2025-11-14"
+categories: [Machine Learning, Neural Audio Synthesis]
 ---
 
 # Introduction
@@ -8,13 +12,13 @@ This post dives into how to perform streamable neural audio synthesis. It is bas
 
 - [RAVE: A variational autoencoder for fast and high-quality neural audio synthesis](https://arxiv.org/abs/2111.05011)
 
-  - This paper introduces the RAVE model which is a [variational autoencoder](https://docs.google.com/document/u/0/d/1bgsMYJV8xzBlf0J-lD0PKpuT3Ylt6hNZNji4Ydzc7t0/edit) trained in two stages:
+  - This paper introduces the RAVE model which is a [variational autoencoder](/posts/variational-autoencoders/index.qmd) trained in two stages:
 
     - First the regular variational autoencoder training,
 
     - Followed by an additional adversarial training stage for the decoder.
 
-  - See the [Short introduction to the RAVE model](https://docs.google.com/document/u/0/d/1BRMQoYHJuW6ZTJJnPlWF2dmsEQT6eTYJdEO72k7YPsI/edit) post for more details.
+  - See the [Short introduction to the RAVE model](/posts/rave_introduction/index.qmd) post for more details.
 
 - [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064)
 
@@ -32,7 +36,7 @@ The [Streamable Neural Audio Synthesis With Non-Causal Convolutions paper](https
 
 However, there are some challenges:
 
-- As explained in the [Encoder](https://docs.google.com/document/d/1BRMQoYHJuW6ZTJJnPlWF2dmsEQT6eTYJdEO72k7YPsI/edit?tab=t.0#heading=h.yu3pqxyylwak) section of the [Short introduction to the RAVE model](https://docs.google.com/document/u/0/d/1BRMQoYHJuW6ZTJJnPlWF2dmsEQT6eTYJdEO72k7YPsI/edit) post, the convolution layers usually use padding to maintain the time alignment between the inputs and outputs across layers.
+- As explained in the [Encoder](/posts/rave_introduction/index.qmd#encoder) section of the [Short introduction to the RAVE model](/posts/rave_introduction/index.qmd) post, the convolution layers usually use padding to maintain the time alignment between the inputs and outputs across layers.
 
 - This creates discontinuities between buffers.
 
@@ -44,9 +48,9 @@ However, there are some challenges:
 
     - Thus, it is much more sensitive to the discontinuities between buffers.
 
-![](media/drawing_1.png)
+![](media/drawing_1.png){fig-align="center" width="1000px"}
 
-![](media/drawing_2.png)
+![](media/drawing_2.png){fig-align="center" width="350px"}
 
 # Possible solutions
 
@@ -68,7 +72,7 @@ However, there are some challenges:
 
 - The idea is to put all the padding on the left side of the audio chunk (the side that corresponds to the values in the past).
 
-![](media/drawing_3.png)
+![](media/drawing_3.png){fig-align="center" width="1000px"}
 
 - Then, each audio chunk (except the first one) is padded with the end of the previous audio chunk (hence the name causal, because each chunk is padded with values from the past but is not padded with values from the future).
 
@@ -118,7 +122,7 @@ The figure below represents 2 convolution layers before the causal reconfigurati
 
   - $padding = (2,\ 2)$
 
-![](media/drawing_4.png)
+![](media/drawing_4.png){fig-align="center" width="1000px"}
 
 Let us see how the causal reconfiguration is applied to each layer.
 
@@ -128,7 +132,7 @@ Let us see how the causal reconfiguration is applied to each layer.
 
 The reconfiguration moves the right padding to the left of the graph and thus, introduces a delay $D_{1} = right\ pad = 1$ compared to the initial non causal graph.
 
-![](media/drawing_5.png)
+![](media/drawing_5.png){fig-align="center" width="1000px"}
 
 #### Inference
 
@@ -148,7 +152,7 @@ During inference, these 3 steps are applied:
 
 Each step corresponds to one line in the figure below, see [here](https://github.com/acids-ircam/cached_conv/blob/v2.3.6/cached_conv/convs.py#L119) for the original implementation.
 
-![](media/drawing_6.png)
+![](media/drawing_6.png){fig-align="center" width="1000px"}
 
 #### Cumulated delay
 
@@ -170,7 +174,7 @@ Which gives at layer 1
 
 The reconfiguration again moves the right padding to the left of the graph and thus, introduces a delay $D_{2} = right\ pad = 2$.
 
-![](media/drawing_7.png)
+![](media/drawing_7.png){fig-align="center" width="1000px"}
 
 #### Inference
 
@@ -180,7 +184,7 @@ For layer 2
 
 During inference, the same 3 steps as for layer 1 are applied.
 
-![](media/drawing_8.png)
+![](media/drawing_8.png){fig-align="center" width="1000px"}
 
 #### Cumulated delay
 
@@ -194,7 +198,7 @@ The $Cumulated\ Delay$ at layer 2 is
 
 Below is a summary of all the steps explained above.
 
-![](media/drawing_9.png)
+![](media/drawing_9.png){fig-align="center" width="1000px"}
 
 For convolution layers with $stride = 1$
 
@@ -222,7 +226,7 @@ The figure below represents 2 convolution layers before the causal reconfigurati
 
   - $padding = (2,\ 2)$
 
-![](media/drawing_10.png)
+![](media/drawing_10.png){fig-align="center" width="1000px"}
 
 Let us see how the causal reconfiguration is applied to each layer.
 
@@ -236,11 +240,11 @@ However, as can be seen below, this delay breaks the time alignment between the 
 
 This means that without additional reconfiguration, the time alignment between the layer input and output is not preserved.
 
-![](media/drawing_11.png)
+![](media/drawing_11.png){fig-align="center" width="1000px"}
 
 In order to align again the initial first value of the input tensor with the convolution stride, an additional $stride\ delay$ needs to be introduced
 
-![](media/drawing_12.png)
+![](media/drawing_12.png){fig-align="center" width="1000px"}
 
 This additional $stride\ delay$ is computed as follows
 
@@ -272,17 +276,15 @@ This additional $stride\ delay$ is computed as follows
 
       - And thus, $stride\ delay = (stride - A)\ \%\ stride = stride - A$
 
-  <!-- -->
-
   - Giving hence the expected behavior.
-
-<!-- -->
 
 - To summarize:
 
-> $stride\ delay = B\ \%\ stride$
->
-> $stride\ delay = (stride - A)\ \%\ stride$$stride\ delay = (stride - (Cumulated\ Delay\  + \ right\ pad)\ \%\ stride)\ \%\ stride$
+$stride\ delay = B\ \%\ stride$
+
+$stride\ delay = (stride - A)\ \%\ stride$
+
+$stride\ delay = (stride - (Cumulated\ Delay\  + \ right\ pad)\ \%\ stride)\ \%\ stride$
 
 - The implementation of this computation can be found [here](https://github.com/acids-ircam/cached_conv/blob/v2.3.6/cached_conv/convs.py#L112).
 
@@ -329,7 +331,7 @@ The 6 steps are:
 
 Each step corresponds to one line in the figure below, see [here](https://github.com/acids-ircam/cached_conv/blob/v2.3.6/cached_conv/convs.py#L119) for the original implementation.
 
-![](media/drawing_13.png)
+![](media/drawing_13.png){fig-align="center" width="1000px"}
 
 #### Cumulated delay
 
@@ -358,7 +360,7 @@ This gives at layer 1
 
 As for layer 1, in order to align again the initial first value of the input tensor with the convolution stride, an additional $stride\ delay$ needs to be introduced
 
-![](media/drawing_14.png)
+![](media/drawing_14.png){fig-align="center" width="1000px"}
 
 This additional $stride\ delay$ is computed as follows
 
@@ -379,7 +381,7 @@ For layer 2
 
 During inference, the same 6 steps as for layer 1 are applied.
 
-![](media/drawing_15.png)
+![](media/drawing_15.png){fig-align="center" width="1000px"}
 
 #### Cumulated delay
 
@@ -396,7 +398,7 @@ The $Cumulated\ Delay$ at layer 2 is
 
 Below is a summary of all the steps explained above.
 
-![](media/drawing_16.png)
+![](media/drawing_16.png){fig-align="center" width="1000px"}
 
 For convolution layers with $stride > 1$
 
@@ -422,7 +424,7 @@ For convolution layers with $stride > 1$
 
   - However, the stride between the receptive fields of the layers over their input stream seems not to be constant around the point of contact between two buffers (red rectangles).
 
-![](media/drawing_17.png)
+![](media/drawing_17.png){fig-align="center" width="1000px"}
 
 - Despite this possible discontinuity, the [Streamable Neural Audio Synthesis With Non-Causal Convolutions](https://arxiv.org/abs/2204.07064) paper reports no difference between the outputs of the studied RAVE model before and after the causal reconfiguration (figure 8 of the paper).
 
