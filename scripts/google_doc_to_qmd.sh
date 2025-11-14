@@ -96,4 +96,8 @@ fi
 mv "$TMP_QMD" "$OUT_QMD"
 rm -f "$TMP_IMAGES"
 
+# Post-process generated .qmd files: convert Quarto-style links
+# from [[text]{.underline}](url) -> [text](url)
+perl -0777 -pe 's/\[\[([^\]]+?)\]\{\.underline\}\]\(([^)]+?)\)/[\1](\2)/gs' -i "$OUT_QMD"
+
 echo "✅ Done! Output written to $OUT_QMD"
