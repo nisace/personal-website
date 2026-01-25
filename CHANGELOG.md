@@ -4,9 +4,15 @@
 
 ### v0.2
 
+#### v0.2.1
+
+##### Added
+- [BLOG] Posts:
+    - Vector quantization
+
 #### v0.2.0
 
-### Added
+##### Added
 - [BLOG] Posts:
     - Information theory
     - Likelihood and maximum likelihood estimation
@@ -15,17 +21,17 @@
     - Short introduction to the RAVE model
     - Streamable neural audio aynthesis with non-causal convolutions
 
-### Changed
+##### Changed
 - [SCRIPTS] Format links in google_doc_to_qmd.sh
 
-### Removed
+##### Removed
 - [BLOG] Home and about pages
 
 ### v0.1
 
 #### v0.1.0
 
-### Added
+##### Added
 - [QUARTO] Initial project structure with Quarto blog, about, and index pages.
     - CSS custom properties (variables) for color management in `styles.css`.
     - Ignore `CHANGELOG.md` and `data/` folder.
