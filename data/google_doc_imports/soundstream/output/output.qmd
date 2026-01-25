@@ -1,0 +1,139 @@
+---
+title: "[]{#_pg7b2bwo1ohu .anchor}SoundStream"
+---
+
+# Introduction
+
+The [SoundStream: An End-to-End Neural Audio Codec](https://arxiv.org/abs/2107.03312) paper proposes a Neural Audio Codec that
+
+- Compresses audio using a neural network,
+
+- Is an autoencoder with quantized latent vectors,
+
+- Is trained with a perceptual loss (spectral distance).
+
+# Architecture
+
+![](data/google_doc_imports/soundstream/output/media/media/image1.png){width="5.734375546806649in" height="2.955194663167104in"}
+
+Architecture overview from the paper
+
+- Single channel input $x\  \in R^{T}$
+
+- Encoder
+
+  - Maps $x$ to a sequence of $S$ embeddings $e$.
+
+- Residual vector quantizer
+
+  - Replaces each embedding by its RQV quantization $RQV(e)$
+
+    - Sum of the codebook vectors.
+
+    - See [Residual Vector Quantization](https://docs.google.com/document/d/1K0ekOqiEsINropgQnt-_4EVDJ957PbxqfF-tzM3oHHk/edit?tab=t.0#heading=h.kfvnxqktbpbj).
+
+- Decoder
+
+  - Produces a lossy reconstruction of $x$ from the sequence of $S$ quantized embeddings $RQV(e)$.
+
+- Discriminator
+
+- The encoder, residual vector quantizer, decoder and discriminator are trained end-to-end
+
+  - Discriminator loss
+
+  - Generator loss
+
+  - Perceptual reconstruction loss (spectral distance)
+
+  - Feature matching loss
+
+    - Features of the original and reconstructed signal in the discriminator layers.
+
+## Encoder
+
+- Causal 1D convolutions.
+
+- Down sampling via strided convolutions.
+
+## Residual Vector Quantizer
+
+### Training
+
+#### Number $n_{q}$ of RQV levels
+
+- RQV allows to reach the same bitrate as plain QV but with fewer codebook vectors.
+
+  - See [Residual Vector Quantization](https://docs.google.com/document/d/1K0ekOqiEsINropgQnt-_4EVDJ957PbxqfF-tzM3oHHk/edit?tab=t.0#heading=h.kfvnxqktbpbj).
+
+  - For a given number $N$ of codebook vectors in each RQV level,
+
+    - The number $n_{q}$ of RQV levels controls the bitrate.
+
+- During training, the number $n_{q}$ of RVQ levels is sampled uniformly in $\lbrack 1;\ N_{q}\rbrack$ for each input sample.
+
+  - The model learns to be robust to different bitrates.
+
+    - i.e. the decoder learns to handle different quantities of information (in bits) per input vector $RQV(e)$.
+
+- The dimensionality of the embeddings does not change with the bitrate.
+
+  - The outputs of each RVQ level progressively reﬁnes the quantized embeddings $RQV(e)$ while keeping the same shape.
+
+  - No architectural changes are needed in neither the encoder nor the decoder to accommodate different bitrates.
+
+#### Codebook vectors
+
+- The codebook vectors are learned.
+
+- They are initialized with the centroids from a k-means algorithm run on the ﬁrst training batch.
+
+- When a codebook vector has not been assigned any embedding for several batches, it is replaced by an embedding randomly sampled within the current batch.
+
+### Inference
+
+- Compresses the representation to a target bitrate expressed in bits/second (bps).
+
+  - The number $n_{q}$ of RQV levels is set according to the target bitrate.
+
+<!-- -->
+
+- The indices of the selected codebook vectors are only used during inference.
+
+  - They are produced by the encoder,
+
+  - and transmitted to the decoder.
+
+  - The embeddings $RQV(e)$ are reconstructed from the indices and the codebook,
+
+  - and taken as inputs by the decoder.
+
+## Decoder
+
+- Mirrors the encoder architecture.
+
+- Output signal with the same resolution as the input signal.
+
+## Discriminator
+
+- The discriminator is composed of two discriminators
+
+  - Wave-based discriminator.
+
+    - 3 identical 1D convolution discriminators taking as inputs the reconstructed audio signal at 3 resolution scales:
+
+      - Original resolution.
+
+      - 2-times downsampled.
+
+      - 4-times downsampled.
+
+  - STFT-based discriminator ([Short-Term Fourier Transform](?tab=t.je0zv49yt9sx#heading=h.12ox1bw2ten2)).
+
+## Metrics
+
+- [ViSQOL metric](?tab=t.9p08qdk1tgbd#heading=h.t5ub53g3ecm1)
+
+## Ablation studies
+
+- The output quality is more affected by the size of the decoder than by the size of the encoder.
