@@ -9,6 +9,7 @@
 ##### Added
 - [BLOG] Posts:
     - Vector quantization
+    - SoundStream
 
 #### v0.2.0
 
