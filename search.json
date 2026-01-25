@@ -1,5 +1,425 @@
 [
   {
+    "objectID": "posts/vector-quantization/index.html",
+    "href": "posts/vector-quantization/index.html",
+    "title": "Vector Quantization (VQ)",
+    "section": "",
+    "text": "This blog post is about Vector Quantization (VQ).\nThe main idea is to:\n\nEncode a vector by mapping it to a codebook vector.\nBoth the input vector and the codebook vector are continuous (real valued).\nThe quantization comes from the discrete choice of the codebook vector from the codebook."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#information-content",
+    "href": "posts/vector-quantization/index.html#information-content",
+    "title": "Vector Quantization (VQ)",
+    "section": "Information content",
+    "text": "Information content\n\nFor \\(N\\) codebook vectors, if we consider all the codebook vectors equally probable,\n\nThe probability of choosing any vector is \\(\\frac{1}{N}\\),\nand the information content is \\(- \\log_{x}(\\frac{1}{N}) = \\log_{x}(N)\\).\nThe unit of the information content depends on the choice of the base of the \\(\\log\\).\nFor base 2\n\nThe unit is in bits.\nThe information content is \\({b = log}_{2}N\\) bits.\n\n\nThus, to convey \\(b\\) bits, the number of codebook vectors \\(N\\) is such that\n\n\\(\\log_{2}N = b\\)\n\\({N = 2}^{b}\\) codebook vectors."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#visual-representation",
+    "href": "posts/vector-quantization/index.html#visual-representation",
+    "title": "Vector Quantization (VQ)",
+    "section": "Visual representation",
+    "text": "Visual representation\n\n\n\n\n\n\n\\(N = 16\\) codebook vectors (blue dots).\nInformation content: \\(\\log_{2}(16) = 4\\) bits."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#information-content-1",
+    "href": "posts/vector-quantization/index.html#information-content-1",
+    "title": "Vector Quantization (VQ)",
+    "section": "Information content",
+    "text": "Information content\n\nShare the \\(b\\) bits between the \\(m\\) mappings.\nEach mapping convey \\(\\frac{b}{m}\\) bits.\n\nHence, \\(2^{\\frac{b}{m}}\\) codebook vectors are required for each mapping.\n\nThe total number of codebook vectors is \\({m\\ 2}^{\\frac{b}{m}}\\).\nWhich is much smaller than \\(2^{b}\\)."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#visual-representation-1",
+    "href": "posts/vector-quantization/index.html#visual-representation-1",
+    "title": "Vector Quantization (VQ)",
+    "section": "Visual representation",
+    "text": "Visual representation\n\n\n\n\n\n\n\\(N_{1} + N_{2} = 4 + 4 = 8\\) codebook vectors (red and orange dots).\nInformation content: \\(\\log_{2}(4) + \\log_{2}(4) = 2 + 2 = 4\\) bits."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#main-idea-1",
+    "href": "posts/vector-quantization/index.html#main-idea-1",
+    "title": "Vector Quantization (VQ)",
+    "section": "Main idea",
+    "text": "Main idea\n\nRQV reduces the complexity of the quantization problem.\nRQV reduces the number of required codebooks.\nRVQ does not reduce the number of transmitted bits."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#visual-representation-2",
+    "href": "posts/vector-quantization/index.html#visual-representation-2",
+    "title": "Vector Quantization (VQ)",
+    "section": "Visual representation",
+    "text": "Visual representation\n\nIn plain VQ, the entire space is mapped with as many codebook vectors as possible,\n\ni.e. \\(2^{b}\\) codebook vectors for \\(b\\) bits.\n\nBut \\(2^{b}\\) grows very fast with \\(b\\).\nIn RVQ\n\nMap the entire space with a few codebook vectors first (red dots).\nAssign the continuous vector to one of these coarse codebook vectors (dotted arrows).\nCompute the error vector or residual vector (dashed arrows).\nRegardless of which coarse vector was selected, this residual vector lives in a smaller space (the space between the coarse vectors).\nMap this smaller space with a few additional codebook vectors (orange dots).\nAssign the residual vector to one of these codebook vectors.\nCompute a new residual vector.\nAnd so on.\nThe final quantized vector in the sum of the codebooks vectors.\n\nCoarse codebook vector\n+ residual codebook vector (relative to the coarse codebook vector)\n+ residual codebook vector (relative to the previous residual codebook vector)\n+ ..."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#information-content-2",
+    "href": "posts/vector-quantization/index.html#information-content-2",
+    "title": "Vector Quantization (VQ)",
+    "section": "Information content",
+    "text": "Information content\n\nFor a budget of \\(b\\) bits,\nQV spends the budget in one mapping with \\(N = 2^{b}\\) codebook vectors.\n\n\\(N\\) vectors represent \\(\\log_{2}(N)\\) bits.\n\\(\\log_{2}(N) = \\log_{2}(2^{b}) = b\\) bits.\n\nRQV spends the budget with \\(m\\) mappings.\n\nEach mapping \\(i\\) represents \\(\\log_{2}(N_{i})\\) bits.\nThus, \\(\\sum_{i = 1}^{m}\\ \\log_{2}(N_{i}) = b\\).\n\n\\(b = \\log_{2}(N) = \\sum_{i = 1}^{m}\\ \\log_{2}(N_{i})\\)\n\nThus, \\(N = \\prod_{i = 1}^{m}N_{i}\\)\nWhich is much smaller than \\(\\sum_{i = 1}^{m}N_{i}\\).\nThus, RQV uses far fewer codebook vectors (\\(\\sum_{i = 1}^{m}N_{i}\\)) than QV (\\(N = \\prod_{i = 1}^{m}N_{i}\\))."
+  },
+  {
+    "objectID": "posts/vector-quantization/index.html#number-of-codebook-vectors",
+    "href": "posts/vector-quantization/index.html#number-of-codebook-vectors",
+    "title": "Vector Quantization (VQ)",
+    "section": "Number of codebook vectors",
+    "text": "Number of codebook vectors\n\nPlain VQ\n\n\\(2^{b}\\)\n\nRQV\n\n\\({m\\ 2}^{\\frac{b}{m}} \\ll 2^{b}\\)"
+  },
+  {
+    "objectID": "posts/streamable-audio-synthesis/index.html",
+    "href": "posts/streamable-audio-synthesis/index.html",
+    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
+    "section": "",
+    "text": "This post dives into how to perform streamable neural audio synthesis. It is based on the following two papers:\n\nRAVE: A variational autoencoder for fast and high-quality neural audio synthesis\n\nThis paper introduces the RAVE model which is a variational autoencoder trained in two stages:\n\nFirst the regular variational autoencoder training,\nFollowed by an additional adversarial training stage for the decoder.\n\nSee the Short introduction to the RAVE model post for more details.\n\nStreamable Neural Audio Synthesis With Non-Causal Convolutions\n\nThis paper introduces a post-training reconfiguration of convolutional networks that allows to turn them into streamable models (for example the RAVE model as it is introduced in the RAVE paper, is not directly streamable and thus, requires this type of post-training reconfiguration).\n\n\nThe Streamable Neural Audio Synthesis With Non-Causal Convolutions paper is about how to process a stream of audio data. Usually:\n\nThe input data comes as a sequence of audio chunks called buffers.\nEach buffer is processed sequentially.\nThe outputs are concatenated to produce the output audio stream."
+  },
+  {
+    "objectID": "posts/streamable-audio-synthesis/index.html#overlap-add",
+    "href": "posts/streamable-audio-synthesis/index.html#overlap-add",
+    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
+    "section": "Overlap-add",
+    "text": "Overlap-add\n\nProcess overlapping buffers and blend them to smooth boundaries.\nThis solution is compatible with any generative model.\nHowever, it requires redundant computations and leads to degraded quality during transition phases.\nIt also requires to cache buffers that are large enough to fill the receptive field of the model.\nAll of this results in high latency."
+  },
+  {
+    "objectID": "posts/streamable-audio-synthesis/index.html#causal-convolutions",
+    "href": "posts/streamable-audio-synthesis/index.html#causal-convolutions",
+    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
+    "section": "Causal convolutions",
+    "text": "Causal convolutions\n\nUse causal convolutional neural networks with cached padding as in the Streaming keyword spotting on mobile devices paper.\nThe idea is to put all the padding on the left side of the audio chunk (the side that corresponds to the values in the past).\n\n\n\n\n\n\n\nThen, each audio chunk (except the first one) is padded with the end of the previous audio chunk (hence the name causal, because each chunk is padded with values from the past but is not padded with values from the future).\nThis solution preserves continuity between chunks.\nHowever, it restricts the model architectures to causal convolutions which makes learning more complex because the model is not given access to the values in the future during training even though they are available (because training is not done in a streaming way)."
+  },
+  {
+    "objectID": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1",
+    "href": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1",
+    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
+    "section": "Convolution layers with \\(stride = 1\\)",
+    "text": "Convolution layers with \\(stride = 1\\)\nThe figure below represents 2 convolution layers before the causal reconfiguration\n\nLayer 1\n\n\\(stride = 1\\)\n\\(kernel\\ size = 3\\)\n\\(padding = (1,\\ 1)\\)\n\nLayer 2\n\n\\(stride = 1\\)\n\\(kernel\\ size = 3\\)\n\\(padding = (2,\\ 2)\\)\n\n\n\n\n\n\n\nLet us see how the causal reconfiguration is applied to each layer.\n\nLayer 1\n\nReconfiguration\nThe reconfiguration moves the right padding to the left of the graph and thus, introduces a delay \\(D_{1} = right\\ pad = 1\\) compared to the initial non causal graph.\n\n\n\n\n\n\n\nInference\nWe note \\(total\\ pad = left\\ pad + right\\ pad\\) the total amount of padding.\nFor layer 1\n\n\\(total\\ pad = 2\\).\n\nDuring inference, these 3 steps are applied:\n\nThe \\(total\\ pad\\) left pad values are filled with the last \\(total\\ pad\\) values of the previous buffer.\nThe last \\(total\\ pad\\) values of the current buffer are stored in the cache.\nAnd the convolution is applied.\n\nEach step corresponds to one line in the figure below, see here for the original implementation.\n\n\n\n\n\n\n\nCumulated delay\nHence, for convolution layers with \\(stride = 1\\)\n\n\\(D_{l} = right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = \\ {Cumulated\\ Delay}_{l - 1} + D_{l}\\)\n\nWhich gives at layer 1\n\n\\(D_{1} = right\\ pad = 1\\)\n\\({Cumulated\\ Delay}_{1} = \\ {Cumulated\\ Delay}_{0} + D_{1} = 0 + 1 = 1\\)\n\n\n\n\nLayer 2\n\nReconfiguration\nThe reconfiguration again moves the right padding to the left of the graph and thus, introduces a delay \\(D_{2} = right\\ pad = 2\\).\n\n\n\n\n\n\n\nInference\nFor layer 2\n\n\\(total\\ pad = 4\\)\n\nDuring inference, the same 3 steps as for layer 1 are applied.\n\n\n\n\n\n\n\nCumulated delay\nThe \\(Cumulated\\ Delay\\) at layer 2 is\n\n\\(D_{2} = right\\ pad = 2\\)\n\\({Cumulated\\ Delay}_{2} = \\ {Cumulated\\ Delay}_{1} + D_{2} = 1 + 2 = 3\\)\n\n\n\n\nSummary\nBelow is a summary of all the steps explained above.\n\n\n\n\n\nFor convolution layers with \\(stride = 1\\)\n\n\\(D_{l} = right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = \\ {Cumulated\\ Delay}_{l - 1} + D_{l}\\)"
+  },
+  {
+    "objectID": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1-1",
+    "href": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1-1",
+    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
+    "section": "Convolution layers with \\(stride > 1\\)",
+    "text": "Convolution layers with \\(stride &gt; 1\\)\nThe figure below represents 2 convolution layers before the causal reconfiguration\n\nLayer 1\n\n\\(stride = 2\\)\n\\(kernel\\ size = 3\\)\n\\(padding = (1,\\ 1)\\)\n\nLayer 2\n\n\\(stride = 2\\)\n\\(kernel\\ size = 5\\)\n\\(padding = (2,\\ 2)\\)\n\n\n\n\n\n\n\nLet us see how the causal reconfiguration is applied to each layer.\n\nLayer 1\n\nReconfiguration\nThe reconfiguration moves the right padding to the left of the graph and thus, introduces a delay \\(right\\ pad = 1\\) compared to the initial non causal graph.\nHowever, as can be seen below, this delay breaks the time alignment between the layer input and the convolution stride.\nThis means that without additional reconfiguration, the time alignment between the layer input and output is not preserved.\n\n\n\n\n\nIn order to align again the initial first value of the input tensor with the convolution stride, an additional \\(stride\\ delay\\) needs to be introduced\n\n\n\n\n\nThis additional \\(stride\\ delay\\) is computed as follows\n\nLet us first consider the quantity \\(A\\).\n\n\\(A = (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride\\)\nAt layer 1, \\({Cumulated\\ Delay}_{0} = 0\\). Hence, it is not visible in the figure above. Please refer to layer 2 reconfiguration to see how \\(Cumulated\\ Delay\\) appears in the calculation.\n\n\\(stride\\ delay\\) could be defined as equal to \\(B = stride - A\\) but the case when \\(A = 0\\) should be handled properly.\n\nIndeed, when \\(A = 0\\), the first value of the input tensor is aligned with the convolution stride.\nThus, \\(stride\\ delay\\) should be \\(0\\).\nThis can be achieved by defining \\(stride\\ delay\\) as \\(stride\\ delay = B\\ \\%\\ stride\\).\nThis means, \\(stride\\ delay = B\\ \\%\\ stride = (stride - A)\\ \\%\\ stride\\) and\n\nIf \\(A = 0\\)\n\n\\(stride\\ delay = (stride - 0)\\ \\%\\ stride = 0\\)\n\nElse\n\nBecause \\(A = (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride\\)),\nWe have \\(0 &lt; A &lt; stride\\),\nAnd thus, \\(stride\\ delay = (stride - A)\\ \\%\\ stride = stride - A\\)\n\n\nGiving hence the expected behavior.\n\nTo summarize:\n\n\\(stride\\ delay = B\\ \\%\\ stride\\)\n\\(stride\\ delay = (stride - A)\\ \\%\\ stride\\)\n\\(stride\\ delay = (stride - (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\nThe implementation of this computation can be found here.\n\nFor layer 1\n\n\\(stride\\ delay\\)\n\\(= (stride - (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\\(= (2 - (0 + \\ 1)\\ \\%\\ 2)\\ \\%\\ 2\\)\n\\(= 1\\)\n\n\n\nInference\nFor layer 1\n\n\\(stride\\ delay = 1\\)\n\n\n\n\\(total\\ pad = 2\\)\n\nDuring inference, 3 additional steps are applied in addition to the 3 steps explained above when \\(stride = 1\\).\nThe first 3 steps handle the \\(stride\\ delay\\) introduced to preserve the stride alignment while the 3 other steps handle the causal reconfiguration of the right padding as seen before.\nThe 6 steps are:\n\nThe first \\(stride\\ delay\\) values are filled with the last \\(stride\\ delay\\) values of the previous buffer.\nThe last \\(stride\\ delay\\) values of the current buffer are stored in the cache.\nThe resulting tensor is cropped (the last \\(stride\\ delay\\) values are dropped).\n\nThis is done to preserve the time dimensionality of the input tensor.\nThe dropped values are not lost because they will be processed by the next buffer.\nHowever, a slight discontinuity seems to occur. See Notes on the continuity between buffers for more details.\n\nThe \\(total\\ pad\\) left pad values are filled with the last \\(total\\ pad\\) values of the previous buffer.\nThe last \\(total\\ pad\\) values of the current buffer are stored in the cache.\nAnd the convolution is applied.\n\nEach step corresponds to one line in the figure below, see here for the original implementation.\n\n\n\n\n\n\n\nCumulated delay\nFor convolution layers with \\(stride &gt; 1\\)\n\n\\(D_{l} = stride\\ delay + right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = ({Cumulated\\ Delay}_{l - 1} + D_{l})\\ //\\ stride\\)\nThe \\(//\\ stride\\) division allows to express the delay in the unit of the output space.\n\nIndeed, \\(1\\ output\\ sample = stride\\ input\\ samples\\)\n\n\nThis gives at layer 1\n\n\\(D_{1} = stride\\ delay + right\\ pad = 1 + 2 = 3\\)\n\\({Cumulated\\ Delay}_{1}\\)\n\\(= ({Cumulated\\ Delay}_{0} + D_{1})\\ //\\ stride\\)\n\\(= (0 + 1 + 1)\\ //\\ 2\\)\n\\(= 1\\)\n\n\n\n\nLayer 2\n\nReconfiguration\nAs for layer 1, in order to align again the initial first value of the input tensor with the convolution stride, an additional \\(stride\\ delay\\) needs to be introduced\n\n\n\n\n\nThis additional \\(stride\\ delay\\) is computed as follows\n\n\\(stride\\ delay\\)\n\\(= (stride - (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\\(= (2 - (1 + \\ 2)\\ \\%\\ 2)\\ \\%\\ 2\\)\n\\(= 1\\)\n\n\n\nInference\nFor layer 2\n\n\\(stride\\ delay = 1\\)\n\n\n\n\\(total\\ pad = 4\\)\n\nDuring inference, the same 6 steps as for layer 1 are applied.\n\n\n\n\n\n\n\nCumulated delay\nThe \\(Cumulated\\ Delay\\) at layer 2 is\n\n\\(D_{2} = stride\\ delay + right\\ pad = 1 + 2 = 3\\)\n\\({Cumulated\\ Delay}_{2}\\)\n\\(= ({Cumulated\\ Delay}_{1} + D_{2})\\ //\\ stride\\)\n\\(= (1 + 3)\\ //\\ 2\\)\n\\(= 2\\)\n\n\n\n\nSummary\nBelow is a summary of all the steps explained above.\n\n\n\n\n\nFor convolution layers with \\(stride &gt; 1\\)\n\n\\(stride\\ delay = (stride - ({Cumulated\\ Delay}_{l - 1} + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\n\n\n\\(D_{l} = stride\\ delay + right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = ({Cumulated\\ Delay}_{l - 1} + D_{l})\\ //\\ stride\\)\n\n\n\nNotes on the continuity between buffers\n\nThe explanations given in this Convolution layers with stride&gt;1 section correspond to the Streamable Neural Audio Synthesis With Non-Causal Convolutions paper and its official implementation RAVE v1.\nThe proposed solution allows to make the convolutions causal while maintaining the stride alignment.\nHowever, a slight discontinuity in the processing of the input audio stream seems to remain.\nThe figure below shows how 2 contiguous buffers are processed.\n\nAs can be seen, the stride alignment is correct (green rectangles).\nHowever, the stride between the receptive fields of the layers over their input stream seems not to be constant around the point of contact between two buffers (red rectangles).\n\n\n\n\n\n\n\n\nDespite this possible discontinuity, the Streamable Neural Audio Synthesis With Non-Causal Convolutions paper reports no difference between the outputs of the studied RAVE model before and after the causal reconfiguration (figure 8 of the paper).\nThis suggests that either the discontinuity has a negligible effect on the output quality or that I have missed something and there is no such discontinuity."
+  },
+  {
+    "objectID": "posts/streamable-audio-synthesis/index.html#convolution-layers-summary",
+    "href": "posts/streamable-audio-synthesis/index.html#convolution-layers-summary",
+    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
+    "section": "Convolution layers summary",
+    "text": "Convolution layers summary\nFor convolution layers with \\(stride &gt; 1\\)\n\n\\(stride\\ delay = (stride - ({Cumulated\\ Delay}_{l - 1} + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\n\n\n\\(D_{l} = stride\\ delay + right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = ({Cumulated\\ Delay}_{l - 1} + D_{l})\\ //\\ stride\\)\n\nWhich, simplifies for \\(stride = 1\\) to\n\n\\(stride\\ delay = 0\\) (because \\(x\\ \\%\\ 1 = 0\\))\n\\(D_{l} = right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = {Cumulated\\ Delay}_{l - 1} + D_{l}\\)"
+  },
+  {
+    "objectID": "posts/streamable-audio-synthesis/index.html#parallel-branches",
+    "href": "posts/streamable-audio-synthesis/index.html#parallel-branches",
+    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
+    "section": "Parallel branches",
+    "text": "Parallel branches\nSimilarly the convolution layers, parallel branches in the computational graph need to be handled after the causal reconfiguration.\nIndeed, each branch introduces its own delay, depending on the layers that compose it.\nBefore merging parallel branches, for example in the element-wise sum layer in a residual connection, all the parallel branches need to be aligned to compensate for their different individual delays.\nThis is simply done by aligning all the parallel branches to the maximum delay. Hence, an additional \\({Alignment\\ Delay}_{i}\\) is added to each branch \\(i\\):\n\\({Alignment\\ Delay}_{i} = Maximum\\ Cumulated\\ Delay\\  - {Cumulated\\ Delay}_{i}\\)\nwhere \\(Maximum\\ Cumulated\\ Delay\\) is the cumulated delay of the branch with the largest cumulated delay."
+  },
+  {
+    "objectID": "posts/likelihood-loss/index.html",
+    "href": "posts/likelihood-loss/index.html",
+    "title": "Maximum Likelihood Estimation and loss functions",
+    "section": "",
+    "text": "In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we will show that in a supervised learning setting, maximizing the likelihood (MLE) of the observed data \\(p(x,\\ y\\ |\\ \\theta)\\) is equivalent to:"
+  },
+  {
+    "objectID": "posts/likelihood-loss/index.html#general-setting",
+    "href": "posts/likelihood-loss/index.html#general-setting",
+    "title": "Maximum Likelihood Estimation and loss functions",
+    "section": "General setting",
+    "text": "General setting\nThe Maximum Likelihood Estimation (MLE) seeks to find the parameters \\(\\theta\\) of a probabilistic model that maximize the likelihood \\(L\\) of the observed data \\(x\\). If we consider that \\(x\\) is composed of \\(n\\) independent and identically distributed samples \\(x_{i}\\), \\(L\\) can be expressed as:\n\\(L(\\theta) = \\prod_{i = 1}^{n}p(x_{i}\\ |\\ \\theta)\\)\nBy convenience and for numerical stability reasons, the \\(\\log\\) of \\(L(\\theta)\\) is often maximized instead of \\(L(\\theta)\\) directly.\n\\(log(L(\\theta)) = \\sum_{i = 1}^{n}log\\ p(x_{i}\\ |\\ \\theta)\\)"
+  },
+  {
+    "objectID": "posts/likelihood-loss/index.html#supervised-learning-setting",
+    "href": "posts/likelihood-loss/index.html#supervised-learning-setting",
+    "title": "Maximum Likelihood Estimation and loss functions",
+    "section": "Supervised learning setting",
+    "text": "Supervised learning setting\nIn a supervised learning setting:\n\nThe samples are pairs \\((x_{i},y_{i})\\) of observed sample \\(x_{i}\\) and label \\(y_{i}\\).\n\nThus, the likelihood is expressed as:\n\\(L(\\theta) = \\prod_{i = 1}^{n}p(x_{i},\\ y_{i}\\ |\\ \\theta)\\)\nwhich can be rearranged as\n\\(L(\\theta) = \\prod_{i = 1}^{n}p(y_{i}\\ |\\ x_{i},\\ \\theta)\\ p(x_{i}\\ |\\ \\theta)\\)\n\nMoreover, in a supervised learning setting, the model does not try to model the data \\(x_{i}\\) but only the label \\(y_{i}\\) based on \\(x_{i}\\).\n\nThus, \\(p(x_{i})\\) does not depend on \\(\\theta\\) and maximizing \\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\ p(x_{i}\\ |\\ \\theta)\\) with respect to \\(\\theta\\) is equivalent to maximizing \\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\).\n\\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}p(y_{i}\\ |\\ x_{i},\\ \\theta)\\)\nIn other terms, in a supervised learning setting, maximizing the likelihood \\(p(x,\\ y\\ |\\ \\theta)\\) is equivalent to maximizing \\(p(y\\ |\\ x,\\ \\theta)\\)."
+  },
+  {
+    "objectID": "posts/likelihood-loss/index.html#classification-setting",
+    "href": "posts/likelihood-loss/index.html#classification-setting",
+    "title": "Maximum Likelihood Estimation and loss functions",
+    "section": "Classification setting",
+    "text": "Classification setting\nIn a classification setting with \\(C\\) classes:\n\nThe label \\(c_{i}\\) is the class index for sample \\(i\\).\n\nWe note \\(y_{i}\\) the corresponding one-hot vector of size \\(C\\) with elements\n\n\\(y_{i,k} = 1\\) for \\(k = c_{i}\\)\n\\(y_{i,k} = 0\\) for \\(k \\neq c_{i}\\)\n\n\nThe model outputs the estimated probabilities of each class in a vector \\(\\widehat{y_{i}} = f(x_{i})\\) of size \\(C\\), i.e.\n\n\\(p(c_{i}\\ |\\ x_{i},\\ \\theta)\\  \\triangleq \\ \\widehat{y_{i,c_{i}}}\\)\nWhich can also be written as\n\\(p(c_{i}\\ |\\ x_{i},\\ \\theta)\\  = \\prod_{k = 1}^{C}\\ {\\widehat{y_{i,k}}}^{{\\ y}_{i,k}}\\)\n\nThus, \\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}\\prod_{k = 1}^{C}\\ {\\widehat{y_{i,k}}}^{{\\ y}_{i,k}}\\)\nTaking the \\(\\log\\) of the expression above gives\n\\(\\sum_{i = 1}^{n}\\sum_{k = 1}^{C}y_{i,k}\\ log\\ \\widehat{y_{i,k}}\\)\nFinally, maximizing the expression above is equivalent to minimizing its negative, i.e\n\\(- \\sum_{i = 1}^{n}\\sum_{k = 1}^{C}y_{i,k}\\ log\\ \\widehat{y_{i,k}}\\)\nWe can recognize above the expression of the cross entropy loss.\n\nUsing the fact that \\(y_{i,k} = 1\\) if \\(k = c_{i}\\) and \\(y_{i,k} = O\\) for \\(k \\neq c_{i}\\), the expression can be simplified to\n\\(- \\sum_{i = 1}^{n}log\\ \\widehat{y_{i,c_{i}}}\\)\n\nThus, in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss.\nTo understand why the formula \\(- \\sum_{i = 1}^{n}\\sum_{k = 1}^{C}y_{i,k}\\ log\\ \\widehat{y_{i,k}}\\) is called the cross entropy loss, refer to the dedicated section in the Information Theory blog post."
+  },
+  {
+    "objectID": "posts/likelihood-loss/index.html#regression-setting",
+    "href": "posts/likelihood-loss/index.html#regression-setting",
+    "title": "Maximum Likelihood Estimation and loss functions",
+    "section": "Regression setting",
+    "text": "Regression setting\nIn a regression setting\n\nThe label is \\(y_{i}\\) for sample \\(i\\).\nThe model outputs a prediction \\(\\widehat{y_{i}} = f(x_{i})\\).\n\nIf we assume that the error follows a normal distribution, we have\n\\(y_{i} \\sim N(\\widehat{y_{i}},\\sigma^{2})\\)\nand\n\\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\  = \\frac{1}{}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\n\nThus, \\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}\\frac{1}{}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\nAnd maximizing the expression above is equivalent to minimizing \\({(y_{i} - \\widehat{y_{i}})}^{2}\\)\nTaking the \\(\\log\\) of the expression above gives\n\\(\\sum_{i = 1}^{n}\\log\\frac{1}{} - \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}\\)\nFinally, because only \\(\\widehat{y_{i}}\\) depends on \\(\\theta\\), maximizing the expression above is equivalent to minimizing\n\\(\\sum_{i = 1}^{n}{(y_{i} - \\widehat{y_{i}})}^{2}\\)\nWe can recognize above the expression of the mean squared error (MSE).\nThus, in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html",
+    "href": "posts/expectation-and-derivative/index.html",
+    "title": "Expectation and derivative",
+    "section": "",
+    "text": "In this document, we explore how to compute the gradient of an expectation or in other terms, the gradient of a stochastic process.\nIn the most general form, let’s define:\n\n\\(x\\) in a random variable\nwhich follows a distribution \\(p_{\\theta}(x)\\) parametrized by \\(\\theta\\)\n\\(f_{\\theta}\\) is a function of \\(x\\) and is also parametrized by \\(\\theta\\)\n\nThe question is then how to compute\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
+    "href": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
+    "title": "Expectation and derivative",
+    "section": "Fixed distribution proof",
+    "text": "Fixed distribution proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\n\n\\(= \\int_{}^{}p(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n(because \\(p(x)\\) does not depend on \\(\\theta\\))\n\n\n\\(= E_{p(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#introduction-1",
+    "href": "posts/expectation-and-derivative/index.html#introduction-1",
+    "title": "Expectation and derivative",
+    "section": "Introduction",
+    "text": "Introduction\nIn the general setting where the probability distribution depends on the parameters \\(\\theta\\) of the gradient, the general form is\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\nsee Distribution dependent on \\(\\theta\\) proof below.\n\nNotice that if the distribution is fixed, i.e. \\(p_{\\theta}\\) does not depend on \\(\\theta\\) (\\(p_{\\theta} = p\\)), the first term disappears and we find back the formula from the previous Fixed distribution section.\nThe general form above can also be estimated with Monte Carlo.\n\nDistribution dependent on \\(\\theta\\) proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p_{\\theta}(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n\\(= \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\n(see Log derivative trick)\n\n\n\\(= E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\nLog derivative trick\n\nThe log derivative trick above is the fact that \\(\\nabla_{\\theta}\\ p_{\\theta}(x) = p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\).\nThis comes from the application of the chain rule to the \\(\\log\\) function:\n\n\\(\\nabla_{x}\\ log(f(x))\\)\n\n\\(= \\nabla_{f}\\ log(f)\\ \\nabla_{x}\\ f(x)\\)\n\\(= \\frac{1}{f(x)}\\ \\nabla_{x}\\ f(x)\\)\nThus, \\(\\nabla_{x}\\ f(x) = f(x){\\ \\nabla}_{x}\\ log(f(x))\\)\n\nFor the following, let us simplify our problem by making the function \\(f_{\\theta}\\) independent on \\(\\theta\\) (i.e. \\(f_{\\theta} = f\\)). This independence is verified in common use cases such as variational autoencoders or reinforcement learning.\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\nThe term above (or the first term in the general form if we keep \\(f_{\\theta}\\) dependent on \\(\\theta\\)) can be estimated with Monte Carlo but it has high variance (see Score function estimator vs Reparameterization trick).\nThis leaves us with two choices in order to compute the gradient of an expectation when the probability distribution depends on the parameters \\(\\theta\\) of the gradient:\n\nUse this Monte Carlo estimator anyway. This is known as the Score function estimator.\nUse another technique. One of them is called the Reparameterization trick.\n\nWe explore both techniques in the Score function estimator and Reparameterization trick sections below."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator",
+    "href": "posts/expectation-and-derivative/index.html#score-function-estimator",
+    "title": "Expectation and derivative",
+    "section": "Score function estimator",
+    "text": "Score function estimator\nIn this technique, the Monte Carlo estimator from the previous section is used directly.\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\nwith \\(x \\sim p_{\\theta}(x)\\)\n\nThis estimator is called (see Glossary)\n\nThe score function estimator\nThe likelihood ratio\nThe REINFORCE estimator\n\nThe name comes from the fact that in statistics, \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) is called the score or the score function (see Glossary).\nThis is the technique used in reinforcement learning and in the REINFORCE algorithm.\nIt is obtained using the log derivative trick (see Distribution dependent on \\(\\theta\\) proof)."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#reparameterization-trick",
+    "href": "posts/expectation-and-derivative/index.html#reparameterization-trick",
+    "title": "Expectation and derivative",
+    "section": "Reparameterization trick",
+    "text": "Reparameterization trick\n\nAlso called the pathwise estimator.\n\nAs a reminder, the goal is to compute \\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\) but because the probability distribution depends on \\(\\theta\\), we cannot directly swap \\(\\nabla_{\\theta}\\) and \\(E_{p_{\\theta}(x)}\\).\nIn the reparametrization trick, the Law of the Unconscious Statistician (LOTUS) is used to reformulate the problem in such a way that the gradient parameters \\(\\theta\\) are moved out of the expectation.\nWe can\n\nExpress our random variable \\(x\\)\n\n\\(x \\sim p_{\\theta}(x)\\)\n\nAs a function \\(g_{\\theta}\\) of another random variable \\(\\varepsilon\\)\n\n\\(x = g_{\\theta}(\\varepsilon)\\) with \\(\\varepsilon \\sim q(\\varepsilon)\\)\n\n\nThen the Law of the Unconscious Statistician (LOTUS) tells us that\n\nThe expectation of \\(x\\) can be computed with the distribution of \\(\\varepsilon\\)\n\n\\(E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack f(g_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\nWith this new formulation, the distribution no longer depends on \\(\\theta\\). Thus we are again in a Fixed distribution setting.\nThus,\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\n\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f{(\\ g}_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\n(LOTUS)\n\n\n\n\n\\(= E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\n(\\(q\\) does not depend on \\(\\theta\\))\n\n\nwhich can be estimated with Monte Carlo\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\\(\\simeq \\frac{1}{N}\\sum_{i = 1}^{N}\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon_{i})))\\) with \\(\\varepsilon_{i} \\sim q(\\varepsilon)\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
+    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
+    "title": "Expectation and derivative",
+    "section": "Score function estimator vs Reparameterization trick",
+    "text": "Score function estimator vs Reparameterization trick\n\n\n\n\n\n\n\nScore function estimator\nReparameterization trick\n\n\n\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack f(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\nCan work with a non-differentiable model.\nThus, often used in reinforcement learning where the environment dynamics are usually non-differentiable.\nRequires \\(f\\) and \\(g_{\\theta}\\) to be differentiable.\nThus, requires a differentiable model.\n\n\nGradient has high variance because the gradient term \\(\\nabla_{\\theta}\\) is multiplied by an unrelated quantity \\(f(x)\\).\n- \\(f(x)\\) might be large, noisy or high-variance.\n- the gradient term \\(\\nabla_{\\theta}\\) gets scaled unpredictably by \\(f(x)\\).\nGradient has low variance because it only contains gradient terms \\(\\nabla_{\\theta}\\).\n\n\n\nBelow is a graphical comparison of the score function estimator vs the reparameterization trick.\n\n\n\n\n\nWe can see that the gradient obtained with reparameterization trick is direct while the one obtained with the score function estimator contains one part with \\(\\nabla_{\\theta}\\) but can be perturbed by the other part \\(f(x)\\)."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-score-function",
+    "href": "posts/expectation-and-derivative/index.html#score-score-function",
+    "title": "Expectation and derivative",
+    "section": "Score / Score function",
+    "text": "Score / Score function\nGradient of the log-likelihood \\(= \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
+    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
+    "title": "Expectation and derivative",
+    "section": "Score function estimator / Likelihood ratio / REINFORCE estimator",
+    "text": "Score function estimator / Likelihood ratio / REINFORCE estimator\nMonte Carlo estimator of the gradient of an expectation (when the distribution depends on the gradient parameters).\n\\({\\nabla_{\\theta}E}_{p(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\) with \\(x \\sim p_{\\theta}(x)\\)\nThe name comes from the fact that the score function \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) appears in the formula."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
+    "href": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
+    "title": "Expectation and derivative",
+    "section": "Score function vs reparametrization trick",
+    "text": "Score function vs reparametrization trick\nhttps://stillbreeze.github.io/REINFORCE-vs-Reparameterization-trick/\nhttps://mpatacchiola.github.io/blog/2021/02/08/intro-variational-inference-2.html\nhttps://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Vector Quantization (VQ)\n\n\n\n\n\n\nMachine Learning\n\n\n\nIntroduction to Vector Quantization (VQ).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStreamable Neural Audio Synthesis With Non-Causal Convolutions\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nPost about how to perform streamable neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA short introduction to the RAVE model\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nA short introduction to RAVE model proposed by the paper RAVE: A variational autoencoder for fast and high-quality neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpectation and derivative\n\n\n\n\n\n\nProbabilites\n\nCalculus\n\n\n\nExplore how to handle derivative when expectation is involved.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariational autoencoders\n\n\n\n\n\n\nMachine Learning\n\n\n\nA deep dive into variational autoencoders.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInformation theory\n\n\n\n\n\n\nInformation theory\n\n\n\nIntroduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMaximum Likelihood Estimation and loss functions\n\n\n\n\n\n\nStatistics\n\n\n\nIntroduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDerivatives, chain rule and backpropagation\n\n\n\n\n\n\nCalculus\n\n\n\nThis post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html",
+    "href": "posts/derivatives-and-backpropagation/index.html",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)\n\n\n\n\n\n\n\n\nFor a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension.\n\n\n\n\n\n\n\n\nThe partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
+    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
+    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "For a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension."
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
+    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "The partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
+    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Univariate scalar function",
+    "text": "Univariate scalar function\nWhen univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.\n\n\n\n\n\n\\(\\frac{df}{d\\theta} = \\frac{df}{dz}\\frac{dz}{d\\theta}\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
+    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Multivariate scalar function",
+    "text": "Multivariate scalar function\n\n\n\n\n\n\\(f:\\ R^{n} \\rightarrow R\\) is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\)\nFor each input dimension \\(\\theta_{i}\\), the chain rule is applied to each intermediate dimension \\(z_{j}\\) and the derivative is the sum over \\(j\\).\nThus,\n\\(\\frac{\\partial f}{\\partial\\theta_{i}} = \\sum_{j = 1}^{m}\\frac{\\partial f}{\\partial z_{j}}\\frac{\\partial z_{j}}{\\partial\\theta_{i}}\\)\nThe expression of \\({\\nabla_{\\theta}}^{T}f\\) above can also be expressed with:\n\nThe Jacobian of \\(z\\) with respect to \\(\\theta\\): \\(\\frac{\\partial z}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\)\nThe gradient of \\(f\\) with respect to \\(z\\): \\(\\nabla_{z}f \\in R^{m}\\)\n\n\\(\\nabla_{\\theta}f = \\left( \\frac{\\partial z}{\\partial\\theta} \\right)^{T}\\nabla_{z}f\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
+    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Derivative with respect to \\(a^{l}\\)",
+    "text": "Derivative with respect to \\(a^{l}\\)\nTo compute the derivative of \\(E\\) with respect to \\(a^{l}\\), the activation of layer \\(l\\), we express \\(E\\) as the composition of \\(E(z^{l + 1})\\) and \\(z^{l + 1}(a^{l},W^{l + 1})\\):\n\\(E(\\widehat{y},\\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))\\)\n\\(E(a^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l + 1}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{a^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial a_{i}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\frac{\\partial E}{\\partial z^{l + 1}}\\frac{\\partial z^{l + 1}}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}\\frac{\\partial z_{k}^{l + 1}}{\\partial a_{i}^{l}}\\) Multivariate chain rule\nMoreover, \\(z_{j}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\\), thus \\(\\frac{\\partial z_{j}^{l}}{\\partial a_{i}^{l - 1}} = w_{ij}^{l}\\) and the expression above becomes:\n\\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}{\\ w}_{ik}^{l + 1}\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
+    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Derivative with respect to \\(z^{l}\\)",
+    "text": "Derivative with respect to \\(z^{l}\\)\nSimilarly, we can express \\(E\\) as the composition of \\(E(a^{l})\\) and \\(a^{l}(z^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l + 1})))\\)\n\\(E(z^{l})\\) is thus a multivariate scalar function and its derivative is given by its gradient:\n\\(\\nabla_{z^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial z_{i}^{l}},\\ ... \\right\\rbrack\\)\nNotice also that each function \\(E(z_{i}^{l})\\) can be expressed as the composition of \\(E(a_{i}^{l})\\) and \\(a_{i}^{l}(z_{i}^{l})\\).\nThus, the chain rule for univariate scalar functions can be applied:\n\\(\\frac{\\partial E}{\\partial z_{i}^{l}} = \\frac{\\partial E}{\\partial a_{i}^{l}}\\frac{\\partial a_{i}^{l}}{\\partial z_{i}^{l}}\\) Scalar chain rule"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
+    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Derivative with respect to \\(w_{ij}^{l}\\)",
+    "text": "Derivative with respect to \\(w_{ij}^{l}\\)\nFinally we can express \\(E\\) as the composition of \\(E(z^{l})\\) and \\(z^{l}(a^{l - 1},W^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l}(a^{l - 1},W^{l})))\\)\n\\(E(W^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{W^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial w_{ij}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z^{l}}\\frac{\\partial z^{l}}{\\partial w_{ij}^{l}} = \\sum_{k = 1}^{N^{l}}\\frac{\\partial E}{\\partial z_{k}^{l}}\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\) Multivariate chain rule\n\n\n\n\n\nMoreover, \\(z_{k}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}\\)\nThus \\(\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = 0\\) for \\(k \\neq j\\)\nAnd the expression above becomes:\n\\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\)"
+  },
+  {
+    "objectID": "posts/information-theory/index.html",
+    "href": "posts/information-theory/index.html",
+    "title": "Information theory",
+    "section": "",
+    "text": "This document is an introduction to information theory and concepts such as:\nIt also explains how these concepts are related to Maximum Likelihood Estimation."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#introduction",
+    "href": "posts/information-theory/index.html#introduction",
+    "title": "Information theory",
+    "section": "Introduction",
+    "text": "Introduction\nIn information theory, the information content quantifies the level of surprise of an event.\nIt is derived from the probability of occurrence of a particular event.\nIts different names are:\n\nInformation content\n\n\n\nSelf-information\nSurprisal\nShannon information\n\nIt can be thought of as an alternative way of expressing probability."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#origin",
+    "href": "posts/information-theory/index.html#origin",
+    "title": "Information theory",
+    "section": "Origin",
+    "text": "Origin\n\nThe self-information of an event \\(x\\) is noted \\(I(x)\\).\n\nIt is a function \\(f\\) of the probability \\(p\\) that \\(x\\) occurs.\ni.e. \\(I(x) = f(p(x))\\)\n\n\n\n\nClaude Shannon's definition of self-information was chosen to meet several axioms\n\n\\(f(p)\\) is monotonically decreasing in \\(p\\).\n\nThe more probable an event is, the less surprising it is and the less information it yields.\n\n\\(f(1) = 0\\)\n\nAn event with probability 1 is perfectly unsurprising and yields no information.\n\n\\(f(p_{1}\\ p_{2}) = f(p_{1}) + f(p_{2})\\)\n\nThe information from independent events is the sum of the information of each event."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#definition",
+    "href": "posts/information-theory/index.html#definition",
+    "title": "Information theory",
+    "section": "Definition",
+    "text": "Definition\n\nThere is a unique function \\(f\\) that meets the 3 axioms, up to a scaling factor \\(b\\).\n\\(I(x) = - \\log_{b}(p(x))\\)\nDifferent choices of \\(b\\) correspond to different units of information:\n\n\\(b = 2\\): Shannon or bit.\n\\(b = e\\): natural unit of information."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#definition-1",
+    "href": "posts/information-theory/index.html#definition-1",
+    "title": "Information theory",
+    "section": "Definition",
+    "text": "Definition\n\nNoted \\(H(X)\\).\nExpected value of the self-information of a random variable.\nExpected value of \\(I(X)\\):\n\\(H(X)\\)\n\\(= E(I(X))\\)\n\\(= \\ E( - log(p(X)))\\)\n\\(= \\ \\sum_{\\chi}^{} - p(x)\\ log(p(x))\\)"
+  },
+  {
+    "objectID": "posts/information-theory/index.html#interpretations",
+    "href": "posts/information-theory/index.html#interpretations",
+    "title": "Information theory",
+    "section": "Interpretations",
+    "text": "Interpretations\n\nThe entropy \\(H_{b}(X)\\) in base \\(b\\) is the lower bound of the expected length of any code with an alphabet size of \\(b\\) that encodes events of \\(X\\).\n\nThe length is the number of characters, i.e. the number of units of information.\nThus, its unit is the unit set by the choice of \\(b\\):\n\n\\(b = 2\\): number of bits.\n\\(b = 10\\): number of decimal digits.\n\nEach character can take a value in an alphabet of size \\(b\\).\nSee relationship to encoding for more details.\n\nThis can also be viewed as the expected amount of information needed to describe the state of the variable, considering the distribution of probabilities across all potential states.\n\n\nRelationship to encoding\n\nProved by Claude Shannon.\nFor optimal encoding, the number of characters (bits for \\(b = 2\\)) used per symbol should reflect its information content.\n\nMore probable symbols require fewer bits, while less probable symbols require more bits.\nThis forms the basis of variable-length codes like Huffman coding or arithmetic coding."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#properties",
+    "href": "posts/information-theory/index.html#properties",
+    "title": "Information theory",
+    "section": "Properties",
+    "text": "Properties\n\nThe entropy is maximized when the probability distribution is uniform.\n\nThe uncertainty (i.e. surprise or information content) is maximized as all events are equally probable."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#history",
+    "href": "posts/information-theory/index.html#history",
+    "title": "Information theory",
+    "section": "History",
+    "text": "History\n\nDiscovered by Claude Shannon.\nNamed after the thermodynamics entropy definition by Boltzmann (and generalized by Gibbs).\nVon Neumann realized first that relation."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#forward-kullback-leibler-divergence",
+    "href": "posts/information-theory/index.html#forward-kullback-leibler-divergence",
+    "title": "Information theory",
+    "section": "Forward Kullback-Leibler divergence",
+    "text": "Forward Kullback-Leibler divergence\n\n\\(D_{KL}(p\\ ||\\ q) = \\sum_{\\chi}^{}p(x)\\ log(\\frac{p(x)}{q(x)})\\)\nThe sum or expectation is weighted by the distribution \\(p\\).\nDifferences between \\(p\\) and \\(q\\) produce large \\(D_{KL}\\) on the mass of \\(p\\) (where \\(p &gt; 0\\)) but not where \\(p\\) is small (\\(p \\simeq 0\\)).\nMinimizing the forward Kullback-Leibler divergence \\(D_{KL}(p\\ ||\\ q)\\) encourages \\(q\\) to put its mass wherever the mass of \\(p\\) is (putting its mass outside the mass of \\(p\\) is not penalized).\nThis results in mode covering behavior."
+  },
+  {
+    "objectID": "posts/information-theory/index.html#reversed-kullback-leibler-divergence",
+    "href": "posts/information-theory/index.html#reversed-kullback-leibler-divergence",
+    "title": "Information theory",
+    "section": "Reversed Kullback-Leibler divergence",
+    "text": "Reversed Kullback-Leibler divergence\n\n\\(D_{KL}(q\\ ||\\ p) = \\sum_{\\chi}^{}q(x)\\ log(\\frac{q(x)}{p(x)})\\)\nThe sum or expectation is weighted by the distribution \\(q\\).\nDifferences between \\(p\\) and \\(q\\) produce large \\(D_{KL}\\) on the mass of \\(q\\) (where \\(q &gt; 0\\)) but not where \\(q\\) is small (\\(q \\simeq 0\\)).\nMinimizing the reversed Kullback-Leibler divergence \\(D_{KL}(q\\ ||\\ p)\\) encourages \\(q\\) not to put its mass outside the mass of \\(p\\) (missing parts of the mass \\(p\\) is not penalized).\nThis results in mode seeking behavior."
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html",
+    "href": "posts/rave_introduction/index.html",
+    "title": "A short introduction to the RAVE model",
+    "section": "",
+    "text": "This post is a short introduction to the RAVE model proposed by the paper RAVE: A variational autoencoder for fast and high-quality neural audio synthesis.\nThe RAVE model is a variational autoencoder trained in two stages:\n\nFirst the regular variational autoencoder training,\nFollowed by an additional adversarial training stage for the decoder."
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#stage-1-regular-variational-autoencoder-training",
+    "href": "posts/rave_introduction/index.html#stage-1-regular-variational-autoencoder-training",
+    "title": "A short introduction to the RAVE model",
+    "section": "Stage 1: Regular variational autoencoder training",
+    "text": "Stage 1: Regular variational autoencoder training\nThe first stage is a regular variational autoencoder training which, as a remainder, aims at maximizing the following quantity (see the variational autoencoder post):\n\\(ELBO = E_{q_{\\phi}(z|x)}\\lbrack log\\ p_{\\theta}(x|z)\\rbrack - KL(q_{\\phi}(z|x)\\ ||\\ p(z))\\)\nwhich gives for the loss\n\\(\\mathcal{L}_{VAE} = - E_{q_{\\phi}(z|x)}\\lbrack log\\ p_{\\theta}(x|z)\\rbrack + KL(q_{\\phi}(z|x)\\ ||\\ p(z))\\)\nFor the reconstruction part, the RAVE paper proposes to use the spectral distance from the DDSP: Differentiable Digital Signal Processing paper:\n\\(S(x,y) = \\sum_{n\\  \\in \\ N}^{}\\left\\lbrack \\frac{{||{\\ STFT}_{n}(x)\\  - \\ {STFT}_{n}(y)\\ ||}_{F}}{{||{\\ STFT}_{n}(x)\\ \\ ||}_{F}} + log({||{\\ STFT}_{n}(x) - {STFT}_{n}(y)\\ ||}_{1}) \\right\\rbrack\\)\nwhere\n\n\\(N\\) is a set of scales\n\\({\\ STFT}_{n}\\) is the amplitude of the Short-Term Fourier Transform with\n\nWindow size \\(n\\)\nHop size \\(n/4\\)\n\n\\({||\\ .\\ ||}_{F}\\) is the Frobenius norm\n\\({||\\ .\\ ||}_{1}\\) is the \\(L_{1}\\) norm\n\nAs explained in the RAVE paper, this amplitude spectrum-based distance does not penalize the model for inaccurately reconstructed phase, but encompasses important perceptual features about the signal."
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#stage-2-adversarial-decoder-training",
+    "href": "posts/rave_introduction/index.html#stage-2-adversarial-decoder-training",
+    "title": "A short introduction to the RAVE model",
+    "section": "Stage 2: Adversarial decoder training",
+    "text": "Stage 2: Adversarial decoder training\n\nThe second stage aims at improving the synthesized audio quality by training the decoder using an adversarial objective (the encoder is frozen).\nFollowing the Generative Adversarial Networks framework, a discriminator \\(D\\) is introduced.\nThe decoder and the discriminator are trained with the following objectives\n\n\\(L_{discriminator}(x,z) = max(0,1 - D(x)) + E_{\\widehat{x} \\sim p(x|z)}max(0,1 + D(\\widehat{x}))\\)\n\\(L_{generator}(z) = \\  - E_{\\widehat{x} \\sim p(x|z)}\\lbrack\\ D(\\widehat{x})\\ \\rbrack\\)\n\nThe authors also proposes to\n\nKeep minimizing the spectral distance \\(S(x,\\widehat{x})\\).\nAdd the feature matching loss \\(L_{FM}\\) proposed in MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis.\nThis gives the final decoder objective\n\n\\(L_{total}(x,z) = L_{generator}(z) + E_{\\widehat{x} \\sim p(x|z)}\\lbrack S(x,\\widehat{x}) + L_{FM}(x,\\widehat{x})\\rbrack\\)"
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#notes-about-the-phase",
+    "href": "posts/rave_introduction/index.html#notes-about-the-phase",
+    "title": "A short introduction to the RAVE model",
+    "section": "Notes about the phase",
+    "text": "Notes about the phase\nThe spectral distance does not directly force the model to reproduce the phase of the input audio signal. However, the model is encouraged to produce plausible phase in two ways:\n\nThe fact that the spectral distance is computed at multiple scales.\n\nThe only way to reproduce the correct magnitude patterns across multiple STFT window sizes is to generate time-domain signals with realistic, coherent phase.\n\nThe adversarial loss.\n\nThe discriminator doesn’t directly evaluate the phase but it evaluates if the output signal is realistic.\nTo fool the discriminator, the decoder must learn to produce phase-coherent signals because inconsistent or unnatural phase (e.g. “swishy”, “metallic”, “blurry” artifacts) would be easy to detect."
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#encoder",
+    "href": "posts/rave_introduction/index.html#encoder",
+    "title": "A short introduction to the RAVE model",
+    "section": "Encoder",
+    "text": "Encoder\n\nThe encoder of RAVE is a 1D convolutional neural network with \\(N\\) input channels (see the original implementation here).\n\nIn order to improve the model speed, the RAVE paper performs a multiband decomposition of the raw waveform before feeding it to the encoder.\nIt uses a 16-band decomposition, hence \\(N = 16\\) and the encoder has \\(N = 16\\) input channels.\n\nIn order to preserve the time alignment between the encoder inputs and the decoder outputs, all the convolutional layers use half padding (also called `same` padding).\n\nSee Time alignment between inputs and outputs for more details.\n\nNo downsampling along the temporal axis is introduced by the convolutions with a unit stride (stride = 1).\nHowever, convolutions with a non unit stride (stride &gt; 1) do introduce downsampling along the temporal axis.\nThe outputs of the encoder are of dimension 256. They are split in two vectors each of dimension 128 that represent the mean and variance of the posterior distribution respectively.\nAs a summary, the inputs and outputs of the encoder of RAVE are:\n\n\n\n\n\n\n\n\n\n\nType\nLength\nDimension\n\n\n\n\nInput\nRaw audio waveform\n65536 samples\n16 (16-band decomposition)\n\n\nOutput\nLatent vectors\n512\n256 (128 mean + 128 variance)"
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#decoder",
+    "href": "posts/rave_introduction/index.html#decoder",
+    "title": "A short introduction to the RAVE model",
+    "section": "Decoder",
+    "text": "Decoder\n\nThe decoder of RAVE is composed of 1D transposed convolutions and residual connections.\nIt produces outputs of the same length and dimension as the input."
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#without-padding",
+    "href": "posts/rave_introduction/index.html#without-padding",
+    "title": "A short introduction to the RAVE model",
+    "section": "Without padding",
+    "text": "Without padding\nWhen there is no padding, the transposed convolution that allows to produce outputs with the same dimensionality as the encoder inputs must be done with a full padding.\nThe figure below shows that the time alignment between the inputs and outputs of the model is not maintained (red lines)."
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#with-half-padding-same-padding",
+    "href": "posts/rave_introduction/index.html#with-half-padding-same-padding",
+    "title": "A short introduction to the RAVE model",
+    "section": "With half padding (“same” padding)",
+    "text": "With half padding (“same” padding)\nWhen a half padding is used, the transposed convolution that allows to produce outputs with the same dimensionality as the encoder inputs must be done with a half padding too.\nThe figure below shows in this configuration the time alignment between the inputs and outputs of the model is maintained (green lines)."
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#rave-model",
+    "href": "posts/rave_introduction/index.html#rave-model",
+    "title": "A short introduction to the RAVE model",
+    "section": "RAVE model",
+    "text": "RAVE model\n\nRAVE: A variational autoencoder for fast and high-quality neural audio synthesis\n\n\nSpectral distance\n\nDDSP: Differentiable Digital Signal Processing\n\n\n\nFeature matching loss\n\nMelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis\n\n\n\nOther\n\nGenerative Adversarial Networks"
+  },
+  {
+    "objectID": "posts/rave_introduction/index.html#dilated-convolutions",
+    "href": "posts/rave_introduction/index.html#dilated-convolutions",
+    "title": "A short introduction to the RAVE model",
+    "section": "Dilated convolutions",
+    "text": "Dilated convolutions\nhttps://medium.com/data-science/types-of-convolutions-in-deep-learning-717013397f4d\nhttps://medium.com/@akp83540/dilation-rate-in-a-convolution-operation-a7143e437654"
+  },
+  {
     "objectID": "posts/variational-autoencoders/index.html",
     "href": "posts/variational-autoencoders/index.html",
     "title": "Variational autoencoders",
@@ -194,362 +614,5 @@
     "title": "Variational autoencoders",
     "section": "Reparameterization trick",
     "text": "Reparameterization trick\nhttps://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html\nhttps://stillbreeze.github.io/REINFORCE-vs-Reparameterization-trick/"
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html",
-    "href": "posts/rave_introduction/index.html",
-    "title": "A short introduction to the RAVE model",
-    "section": "",
-    "text": "This post is a short introduction to the RAVE model proposed by the paper RAVE: A variational autoencoder for fast and high-quality neural audio synthesis.\nThe RAVE model is a variational autoencoder trained in two stages:\n\nFirst the regular variational autoencoder training,\nFollowed by an additional adversarial training stage for the decoder."
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#stage-1-regular-variational-autoencoder-training",
-    "href": "posts/rave_introduction/index.html#stage-1-regular-variational-autoencoder-training",
-    "title": "A short introduction to the RAVE model",
-    "section": "Stage 1: Regular variational autoencoder training",
-    "text": "Stage 1: Regular variational autoencoder training\nThe first stage is a regular variational autoencoder training which, as a remainder, aims at maximizing the following quantity (see the variational autoencoder post):\n\\(ELBO = E_{q_{\\phi}(z|x)}\\lbrack log\\ p_{\\theta}(x|z)\\rbrack - KL(q_{\\phi}(z|x)\\ ||\\ p(z))\\)\nwhich gives for the loss\n\\(\\mathcal{L}_{VAE} = - E_{q_{\\phi}(z|x)}\\lbrack log\\ p_{\\theta}(x|z)\\rbrack + KL(q_{\\phi}(z|x)\\ ||\\ p(z))\\)\nFor the reconstruction part, the RAVE paper proposes to use the spectral distance from the DDSP: Differentiable Digital Signal Processing paper:\n\\(S(x,y) = \\sum_{n\\  \\in \\ N}^{}\\left\\lbrack \\frac{{||{\\ STFT}_{n}(x)\\  - \\ {STFT}_{n}(y)\\ ||}_{F}}{{||{\\ STFT}_{n}(x)\\ \\ ||}_{F}} + log({||{\\ STFT}_{n}(x) - {STFT}_{n}(y)\\ ||}_{1}) \\right\\rbrack\\)\nwhere\n\n\\(N\\) is a set of scales\n\\({\\ STFT}_{n}\\) is the amplitude of the Short-Term Fourier Transform with\n\nWindow size \\(n\\)\nHop size \\(n/4\\)\n\n\\({||\\ .\\ ||}_{F}\\) is the Frobenius norm\n\\({||\\ .\\ ||}_{1}\\) is the \\(L_{1}\\) norm\n\nAs explained in the RAVE paper, this amplitude spectrum-based distance does not penalize the model for inaccurately reconstructed phase, but encompasses important perceptual features about the signal."
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#stage-2-adversarial-decoder-training",
-    "href": "posts/rave_introduction/index.html#stage-2-adversarial-decoder-training",
-    "title": "A short introduction to the RAVE model",
-    "section": "Stage 2: Adversarial decoder training",
-    "text": "Stage 2: Adversarial decoder training\n\nThe second stage aims at improving the synthesized audio quality by training the decoder using an adversarial objective (the encoder is frozen).\nFollowing the Generative Adversarial Networks framework, a discriminator \\(D\\) is introduced.\nThe decoder and the discriminator are trained with the following objectives\n\n\\(L_{discriminator}(x,z) = max(0,1 - D(x)) + E_{\\widehat{x} \\sim p(x|z)}max(0,1 + D(\\widehat{x}))\\)\n\\(L_{generator}(z) = \\  - E_{\\widehat{x} \\sim p(x|z)}\\lbrack\\ D(\\widehat{x})\\ \\rbrack\\)\n\nThe authors also proposes to\n\nKeep minimizing the spectral distance \\(S(x,\\widehat{x})\\).\nAdd the feature matching loss \\(L_{FM}\\) proposed in MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis.\nThis gives the final decoder objective\n\n\\(L_{total}(x,z) = L_{generator}(z) + E_{\\widehat{x} \\sim p(x|z)}\\lbrack S(x,\\widehat{x}) + L_{FM}(x,\\widehat{x})\\rbrack\\)"
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#notes-about-the-phase",
-    "href": "posts/rave_introduction/index.html#notes-about-the-phase",
-    "title": "A short introduction to the RAVE model",
-    "section": "Notes about the phase",
-    "text": "Notes about the phase\nThe spectral distance does not directly force the model to reproduce the phase of the input audio signal. However, the model is encouraged to produce plausible phase in two ways:\n\nThe fact that the spectral distance is computed at multiple scales.\n\nThe only way to reproduce the correct magnitude patterns across multiple STFT window sizes is to generate time-domain signals with realistic, coherent phase.\n\nThe adversarial loss.\n\nThe discriminator doesn’t directly evaluate the phase but it evaluates if the output signal is realistic.\nTo fool the discriminator, the decoder must learn to produce phase-coherent signals because inconsistent or unnatural phase (e.g. “swishy”, “metallic”, “blurry” artifacts) would be easy to detect."
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#encoder",
-    "href": "posts/rave_introduction/index.html#encoder",
-    "title": "A short introduction to the RAVE model",
-    "section": "Encoder",
-    "text": "Encoder\n\nThe encoder of RAVE is a 1D convolutional neural network with \\(N\\) input channels (see the original implementation here).\n\nIn order to improve the model speed, the RAVE paper performs a multiband decomposition of the raw waveform before feeding it to the encoder.\nIt uses a 16-band decomposition, hence \\(N = 16\\) and the encoder has \\(N = 16\\) input channels.\n\nIn order to preserve the time alignment between the encoder inputs and the decoder outputs, all the convolutional layers use half padding (also called `same` padding).\n\nSee Time alignment between inputs and outputs for more details.\n\nNo downsampling along the temporal axis is introduced by the convolutions with a unit stride (stride = 1).\nHowever, convolutions with a non unit stride (stride &gt; 1) do introduce downsampling along the temporal axis.\nThe outputs of the encoder are of dimension 256. They are split in two vectors each of dimension 128 that represent the mean and variance of the posterior distribution respectively.\nAs a summary, the inputs and outputs of the encoder of RAVE are:\n\n\n\n\n\n\n\n\n\n\nType\nLength\nDimension\n\n\n\n\nInput\nRaw audio waveform\n65536 samples\n16 (16-band decomposition)\n\n\nOutput\nLatent vectors\n512\n256 (128 mean + 128 variance)"
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#decoder",
-    "href": "posts/rave_introduction/index.html#decoder",
-    "title": "A short introduction to the RAVE model",
-    "section": "Decoder",
-    "text": "Decoder\n\nThe decoder of RAVE is composed of 1D transposed convolutions and residual connections.\nIt produces outputs of the same length and dimension as the input."
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#without-padding",
-    "href": "posts/rave_introduction/index.html#without-padding",
-    "title": "A short introduction to the RAVE model",
-    "section": "Without padding",
-    "text": "Without padding\nWhen there is no padding, the transposed convolution that allows to produce outputs with the same dimensionality as the encoder inputs must be done with a full padding.\nThe figure below shows that the time alignment between the inputs and outputs of the model is not maintained (red lines)."
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#with-half-padding-same-padding",
-    "href": "posts/rave_introduction/index.html#with-half-padding-same-padding",
-    "title": "A short introduction to the RAVE model",
-    "section": "With half padding (“same” padding)",
-    "text": "With half padding (“same” padding)\nWhen a half padding is used, the transposed convolution that allows to produce outputs with the same dimensionality as the encoder inputs must be done with a half padding too.\nThe figure below shows in this configuration the time alignment between the inputs and outputs of the model is maintained (green lines)."
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#rave-model",
-    "href": "posts/rave_introduction/index.html#rave-model",
-    "title": "A short introduction to the RAVE model",
-    "section": "RAVE model",
-    "text": "RAVE model\n\nRAVE: A variational autoencoder for fast and high-quality neural audio synthesis\n\n\nSpectral distance\n\nDDSP: Differentiable Digital Signal Processing\n\n\n\nFeature matching loss\n\nMelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis\n\n\n\nOther\n\nGenerative Adversarial Networks"
-  },
-  {
-    "objectID": "posts/rave_introduction/index.html#dilated-convolutions",
-    "href": "posts/rave_introduction/index.html#dilated-convolutions",
-    "title": "A short introduction to the RAVE model",
-    "section": "Dilated convolutions",
-    "text": "Dilated convolutions\nhttps://medium.com/data-science/types-of-convolutions-in-deep-learning-717013397f4d\nhttps://medium.com/@akp83540/dilation-rate-in-a-convolution-operation-a7143e437654"
-  },
-  {
-    "objectID": "posts/information-theory/index.html",
-    "href": "posts/information-theory/index.html",
-    "title": "Information theory",
-    "section": "",
-    "text": "This document is an introduction to information theory and concepts such as:\nIt also explains how these concepts are related to Maximum Likelihood Estimation."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#introduction",
-    "href": "posts/information-theory/index.html#introduction",
-    "title": "Information theory",
-    "section": "Introduction",
-    "text": "Introduction\nIn information theory, the information content quantifies the level of surprise of an event.\nIt is derived from the probability of occurrence of a particular event.\nIts different names are:\n\nInformation content\n\n\n\nSelf-information\nSurprisal\nShannon information\n\nIt can be thought of as an alternative way of expressing probability."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#origin",
-    "href": "posts/information-theory/index.html#origin",
-    "title": "Information theory",
-    "section": "Origin",
-    "text": "Origin\n\nThe self-information of an event \\(x\\) is noted \\(I(x)\\).\n\nIt is a function \\(f\\) of the probability \\(p\\) that \\(x\\) occurs.\ni.e. \\(I(x) = f(p(x))\\)\n\n\n\n\nClaude Shannon's definition of self-information was chosen to meet several axioms\n\n\\(f(p)\\) is monotonically decreasing in \\(p\\).\n\nThe more probable an event is, the less surprising it is and the less information it yields.\n\n\\(f(1) = 0\\)\n\nAn event with probability 1 is perfectly unsurprising and yields no information.\n\n\\(f(p_{1}\\ p_{2}) = f(p_{1}) + f(p_{2})\\)\n\nThe information from independent events is the sum of the information of each event."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#definition",
-    "href": "posts/information-theory/index.html#definition",
-    "title": "Information theory",
-    "section": "Definition",
-    "text": "Definition\n\nThere is a unique function \\(f\\) that meets the 3 axioms, up to a scaling factor \\(b\\).\n\\(I(x) = - \\log_{b}(p(x))\\)\nDifferent choices of \\(b\\) correspond to different units of information:\n\n\\(b = 2\\): Shannon or bit.\n\\(b = e\\): natural unit of information."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#definition-1",
-    "href": "posts/information-theory/index.html#definition-1",
-    "title": "Information theory",
-    "section": "Definition",
-    "text": "Definition\n\nNoted \\(H(X)\\).\nExpected value of the self-information of a random variable.\nExpected value of \\(I(X)\\):\n\\(H(X)\\)\n\\(= E(I(X))\\)\n\\(= \\ E( - log(p(X)))\\)\n\\(= \\ \\sum_{\\chi}^{} - p(x)\\ log(p(x))\\)"
-  },
-  {
-    "objectID": "posts/information-theory/index.html#interpretations",
-    "href": "posts/information-theory/index.html#interpretations",
-    "title": "Information theory",
-    "section": "Interpretations",
-    "text": "Interpretations\n\nThe entropy \\(H_{b}(X)\\) in base \\(b\\) is the lower bound of the expected length of any code with an alphabet size of \\(b\\) that encodes events of \\(X\\).\n\nThe length is the number of characters, i.e. the number of units of information.\nThus, its unit is the unit set by the choice of \\(b\\):\n\n\\(b = 2\\): number of bits.\n\\(b = 10\\): number of decimal digits.\n\nEach character can take a value in an alphabet of size \\(b\\).\nSee relationship to encoding for more details.\n\nThis can also be viewed as the expected amount of information needed to describe the state of the variable, considering the distribution of probabilities across all potential states.\n\n\nRelationship to encoding\n\nProved by Claude Shannon.\nFor optimal encoding, the number of characters (bits for \\(b = 2\\)) used per symbol should reflect its information content.\n\nMore probable symbols require fewer bits, while less probable symbols require more bits.\nThis forms the basis of variable-length codes like Huffman coding or arithmetic coding."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#properties",
-    "href": "posts/information-theory/index.html#properties",
-    "title": "Information theory",
-    "section": "Properties",
-    "text": "Properties\n\nThe entropy is maximized when the probability distribution is uniform.\n\nThe uncertainty (i.e. surprise or information content) is maximized as all events are equally probable."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#history",
-    "href": "posts/information-theory/index.html#history",
-    "title": "Information theory",
-    "section": "History",
-    "text": "History\n\nDiscovered by Claude Shannon.\nNamed after the thermodynamics entropy definition by Boltzmann (and generalized by Gibbs).\nVon Neumann realized first that relation."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#forward-kullback-leibler-divergence",
-    "href": "posts/information-theory/index.html#forward-kullback-leibler-divergence",
-    "title": "Information theory",
-    "section": "Forward Kullback-Leibler divergence",
-    "text": "Forward Kullback-Leibler divergence\n\n\\(D_{KL}(p\\ ||\\ q) = \\sum_{\\chi}^{}p(x)\\ log(\\frac{p(x)}{q(x)})\\)\nThe sum or expectation is weighted by the distribution \\(p\\).\nDifferences between \\(p\\) and \\(q\\) produce large \\(D_{KL}\\) on the mass of \\(p\\) (where \\(p &gt; 0\\)) but not where \\(p\\) is small (\\(p \\simeq 0\\)).\nMinimizing the forward Kullback-Leibler divergence \\(D_{KL}(p\\ ||\\ q)\\) encourages \\(q\\) to put its mass wherever the mass of \\(p\\) is (putting its mass outside the mass of \\(p\\) is not penalized).\nThis results in mode covering behavior."
-  },
-  {
-    "objectID": "posts/information-theory/index.html#reversed-kullback-leibler-divergence",
-    "href": "posts/information-theory/index.html#reversed-kullback-leibler-divergence",
-    "title": "Information theory",
-    "section": "Reversed Kullback-Leibler divergence",
-    "text": "Reversed Kullback-Leibler divergence\n\n\\(D_{KL}(q\\ ||\\ p) = \\sum_{\\chi}^{}q(x)\\ log(\\frac{q(x)}{p(x)})\\)\nThe sum or expectation is weighted by the distribution \\(q\\).\nDifferences between \\(p\\) and \\(q\\) produce large \\(D_{KL}\\) on the mass of \\(q\\) (where \\(q &gt; 0\\)) but not where \\(q\\) is small (\\(q \\simeq 0\\)).\nMinimizing the reversed Kullback-Leibler divergence \\(D_{KL}(q\\ ||\\ p)\\) encourages \\(q\\) not to put its mass outside the mass of \\(p\\) (missing parts of the mass \\(p\\) is not penalized).\nThis results in mode seeking behavior."
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html",
-    "href": "posts/derivatives-and-backpropagation/index.html",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)\n\n\n\n\n\n\n\n\nFor a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension.\n\n\n\n\n\n\n\n\nThe partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
-    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
-    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "For a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension."
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
-    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "The partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
-    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Univariate scalar function",
-    "text": "Univariate scalar function\nWhen univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.\n\n\n\n\n\n\\(\\frac{df}{d\\theta} = \\frac{df}{dz}\\frac{dz}{d\\theta}\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
-    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Multivariate scalar function",
-    "text": "Multivariate scalar function\n\n\n\n\n\n\\(f:\\ R^{n} \\rightarrow R\\) is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\)\nFor each input dimension \\(\\theta_{i}\\), the chain rule is applied to each intermediate dimension \\(z_{j}\\) and the derivative is the sum over \\(j\\).\nThus,\n\\(\\frac{\\partial f}{\\partial\\theta_{i}} = \\sum_{j = 1}^{m}\\frac{\\partial f}{\\partial z_{j}}\\frac{\\partial z_{j}}{\\partial\\theta_{i}}\\)\nThe expression of \\({\\nabla_{\\theta}}^{T}f\\) above can also be expressed with:\n\nThe Jacobian of \\(z\\) with respect to \\(\\theta\\): \\(\\frac{\\partial z}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\)\nThe gradient of \\(f\\) with respect to \\(z\\): \\(\\nabla_{z}f \\in R^{m}\\)\n\n\\(\\nabla_{\\theta}f = \\left( \\frac{\\partial z}{\\partial\\theta} \\right)^{T}\\nabla_{z}f\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
-    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Derivative with respect to \\(a^{l}\\)",
-    "text": "Derivative with respect to \\(a^{l}\\)\nTo compute the derivative of \\(E\\) with respect to \\(a^{l}\\), the activation of layer \\(l\\), we express \\(E\\) as the composition of \\(E(z^{l + 1})\\) and \\(z^{l + 1}(a^{l},W^{l + 1})\\):\n\\(E(\\widehat{y},\\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))\\)\n\\(E(a^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l + 1}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{a^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial a_{i}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\frac{\\partial E}{\\partial z^{l + 1}}\\frac{\\partial z^{l + 1}}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}\\frac{\\partial z_{k}^{l + 1}}{\\partial a_{i}^{l}}\\) Multivariate chain rule\nMoreover, \\(z_{j}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\\), thus \\(\\frac{\\partial z_{j}^{l}}{\\partial a_{i}^{l - 1}} = w_{ij}^{l}\\) and the expression above becomes:\n\\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}{\\ w}_{ik}^{l + 1}\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
-    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Derivative with respect to \\(z^{l}\\)",
-    "text": "Derivative with respect to \\(z^{l}\\)\nSimilarly, we can express \\(E\\) as the composition of \\(E(a^{l})\\) and \\(a^{l}(z^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l + 1})))\\)\n\\(E(z^{l})\\) is thus a multivariate scalar function and its derivative is given by its gradient:\n\\(\\nabla_{z^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial z_{i}^{l}},\\ ... \\right\\rbrack\\)\nNotice also that each function \\(E(z_{i}^{l})\\) can be expressed as the composition of \\(E(a_{i}^{l})\\) and \\(a_{i}^{l}(z_{i}^{l})\\).\nThus, the chain rule for univariate scalar functions can be applied:\n\\(\\frac{\\partial E}{\\partial z_{i}^{l}} = \\frac{\\partial E}{\\partial a_{i}^{l}}\\frac{\\partial a_{i}^{l}}{\\partial z_{i}^{l}}\\) Scalar chain rule"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
-    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Derivative with respect to \\(w_{ij}^{l}\\)",
-    "text": "Derivative with respect to \\(w_{ij}^{l}\\)\nFinally we can express \\(E\\) as the composition of \\(E(z^{l})\\) and \\(z^{l}(a^{l - 1},W^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l}(a^{l - 1},W^{l})))\\)\n\\(E(W^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{W^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial w_{ij}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z^{l}}\\frac{\\partial z^{l}}{\\partial w_{ij}^{l}} = \\sum_{k = 1}^{N^{l}}\\frac{\\partial E}{\\partial z_{k}^{l}}\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\) Multivariate chain rule\n\n\n\n\n\nMoreover, \\(z_{k}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}\\)\nThus \\(\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = 0\\) for \\(k \\neq j\\)\nAnd the expression above becomes:\n\\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\)"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blog",
-    "section": "",
-    "text": "Streamable Neural Audio Synthesis With Non-Causal Convolutions\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nPost about how to perform streamable neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA short introduction to the RAVE model\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nA short introduction to RAVE model proposed by the paper RAVE: A variational autoencoder for fast and high-quality neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpectation and derivative\n\n\n\n\n\n\nProbabilites\n\nCalculus\n\n\n\nExplore how to handle derivative when expectation is involved.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariational autoencoders\n\n\n\n\n\n\nMachine Learning\n\n\n\nA deep dive into variational autoencoders.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInformation theory\n\n\n\n\n\n\nInformation theory\n\n\n\nIntroduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMaximum Likelihood Estimation and loss functions\n\n\n\n\n\n\nStatistics\n\n\n\nIntroduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDerivatives, chain rule and backpropagation\n\n\n\n\n\n\nCalculus\n\n\n\nThis post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html",
-    "href": "posts/expectation-and-derivative/index.html",
-    "title": "Expectation and derivative",
-    "section": "",
-    "text": "In this document, we explore how to compute the gradient of an expectation or in other terms, the gradient of a stochastic process.\nIn the most general form, let’s define:\n\n\\(x\\) in a random variable\nwhich follows a distribution \\(p_{\\theta}(x)\\) parametrized by \\(\\theta\\)\n\\(f_{\\theta}\\) is a function of \\(x\\) and is also parametrized by \\(\\theta\\)\n\nThe question is then how to compute\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
-    "href": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
-    "title": "Expectation and derivative",
-    "section": "Fixed distribution proof",
-    "text": "Fixed distribution proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\n\n\\(= \\int_{}^{}p(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n(because \\(p(x)\\) does not depend on \\(\\theta\\))\n\n\n\\(= E_{p(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#introduction-1",
-    "href": "posts/expectation-and-derivative/index.html#introduction-1",
-    "title": "Expectation and derivative",
-    "section": "Introduction",
-    "text": "Introduction\nIn the general setting where the probability distribution depends on the parameters \\(\\theta\\) of the gradient, the general form is\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\nsee Distribution dependent on \\(\\theta\\) proof below.\n\nNotice that if the distribution is fixed, i.e. \\(p_{\\theta}\\) does not depend on \\(\\theta\\) (\\(p_{\\theta} = p\\)), the first term disappears and we find back the formula from the previous Fixed distribution section.\nThe general form above can also be estimated with Monte Carlo.\n\nDistribution dependent on \\(\\theta\\) proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p_{\\theta}(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n\\(= \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\n(see Log derivative trick)\n\n\n\\(= E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\nLog derivative trick\n\nThe log derivative trick above is the fact that \\(\\nabla_{\\theta}\\ p_{\\theta}(x) = p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\).\nThis comes from the application of the chain rule to the \\(\\log\\) function:\n\n\\(\\nabla_{x}\\ log(f(x))\\)\n\n\\(= \\nabla_{f}\\ log(f)\\ \\nabla_{x}\\ f(x)\\)\n\\(= \\frac{1}{f(x)}\\ \\nabla_{x}\\ f(x)\\)\nThus, \\(\\nabla_{x}\\ f(x) = f(x){\\ \\nabla}_{x}\\ log(f(x))\\)\n\nFor the following, let us simplify our problem by making the function \\(f_{\\theta}\\) independent on \\(\\theta\\) (i.e. \\(f_{\\theta} = f\\)). This independence is verified in common use cases such as variational autoencoders or reinforcement learning.\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\nThe term above (or the first term in the general form if we keep \\(f_{\\theta}\\) dependent on \\(\\theta\\)) can be estimated with Monte Carlo but it has high variance (see Score function estimator vs Reparameterization trick).\nThis leaves us with two choices in order to compute the gradient of an expectation when the probability distribution depends on the parameters \\(\\theta\\) of the gradient:\n\nUse this Monte Carlo estimator anyway. This is known as the Score function estimator.\nUse another technique. One of them is called the Reparameterization trick.\n\nWe explore both techniques in the Score function estimator and Reparameterization trick sections below."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator",
-    "href": "posts/expectation-and-derivative/index.html#score-function-estimator",
-    "title": "Expectation and derivative",
-    "section": "Score function estimator",
-    "text": "Score function estimator\nIn this technique, the Monte Carlo estimator from the previous section is used directly.\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\nwith \\(x \\sim p_{\\theta}(x)\\)\n\nThis estimator is called (see Glossary)\n\nThe score function estimator\nThe likelihood ratio\nThe REINFORCE estimator\n\nThe name comes from the fact that in statistics, \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) is called the score or the score function (see Glossary).\nThis is the technique used in reinforcement learning and in the REINFORCE algorithm.\nIt is obtained using the log derivative trick (see Distribution dependent on \\(\\theta\\) proof)."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#reparameterization-trick",
-    "href": "posts/expectation-and-derivative/index.html#reparameterization-trick",
-    "title": "Expectation and derivative",
-    "section": "Reparameterization trick",
-    "text": "Reparameterization trick\n\nAlso called the pathwise estimator.\n\nAs a reminder, the goal is to compute \\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\) but because the probability distribution depends on \\(\\theta\\), we cannot directly swap \\(\\nabla_{\\theta}\\) and \\(E_{p_{\\theta}(x)}\\).\nIn the reparametrization trick, the Law of the Unconscious Statistician (LOTUS) is used to reformulate the problem in such a way that the gradient parameters \\(\\theta\\) are moved out of the expectation.\nWe can\n\nExpress our random variable \\(x\\)\n\n\\(x \\sim p_{\\theta}(x)\\)\n\nAs a function \\(g_{\\theta}\\) of another random variable \\(\\varepsilon\\)\n\n\\(x = g_{\\theta}(\\varepsilon)\\) with \\(\\varepsilon \\sim q(\\varepsilon)\\)\n\n\nThen the Law of the Unconscious Statistician (LOTUS) tells us that\n\nThe expectation of \\(x\\) can be computed with the distribution of \\(\\varepsilon\\)\n\n\\(E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack f(g_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\nWith this new formulation, the distribution no longer depends on \\(\\theta\\). Thus we are again in a Fixed distribution setting.\nThus,\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\n\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f{(\\ g}_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\n(LOTUS)\n\n\n\n\n\\(= E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\n(\\(q\\) does not depend on \\(\\theta\\))\n\n\nwhich can be estimated with Monte Carlo\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\\(\\simeq \\frac{1}{N}\\sum_{i = 1}^{N}\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon_{i})))\\) with \\(\\varepsilon_{i} \\sim q(\\varepsilon)\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
-    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
-    "title": "Expectation and derivative",
-    "section": "Score function estimator vs Reparameterization trick",
-    "text": "Score function estimator vs Reparameterization trick\n\n\n\n\n\n\n\nScore function estimator\nReparameterization trick\n\n\n\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack f(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\nCan work with a non-differentiable model.\nThus, often used in reinforcement learning where the environment dynamics are usually non-differentiable.\nRequires \\(f\\) and \\(g_{\\theta}\\) to be differentiable.\nThus, requires a differentiable model.\n\n\nGradient has high variance because the gradient term \\(\\nabla_{\\theta}\\) is multiplied by an unrelated quantity \\(f(x)\\).\n- \\(f(x)\\) might be large, noisy or high-variance.\n- the gradient term \\(\\nabla_{\\theta}\\) gets scaled unpredictably by \\(f(x)\\).\nGradient has low variance because it only contains gradient terms \\(\\nabla_{\\theta}\\).\n\n\n\nBelow is a graphical comparison of the score function estimator vs the reparameterization trick.\n\n\n\n\n\nWe can see that the gradient obtained with reparameterization trick is direct while the one obtained with the score function estimator contains one part with \\(\\nabla_{\\theta}\\) but can be perturbed by the other part \\(f(x)\\)."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-score-function",
-    "href": "posts/expectation-and-derivative/index.html#score-score-function",
-    "title": "Expectation and derivative",
-    "section": "Score / Score function",
-    "text": "Score / Score function\nGradient of the log-likelihood \\(= \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
-    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
-    "title": "Expectation and derivative",
-    "section": "Score function estimator / Likelihood ratio / REINFORCE estimator",
-    "text": "Score function estimator / Likelihood ratio / REINFORCE estimator\nMonte Carlo estimator of the gradient of an expectation (when the distribution depends on the gradient parameters).\n\\({\\nabla_{\\theta}E}_{p(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\) with \\(x \\sim p_{\\theta}(x)\\)\nThe name comes from the fact that the score function \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) appears in the formula."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
-    "href": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
-    "title": "Expectation and derivative",
-    "section": "Score function vs reparametrization trick",
-    "text": "Score function vs reparametrization trick\nhttps://stillbreeze.github.io/REINFORCE-vs-Reparameterization-trick/\nhttps://mpatacchiola.github.io/blog/2021/02/08/intro-variational-inference-2.html\nhttps://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html"
-  },
-  {
-    "objectID": "posts/likelihood-loss/index.html",
-    "href": "posts/likelihood-loss/index.html",
-    "title": "Maximum Likelihood Estimation and loss functions",
-    "section": "",
-    "text": "In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we will show that in a supervised learning setting, maximizing the likelihood (MLE) of the observed data \\(p(x,\\ y\\ |\\ \\theta)\\) is equivalent to:"
-  },
-  {
-    "objectID": "posts/likelihood-loss/index.html#general-setting",
-    "href": "posts/likelihood-loss/index.html#general-setting",
-    "title": "Maximum Likelihood Estimation and loss functions",
-    "section": "General setting",
-    "text": "General setting\nThe Maximum Likelihood Estimation (MLE) seeks to find the parameters \\(\\theta\\) of a probabilistic model that maximize the likelihood \\(L\\) of the observed data \\(x\\). If we consider that \\(x\\) is composed of \\(n\\) independent and identically distributed samples \\(x_{i}\\), \\(L\\) can be expressed as:\n\\(L(\\theta) = \\prod_{i = 1}^{n}p(x_{i}\\ |\\ \\theta)\\)\nBy convenience and for numerical stability reasons, the \\(\\log\\) of \\(L(\\theta)\\) is often maximized instead of \\(L(\\theta)\\) directly.\n\\(log(L(\\theta)) = \\sum_{i = 1}^{n}log\\ p(x_{i}\\ |\\ \\theta)\\)"
-  },
-  {
-    "objectID": "posts/likelihood-loss/index.html#supervised-learning-setting",
-    "href": "posts/likelihood-loss/index.html#supervised-learning-setting",
-    "title": "Maximum Likelihood Estimation and loss functions",
-    "section": "Supervised learning setting",
-    "text": "Supervised learning setting\nIn a supervised learning setting:\n\nThe samples are pairs \\((x_{i},y_{i})\\) of observed sample \\(x_{i}\\) and label \\(y_{i}\\).\n\nThus, the likelihood is expressed as:\n\\(L(\\theta) = \\prod_{i = 1}^{n}p(x_{i},\\ y_{i}\\ |\\ \\theta)\\)\nwhich can be rearranged as\n\\(L(\\theta) = \\prod_{i = 1}^{n}p(y_{i}\\ |\\ x_{i},\\ \\theta)\\ p(x_{i}\\ |\\ \\theta)\\)\n\nMoreover, in a supervised learning setting, the model does not try to model the data \\(x_{i}\\) but only the label \\(y_{i}\\) based on \\(x_{i}\\).\n\nThus, \\(p(x_{i})\\) does not depend on \\(\\theta\\) and maximizing \\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\ p(x_{i}\\ |\\ \\theta)\\) with respect to \\(\\theta\\) is equivalent to maximizing \\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\).\n\\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}p(y_{i}\\ |\\ x_{i},\\ \\theta)\\)\nIn other terms, in a supervised learning setting, maximizing the likelihood \\(p(x,\\ y\\ |\\ \\theta)\\) is equivalent to maximizing \\(p(y\\ |\\ x,\\ \\theta)\\)."
-  },
-  {
-    "objectID": "posts/likelihood-loss/index.html#classification-setting",
-    "href": "posts/likelihood-loss/index.html#classification-setting",
-    "title": "Maximum Likelihood Estimation and loss functions",
-    "section": "Classification setting",
-    "text": "Classification setting\nIn a classification setting with \\(C\\) classes:\n\nThe label \\(c_{i}\\) is the class index for sample \\(i\\).\n\nWe note \\(y_{i}\\) the corresponding one-hot vector of size \\(C\\) with elements\n\n\\(y_{i,k} = 1\\) for \\(k = c_{i}\\)\n\\(y_{i,k} = 0\\) for \\(k \\neq c_{i}\\)\n\n\nThe model outputs the estimated probabilities of each class in a vector \\(\\widehat{y_{i}} = f(x_{i})\\) of size \\(C\\), i.e.\n\n\\(p(c_{i}\\ |\\ x_{i},\\ \\theta)\\  \\triangleq \\ \\widehat{y_{i,c_{i}}}\\)\nWhich can also be written as\n\\(p(c_{i}\\ |\\ x_{i},\\ \\theta)\\  = \\prod_{k = 1}^{C}\\ {\\widehat{y_{i,k}}}^{{\\ y}_{i,k}}\\)\n\nThus, \\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}\\prod_{k = 1}^{C}\\ {\\widehat{y_{i,k}}}^{{\\ y}_{i,k}}\\)\nTaking the \\(\\log\\) of the expression above gives\n\\(\\sum_{i = 1}^{n}\\sum_{k = 1}^{C}y_{i,k}\\ log\\ \\widehat{y_{i,k}}\\)\nFinally, maximizing the expression above is equivalent to minimizing its negative, i.e\n\\(- \\sum_{i = 1}^{n}\\sum_{k = 1}^{C}y_{i,k}\\ log\\ \\widehat{y_{i,k}}\\)\nWe can recognize above the expression of the cross entropy loss.\n\nUsing the fact that \\(y_{i,k} = 1\\) if \\(k = c_{i}\\) and \\(y_{i,k} = O\\) for \\(k \\neq c_{i}\\), the expression can be simplified to\n\\(- \\sum_{i = 1}^{n}log\\ \\widehat{y_{i,c_{i}}}\\)\n\nThus, in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss.\nTo understand why the formula \\(- \\sum_{i = 1}^{n}\\sum_{k = 1}^{C}y_{i,k}\\ log\\ \\widehat{y_{i,k}}\\) is called the cross entropy loss, refer to the dedicated section in the Information Theory blog post."
-  },
-  {
-    "objectID": "posts/likelihood-loss/index.html#regression-setting",
-    "href": "posts/likelihood-loss/index.html#regression-setting",
-    "title": "Maximum Likelihood Estimation and loss functions",
-    "section": "Regression setting",
-    "text": "Regression setting\nIn a regression setting\n\nThe label is \\(y_{i}\\) for sample \\(i\\).\nThe model outputs a prediction \\(\\widehat{y_{i}} = f(x_{i})\\).\n\nIf we assume that the error follows a normal distribution, we have\n\\(y_{i} \\sim N(\\widehat{y_{i}},\\sigma^{2})\\)\nand\n\\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\  = \\frac{1}{}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\n\nThus, \\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}\\frac{1}{}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\nAnd maximizing the expression above is equivalent to minimizing \\({(y_{i} - \\widehat{y_{i}})}^{2}\\)\nTaking the \\(\\log\\) of the expression above gives\n\\(\\sum_{i = 1}^{n}\\log\\frac{1}{} - \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}\\)\nFinally, because only \\(\\widehat{y_{i}}\\) depends on \\(\\theta\\), maximizing the expression above is equivalent to minimizing\n\\(\\sum_{i = 1}^{n}{(y_{i} - \\widehat{y_{i}})}^{2}\\)\nWe can recognize above the expression of the mean squared error (MSE).\nThus, in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error."
-  },
-  {
-    "objectID": "posts/streamable-audio-synthesis/index.html",
-    "href": "posts/streamable-audio-synthesis/index.html",
-    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
-    "section": "",
-    "text": "This post dives into how to perform streamable neural audio synthesis. It is based on the following two papers:\n\nRAVE: A variational autoencoder for fast and high-quality neural audio synthesis\n\nThis paper introduces the RAVE model which is a variational autoencoder trained in two stages:\n\nFirst the regular variational autoencoder training,\nFollowed by an additional adversarial training stage for the decoder.\n\nSee the Short introduction to the RAVE model post for more details.\n\nStreamable Neural Audio Synthesis With Non-Causal Convolutions\n\nThis paper introduces a post-training reconfiguration of convolutional networks that allows to turn them into streamable models (for example the RAVE model as it is introduced in the RAVE paper, is not directly streamable and thus, requires this type of post-training reconfiguration).\n\n\nThe Streamable Neural Audio Synthesis With Non-Causal Convolutions paper is about how to process a stream of audio data. Usually:\n\nThe input data comes as a sequence of audio chunks called buffers.\nEach buffer is processed sequentially.\nThe outputs are concatenated to produce the output audio stream."
-  },
-  {
-    "objectID": "posts/streamable-audio-synthesis/index.html#overlap-add",
-    "href": "posts/streamable-audio-synthesis/index.html#overlap-add",
-    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
-    "section": "Overlap-add",
-    "text": "Overlap-add\n\nProcess overlapping buffers and blend them to smooth boundaries.\nThis solution is compatible with any generative model.\nHowever, it requires redundant computations and leads to degraded quality during transition phases.\nIt also requires to cache buffers that are large enough to fill the receptive field of the model.\nAll of this results in high latency."
-  },
-  {
-    "objectID": "posts/streamable-audio-synthesis/index.html#causal-convolutions",
-    "href": "posts/streamable-audio-synthesis/index.html#causal-convolutions",
-    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
-    "section": "Causal convolutions",
-    "text": "Causal convolutions\n\nUse causal convolutional neural networks with cached padding as in the Streaming keyword spotting on mobile devices paper.\nThe idea is to put all the padding on the left side of the audio chunk (the side that corresponds to the values in the past).\n\n\n\n\n\n\n\nThen, each audio chunk (except the first one) is padded with the end of the previous audio chunk (hence the name causal, because each chunk is padded with values from the past but is not padded with values from the future).\nThis solution preserves continuity between chunks.\nHowever, it restricts the model architectures to causal convolutions which makes learning more complex because the model is not given access to the values in the future during training even though they are available (because training is not done in a streaming way)."
-  },
-  {
-    "objectID": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1",
-    "href": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1",
-    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
-    "section": "Convolution layers with \\(stride = 1\\)",
-    "text": "Convolution layers with \\(stride = 1\\)\nThe figure below represents 2 convolution layers before the causal reconfiguration\n\nLayer 1\n\n\\(stride = 1\\)\n\\(kernel\\ size = 3\\)\n\\(padding = (1,\\ 1)\\)\n\nLayer 2\n\n\\(stride = 1\\)\n\\(kernel\\ size = 3\\)\n\\(padding = (2,\\ 2)\\)\n\n\n\n\n\n\n\nLet us see how the causal reconfiguration is applied to each layer.\n\nLayer 1\n\nReconfiguration\nThe reconfiguration moves the right padding to the left of the graph and thus, introduces a delay \\(D_{1} = right\\ pad = 1\\) compared to the initial non causal graph.\n\n\n\n\n\n\n\nInference\nWe note \\(total\\ pad = left\\ pad + right\\ pad\\) the total amount of padding.\nFor layer 1\n\n\\(total\\ pad = 2\\).\n\nDuring inference, these 3 steps are applied:\n\nThe \\(total\\ pad\\) left pad values are filled with the last \\(total\\ pad\\) values of the previous buffer.\nThe last \\(total\\ pad\\) values of the current buffer are stored in the cache.\nAnd the convolution is applied.\n\nEach step corresponds to one line in the figure below, see here for the original implementation.\n\n\n\n\n\n\n\nCumulated delay\nHence, for convolution layers with \\(stride = 1\\)\n\n\\(D_{l} = right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = \\ {Cumulated\\ Delay}_{l - 1} + D_{l}\\)\n\nWhich gives at layer 1\n\n\\(D_{1} = right\\ pad = 1\\)\n\\({Cumulated\\ Delay}_{1} = \\ {Cumulated\\ Delay}_{0} + D_{1} = 0 + 1 = 1\\)\n\n\n\n\nLayer 2\n\nReconfiguration\nThe reconfiguration again moves the right padding to the left of the graph and thus, introduces a delay \\(D_{2} = right\\ pad = 2\\).\n\n\n\n\n\n\n\nInference\nFor layer 2\n\n\\(total\\ pad = 4\\)\n\nDuring inference, the same 3 steps as for layer 1 are applied.\n\n\n\n\n\n\n\nCumulated delay\nThe \\(Cumulated\\ Delay\\) at layer 2 is\n\n\\(D_{2} = right\\ pad = 2\\)\n\\({Cumulated\\ Delay}_{2} = \\ {Cumulated\\ Delay}_{1} + D_{2} = 1 + 2 = 3\\)\n\n\n\n\nSummary\nBelow is a summary of all the steps explained above.\n\n\n\n\n\nFor convolution layers with \\(stride = 1\\)\n\n\\(D_{l} = right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = \\ {Cumulated\\ Delay}_{l - 1} + D_{l}\\)"
-  },
-  {
-    "objectID": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1-1",
-    "href": "posts/streamable-audio-synthesis/index.html#convolution-layers-with-stride-1-1",
-    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
-    "section": "Convolution layers with \\(stride > 1\\)",
-    "text": "Convolution layers with \\(stride &gt; 1\\)\nThe figure below represents 2 convolution layers before the causal reconfiguration\n\nLayer 1\n\n\\(stride = 2\\)\n\\(kernel\\ size = 3\\)\n\\(padding = (1,\\ 1)\\)\n\nLayer 2\n\n\\(stride = 2\\)\n\\(kernel\\ size = 5\\)\n\\(padding = (2,\\ 2)\\)\n\n\n\n\n\n\n\nLet us see how the causal reconfiguration is applied to each layer.\n\nLayer 1\n\nReconfiguration\nThe reconfiguration moves the right padding to the left of the graph and thus, introduces a delay \\(right\\ pad = 1\\) compared to the initial non causal graph.\nHowever, as can be seen below, this delay breaks the time alignment between the layer input and the convolution stride.\nThis means that without additional reconfiguration, the time alignment between the layer input and output is not preserved.\n\n\n\n\n\nIn order to align again the initial first value of the input tensor with the convolution stride, an additional \\(stride\\ delay\\) needs to be introduced\n\n\n\n\n\nThis additional \\(stride\\ delay\\) is computed as follows\n\nLet us first consider the quantity \\(A\\).\n\n\\(A = (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride\\)\nAt layer 1, \\({Cumulated\\ Delay}_{0} = 0\\). Hence, it is not visible in the figure above. Please refer to layer 2 reconfiguration to see how \\(Cumulated\\ Delay\\) appears in the calculation.\n\n\\(stride\\ delay\\) could be defined as equal to \\(B = stride - A\\) but the case when \\(A = 0\\) should be handled properly.\n\nIndeed, when \\(A = 0\\), the first value of the input tensor is aligned with the convolution stride.\nThus, \\(stride\\ delay\\) should be \\(0\\).\nThis can be achieved by defining \\(stride\\ delay\\) as \\(stride\\ delay = B\\ \\%\\ stride\\).\nThis means, \\(stride\\ delay = B\\ \\%\\ stride = (stride - A)\\ \\%\\ stride\\) and\n\nIf \\(A = 0\\)\n\n\\(stride\\ delay = (stride - 0)\\ \\%\\ stride = 0\\)\n\nElse\n\nBecause \\(A = (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride\\)),\nWe have \\(0 &lt; A &lt; stride\\),\nAnd thus, \\(stride\\ delay = (stride - A)\\ \\%\\ stride = stride - A\\)\n\n\nGiving hence the expected behavior.\n\nTo summarize:\n\n\\(stride\\ delay = B\\ \\%\\ stride\\)\n\\(stride\\ delay = (stride - A)\\ \\%\\ stride\\)\n\\(stride\\ delay = (stride - (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\nThe implementation of this computation can be found here.\n\nFor layer 1\n\n\\(stride\\ delay\\)\n\\(= (stride - (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\\(= (2 - (0 + \\ 1)\\ \\%\\ 2)\\ \\%\\ 2\\)\n\\(= 1\\)\n\n\n\nInference\nFor layer 1\n\n\\(stride\\ delay = 1\\)\n\n\n\n\\(total\\ pad = 2\\)\n\nDuring inference, 3 additional steps are applied in addition to the 3 steps explained above when \\(stride = 1\\).\nThe first 3 steps handle the \\(stride\\ delay\\) introduced to preserve the stride alignment while the 3 other steps handle the causal reconfiguration of the right padding as seen before.\nThe 6 steps are:\n\nThe first \\(stride\\ delay\\) values are filled with the last \\(stride\\ delay\\) values of the previous buffer.\nThe last \\(stride\\ delay\\) values of the current buffer are stored in the cache.\nThe resulting tensor is cropped (the last \\(stride\\ delay\\) values are dropped).\n\nThis is done to preserve the time dimensionality of the input tensor.\nThe dropped values are not lost because they will be processed by the next buffer.\nHowever, a slight discontinuity seems to occur. See Notes on the continuity between buffers for more details.\n\nThe \\(total\\ pad\\) left pad values are filled with the last \\(total\\ pad\\) values of the previous buffer.\nThe last \\(total\\ pad\\) values of the current buffer are stored in the cache.\nAnd the convolution is applied.\n\nEach step corresponds to one line in the figure below, see here for the original implementation.\n\n\n\n\n\n\n\nCumulated delay\nFor convolution layers with \\(stride &gt; 1\\)\n\n\\(D_{l} = stride\\ delay + right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = ({Cumulated\\ Delay}_{l - 1} + D_{l})\\ //\\ stride\\)\nThe \\(//\\ stride\\) division allows to express the delay in the unit of the output space.\n\nIndeed, \\(1\\ output\\ sample = stride\\ input\\ samples\\)\n\n\nThis gives at layer 1\n\n\\(D_{1} = stride\\ delay + right\\ pad = 1 + 2 = 3\\)\n\\({Cumulated\\ Delay}_{1}\\)\n\\(= ({Cumulated\\ Delay}_{0} + D_{1})\\ //\\ stride\\)\n\\(= (0 + 1 + 1)\\ //\\ 2\\)\n\\(= 1\\)\n\n\n\n\nLayer 2\n\nReconfiguration\nAs for layer 1, in order to align again the initial first value of the input tensor with the convolution stride, an additional \\(stride\\ delay\\) needs to be introduced\n\n\n\n\n\nThis additional \\(stride\\ delay\\) is computed as follows\n\n\\(stride\\ delay\\)\n\\(= (stride - (Cumulated\\ Delay\\  + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\\(= (2 - (1 + \\ 2)\\ \\%\\ 2)\\ \\%\\ 2\\)\n\\(= 1\\)\n\n\n\nInference\nFor layer 2\n\n\\(stride\\ delay = 1\\)\n\n\n\n\\(total\\ pad = 4\\)\n\nDuring inference, the same 6 steps as for layer 1 are applied.\n\n\n\n\n\n\n\nCumulated delay\nThe \\(Cumulated\\ Delay\\) at layer 2 is\n\n\\(D_{2} = stride\\ delay + right\\ pad = 1 + 2 = 3\\)\n\\({Cumulated\\ Delay}_{2}\\)\n\\(= ({Cumulated\\ Delay}_{1} + D_{2})\\ //\\ stride\\)\n\\(= (1 + 3)\\ //\\ 2\\)\n\\(= 2\\)\n\n\n\n\nSummary\nBelow is a summary of all the steps explained above.\n\n\n\n\n\nFor convolution layers with \\(stride &gt; 1\\)\n\n\\(stride\\ delay = (stride - ({Cumulated\\ Delay}_{l - 1} + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\n\n\n\\(D_{l} = stride\\ delay + right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = ({Cumulated\\ Delay}_{l - 1} + D_{l})\\ //\\ stride\\)\n\n\n\nNotes on the continuity between buffers\n\nThe explanations given in this Convolution layers with stride&gt;1 section correspond to the Streamable Neural Audio Synthesis With Non-Causal Convolutions paper and its official implementation RAVE v1.\nThe proposed solution allows to make the convolutions causal while maintaining the stride alignment.\nHowever, a slight discontinuity in the processing of the input audio stream seems to remain.\nThe figure below shows how 2 contiguous buffers are processed.\n\nAs can be seen, the stride alignment is correct (green rectangles).\nHowever, the stride between the receptive fields of the layers over their input stream seems not to be constant around the point of contact between two buffers (red rectangles).\n\n\n\n\n\n\n\n\nDespite this possible discontinuity, the Streamable Neural Audio Synthesis With Non-Causal Convolutions paper reports no difference between the outputs of the studied RAVE model before and after the causal reconfiguration (figure 8 of the paper).\nThis suggests that either the discontinuity has a negligible effect on the output quality or that I have missed something and there is no such discontinuity."
-  },
-  {
-    "objectID": "posts/streamable-audio-synthesis/index.html#convolution-layers-summary",
-    "href": "posts/streamable-audio-synthesis/index.html#convolution-layers-summary",
-    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
-    "section": "Convolution layers summary",
-    "text": "Convolution layers summary\nFor convolution layers with \\(stride &gt; 1\\)\n\n\\(stride\\ delay = (stride - ({Cumulated\\ Delay}_{l - 1} + \\ right\\ pad)\\ \\%\\ stride)\\ \\%\\ stride\\)\n\n\n\n\\(D_{l} = stride\\ delay + right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = ({Cumulated\\ Delay}_{l - 1} + D_{l})\\ //\\ stride\\)\n\nWhich, simplifies for \\(stride = 1\\) to\n\n\\(stride\\ delay = 0\\) (because \\(x\\ \\%\\ 1 = 0\\))\n\\(D_{l} = right\\ pad\\)\n\\({Cumulated\\ Delay}_{l} = {Cumulated\\ Delay}_{l - 1} + D_{l}\\)"
-  },
-  {
-    "objectID": "posts/streamable-audio-synthesis/index.html#parallel-branches",
-    "href": "posts/streamable-audio-synthesis/index.html#parallel-branches",
-    "title": "Streamable Neural Audio Synthesis With Non-Causal Convolutions",
-    "section": "Parallel branches",
-    "text": "Parallel branches\nSimilarly the convolution layers, parallel branches in the computational graph need to be handled after the causal reconfiguration.\nIndeed, each branch introduces its own delay, depending on the layers that compose it.\nBefore merging parallel branches, for example in the element-wise sum layer in a residual connection, all the parallel branches need to be aligned to compensate for their different individual delays.\nThis is simply done by aligning all the parallel branches to the maximum delay. Hence, an additional \\({Alignment\\ Delay}_{i}\\) is added to each branch \\(i\\):\n\\({Alignment\\ Delay}_{i} = Maximum\\ Cumulated\\ Delay\\  - {Cumulated\\ Delay}_{i}\\)\nwhere \\(Maximum\\ Cumulated\\ Delay\\) is the cumulated delay of the branch with the largest cumulated delay."
   }
 ]

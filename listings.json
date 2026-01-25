@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/vector-quantization/index.html",
       "/posts/streamable-audio-synthesis/index.html",
       "/posts/rave_introduction/index.html",
       "/posts/expectation-and-derivative/index.html",
