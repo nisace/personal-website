@@ -4,6 +4,7 @@ description: |
   Introduction to Vector Quantization (VQ).
 date: "2026-01-25"
 categories: [Machine Learning]
+image: media/drawing_2.png
 ---
 
 
