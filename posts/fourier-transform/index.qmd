@@ -108,11 +108,9 @@ This blog post is about the Fourier transform. It is organized as follows:
 
 - The Fourier transform coefficients are thus complex numbers.
 
-<!-- -->
-
 - At frequency $\xi$, the Fourier transform coefficient is computed as follows:
 
-$F(\xi) = \int_{- \infty}^{\infty}f(t)e^{- i2\pi\xi t}dt$ (1)
+  $F(\xi) = \int_{- \infty}^{\infty}f(t)e^{- i2\pi\xi t}dt$ (1)
 
 - The amplitude $\left| F(\xi) \right|$ indicates how strongly the oscillation of frequency $\xi$ is present in the signal.
 
@@ -136,10 +134,8 @@ $F(\xi) = \int_{- \infty}^{\infty}f(t)e^{- i2\pi\xi t}dt$ (1)
 
 - Each oscillation of frequency $\xi$ is weighted by its Fourier transform coefficient $F(\xi)$.
 
-$f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi$ (2)
+  $f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi$ (2)
 
 ### Practical note
 
 - The DFT / FFT / STFT post explains how the Fourier transform coefficients are computed in practice.
-
-- The Spectrogram, Mel-spectrogram and MFCC post explains how the Fourier transform coefficients are used in practice.
