@@ -107,15 +107,15 @@ In a regression setting
 
     and
 
-    $p(y_{i}\ |\ x_{i},\ \theta)\  = \frac{1}{}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}$
+    $p(y_{i}\ |\ x_{i},\ \theta)\  = \frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}$
 
-- Thus, $L(\theta)\  \propto \ \prod_{i = 1}^{n}\frac{1}{}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}$
+- Thus, $L(\theta)\  \propto \ \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}$
 
 - And maximizing the expression above is equivalent to minimizing ${(y_{i} - \widehat{y_{i}})}^{2}$
 
 - Taking the $\log$ of the expression above gives
 
-  $\sum_{i = 1}^{n}\log\frac{1}{} - \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}$
+  $\sum_{i = 1}^{n}\log\frac{1}{\sqrt{2\pi\sigma^{2}}} - \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}$
 
 - Finally, because only $\widehat{y_{i}}$ depends on $\theta$, maximizing the expression above is equivalent to minimizing
 
