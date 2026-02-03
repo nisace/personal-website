@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-11">
-<meta name="description" content="Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.">
+<meta name="dcterms.date" content="2026-02-03">
+<meta name="description" content="How to go from the Fourier series to the Fourier transform.">
 
-<title>Maximum Likelihood Estimation and loss functions – Nisace’s website</title>
+<title>From the Fourier series to the Fourier transform – Nisace’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -140,16 +140,24 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#maximum-likelihood-estimation" id="toc-maximum-likelihood-estimation" class="nav-link active" data-scroll-target="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#fourier-series" id="toc-fourier-series" class="nav-link" data-scroll-target="#fourier-series">Fourier series</a>
   <ul class="collapse">
-  <li><a href="#general-setting" id="toc-general-setting" class="nav-link" data-scroll-target="#general-setting">General setting</a></li>
-  <li><a href="#supervised-learning-setting" id="toc-supervised-learning-setting" class="nav-link" data-scroll-target="#supervised-learning-setting">Supervised learning setting</a></li>
+  <li><a href="#fouriers-intuition" id="toc-fouriers-intuition" class="nav-link" data-scroll-target="#fouriers-intuition">Fourier’s intuition</a></li>
+  <li><a href="#fourier-series-1" id="toc-fourier-series-1" class="nav-link" data-scroll-target="#fourier-series-1">Fourier series</a></li>
+  <li><a href="#fourier-series-coefficients" id="toc-fourier-series-coefficients" class="nav-link" data-scroll-target="#fourier-series-coefficients">Fourier series coefficients</a></li>
   </ul></li>
-  <li><a href="#relationship-to-loss-functions" id="toc-relationship-to-loss-functions" class="nav-link" data-scroll-target="#relationship-to-loss-functions">Relationship to loss functions</a>
+  <li><a href="#from-the-fourier-series-to-the-fourier-transform" id="toc-from-the-fourier-series-to-the-fourier-transform" class="nav-link" data-scroll-target="#from-the-fourier-series-to-the-fourier-transform">From the Fourier Series to the Fourier Transform</a></li>
+  <li><a href="#from-sinecosine-to-complex-exponentials" id="toc-from-sinecosine-to-complex-exponentials" class="nav-link" data-scroll-target="#from-sinecosine-to-complex-exponentials">From sine/cosine to complex exponentials</a>
   <ul class="collapse">
-  <li><a href="#classification-setting" id="toc-classification-setting" class="nav-link" data-scroll-target="#classification-setting">Classification setting</a></li>
-  <li><a href="#regression-setting" id="toc-regression-setting" class="nav-link" data-scroll-target="#regression-setting">Regression setting</a></li>
+  <li><a href="#fourier-series-intuition" id="toc-fourier-series-intuition" class="nav-link" data-scroll-target="#fourier-series-intuition">Fourier series intuition</a></li>
+  <li><a href="#eulers-formula" id="toc-eulers-formula" class="nav-link" data-scroll-target="#eulers-formula">Euler’s formula</a></li>
+  <li><a href="#plug-into-fourier-series-intuition" id="toc-plug-into-fourier-series-intuition" class="nav-link" data-scroll-target="#plug-into-fourier-series-intuition">Plug into <strong>Fourier series intuition</strong></a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
+  <li><a href="#from-fourier-series-intuition-to-fourier-series-coefficients" id="toc-from-fourier-series-intuition-to-fourier-series-coefficients" class="nav-link" data-scroll-target="#from-fourier-series-intuition-to-fourier-series-coefficients">From Fourier series intuition to Fourier series coefficients</a></li>
+  <li><a href="#from-fourier-decomposition-to-fourier-transform-coefficients" id="toc-from-fourier-decomposition-to-fourier-transform-coefficients" class="nav-link" data-scroll-target="#from-fourier-decomposition-to-fourier-transform-coefficients">From Fourier decomposition to Fourier transform coefficients</a></li>
   <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul>
 </nav>
@@ -159,15 +167,15 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Maximum Likelihood Estimation and loss functions</h1>
+<h1 class="title">From the Fourier series to the Fourier transform</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Statistics</div>
+    <div class="quarto-category">Signal Processing</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    <p>Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.</p>
+    <p>How to go from the Fourier series to the Fourier transform.</p>
   </div>
 </div>
 
@@ -178,7 +186,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 11, 2025</p>
+      <p class="date">February 3, 2026</p>
     </div>
   </div>
   
@@ -190,99 +198,213 @@ window.Quarto = {
 </header>
 
 
-<p>In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we will show that in a supervised learning setting, maximizing the likelihood (MLE) of the observed data <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> is equivalent to:</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <ul>
-<li><p>Maximizing <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span>.</p></li>
-<li><p>Minimizing the cross entropy loss in a classification setting.</p></li>
-<li><p>Minimizing the mean squared error (MSE) in a regression setting and under the assumption of normally distributed errors.</p></li>
-</ul>
-<section id="maximum-likelihood-estimation" class="level1">
-<h1>Maximum Likelihood Estimation</h1>
-<section id="general-setting" class="level2">
-<h2 class="anchored" data-anchor-id="general-setting">General setting</h2>
-<p>The Maximum Likelihood Estimation (MLE) seeks to find the parameters <span class="math inline">\(\theta\)</span> of a probabilistic model that maximize the likelihood <span class="math inline">\(L\)</span> of the observed data <span class="math inline">\(x\)</span>. If we consider that <span class="math inline">\(x\)</span> is composed of <span class="math inline">\(n\)</span> independent and identically distributed samples <span class="math inline">\(x_{i}\)</span>, <span class="math inline">\(L\)</span> can be expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i}\ |\ \theta)\)</span></p>
-<p>By convenience and for numerical stability reasons, the <span class="math inline">\(\log\)</span> of <span class="math inline">\(L(\theta)\)</span> is often maximized instead of <span class="math inline">\(L(\theta)\)</span> directly.</p>
-<p><span class="math inline">\(log(L(\theta)) = \sum_{i = 1}^{n}log\ p(x_{i}\ |\ \theta)\)</span></p>
-</section>
-<section id="supervised-learning-setting" class="level2">
-<h2 class="anchored" data-anchor-id="supervised-learning-setting">Supervised learning setting</h2>
-<p>In a supervised learning setting:</p>
-<ul>
-<li>The samples are pairs <span class="math inline">\((x_{i},y_{i})\)</span> of observed sample <span class="math inline">\(x_{i}\)</span> and label <span class="math inline">\(y_{i}\)</span>.</li>
-</ul>
-<p>Thus, the likelihood is expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i},\ y_{i}\ |\ \theta)\)</span></p>
-<p>which can be rearranged as</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span></p>
-<ul>
-<li>Moreover, in a supervised learning setting, the model does not try to model the data <span class="math inline">\(x_{i}\)</span> but only the label <span class="math inline">\(y_{i}\)</span> based on <span class="math inline">\(x_{i}\)</span>.</li>
-</ul>
-<p>Thus, <span class="math inline">\(p(x_{i})\)</span> does not depend on <span class="math inline">\(\theta\)</span> and maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span> with respect to <span class="math inline">\(\theta\)</span> is equivalent to maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\)</span>.</p>
-<p><span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\)</span></p>
-<p>In other terms, in a supervised learning setting, <strong>maximizing the likelihood</strong> <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> <strong>is equivalent to maximizing</strong> <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span><strong>.</strong></p>
-</section>
-</section>
-<section id="relationship-to-loss-functions" class="level1">
-<h1>Relationship to loss functions</h1>
-<section id="classification-setting" class="level2">
-<h2 class="anchored" data-anchor-id="classification-setting">Classification setting</h2>
-<p>In a classification setting with <span class="math inline">\(C\)</span> classes:</p>
-<ul>
-<li><p>The label <span class="math inline">\(c_{i}\)</span> is the class index for sample <span class="math inline">\(i\)</span>.</p>
-<ul>
-<li><p>We note <span class="math inline">\(y_{i}\)</span> the corresponding one-hot vector of size <span class="math inline">\(C\)</span> with elements</p>
-<ul>
-<li><p><span class="math inline">\(y_{i,k} = 1\)</span> for <span class="math inline">\(k = c_{i}\)</span></p></li>
-<li><p><span class="math inline">\(y_{i,k} = 0\)</span> for <span class="math inline">\(k \neq c_{i}\)</span></p></li>
-</ul></li>
-</ul></li>
-<li><p>The model outputs the estimated probabilities of each class in a vector <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span> of size <span class="math inline">\(C\)</span>, i.e.</p>
-<ul>
-<li><p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  \triangleq \ \widehat{y_{i,c_{i}}}\)</span></p></li>
-<li><p>Which can also be written as</p>
-<p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  = \prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
-</ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>Finally, maximizing the expression above is equivalent to minimizing its negative, i.e</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>We can recognize above the expression of the <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss">cross entropy loss</a>.</p>
-<ul>
-<li><p>Using the fact that <span class="math inline">\(y_{i,k} = 1\)</span> if <span class="math inline">\(k = c_{i}\)</span> and <span class="math inline">\(y_{i,k} = O\)</span> for <span class="math inline">\(k \neq c_{i}\)</span>, the expression can be simplified to</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}log\ \widehat{y_{i,c_{i}}}\)</span></p></li>
-</ul></li>
-<li><p>Thus, <strong>in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss</strong>.</p></li>
-<li><p>To understand why the formula <span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span> is called the cross entropy loss, refer to the <a href="../../posts/information-theory/index.html#where-does-the-name-of-the-cross-entropy-loss-come-from">dedicated section</a> in the <a href="../../posts/information-theory/index.html">Information Theory</a> blog post.</p></li>
+<li><p><a href="../../posts/fourier-transform/index.html">The Fourier transform</a> blog post gives the definition of the Fourier transform.</p></li>
+<li><p>But it does not explain where it comes from.</p></li>
+<li><p>This blog post explains where the Fourier transform comes from.</p></li>
 </ul>
 </section>
-<section id="regression-setting" class="level2">
-<h2 class="anchored" data-anchor-id="regression-setting">Regression setting</h2>
-<p>In a regression setting</p>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<p>The post is organized as follows</p>
 <ul>
-<li><p>The label is <span class="math inline">\(y_{i}\)</span> for sample <span class="math inline">\(i\)</span>.</p></li>
-<li><p>The model outputs a prediction <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span>.</p>
+<li><p>The <a href="#fourier-series-1">Fourier series</a> section explains that</p>
 <ul>
-<li><p>If we assume that the error follows a normal distribution, we have</p>
-<p><span class="math inline">\(y_{i} \sim N(\widehat{y_{i}},\sigma^{2})\)</span></p>
-<p>and</p>
-<p><span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\  = \frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
+<li><p>Fourier had the intuition (but no proof) for the following equality for periodic signals (see <a href="#fouriers-intuition">Fourier’s intuition</a>)</p>
+<p><span class="math inline">\(f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack\)</span> (1)</p></li>
 </ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
-<li><p>And maximizing the expression above is equivalent to minimizing <span class="math inline">\({(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\log\frac{1}{\sqrt{2\pi\sigma^{2}}} - \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}\)</span></p></li>
-<li><p>Finally, because only <span class="math inline">\(\widehat{y_{i}}\)</span> depends on <span class="math inline">\(\theta\)</span>, maximizing the expression above is equivalent to minimizing</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}{(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>We can recognize above the expression of the mean squared error (MSE).</p></li>
-<li><p>Thus, <strong>in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error</strong>.</p></li>
+<li><p>This expression can be rewritten as (see <a href="#from-sinecosine-to-complex-exponentials">From sine/cosine to complex exponentials</a>)</p>
+<p><span class="math inline">\(f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}\)</span> (2)</p></li>
+<li><p>Which makes</p>
+<ul>
+<li><p>Complex exponentials appear.</p></li>
+<li><p>Positive and negative frequencies appear.</p></li>
+</ul></li>
+<li><p>The corresponding Fourier series coefficients can be derived from orthogonality as (see <a href="#from-fourier-series-intuition-to-fourier-series-coefficients">From Fourier series intuition to Fourier series coefficients</a>)</p>
+<p><span class="math inline">\(c_{n} = \frac{1}{T}\int_{0}^{T}f(t)\ e^{- i2\pi n\xi t}dt\)</span></p></li>
+<li><p>The <a href="#from-the-fourier-series-to-the-fourier-transform">From the Fourier Series to the Fourier Transform</a> section explains that</p>
+<ul>
+<li><p>The <a href="#fourier-series-1">Fourier series</a> intuition can be extended to a non-periodic signal by seeing it as the limit of a periodic signal as its period <span class="math inline">\(T \rightarrow \infty\)</span>.</p></li>
+<li><p>This leads to (see <a href="#from-the-fourier-series-to-the-fourier-transform">From the Fourier Series to the Fourier Transform</a>)</p>
+<p><span class="math inline">\(f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi\)</span> (3)</p></li>
+</ul></li>
+<li><p>Note that even though expression (3) is the limit of the Fourier series (expression (2)) as <span class="math inline">\(T \rightarrow \infty\)</span>, it is <strong>not</strong> called the Fourier transform.</p>
+<ul>
+<li><p>In fact, it is the inverse Fourier transform instead.</p></li>
+<li><p>The Fourier transform is the function <span class="math inline">\(F(\xi)\)</span> of <span class="math inline">\(\xi\)</span> (i.e.&nbsp;the Fourier transform coefficients).</p></li>
+</ul></li>
+<li><p>Similarly to the Fourier series, this leads to the Fourier transform coefficients</p>
+<p><span class="math inline">\(F(\xi) = \int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\xi t}dt\)</span></p></li>
 </ul>
 </section>
+<section id="fourier-series" class="level1">
+<h1>Fourier series</h1>
+<ul>
+<li>This section explains Fourier's intuition that led to the Fourier series and the Fourier series coefficients.</li>
+</ul>
+<section id="fouriers-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="fouriers-intuition">Fourier’s intuition</h2>
+<ul>
+<li><p>Fourier had the intuition that any periodic signal with period <span class="math inline">\(T\)</span> (or frequency <span class="math inline">\(\xi = \frac{1}{T}\)</span>) can be decomposed as an infinite sum of oscillations at frequencies that are integer multiples of <span class="math inline">\(\xi\)</span>.</p></li>
+<li><p><a href="https://proofwiki.org/wiki/Definition:Fourier_Series/Historical_Note">He did not prove this intuition</a>.</p></li>
+<li><p>He used it as an assumption and derived the Fourier series coefficients from this assumption.</p></li>
+<li><p>The empirical success suggested that the assumption was correct.</p></li>
+<li><p>But mathematical proof came later.</p>
+<ul>
+<li><p>Dirichlet provided the first rigorous proof in 1829, valid under certain conditions now called the Dirichlet conditions.</p></li>
+<li><p>This proof is only valid for Fourier series / periodic signals.</p></li>
+<li><p>Hence, this proof does not apply to modern Fourier analysis of non-periodic signals.</p></li>
+<li><p>One must refer to the convergence proof of the inverse Fourier transform instead (see the <a href="../../posts/fourier-transform/index.html#signal-decomposition">Signal decomposition</a> section of <a href="../../posts/fourier-transform/index.html">The Fourier transform</a> blog post).</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="fourier-series-1" class="level2">
+<h2 class="anchored" data-anchor-id="fourier-series-1">Fourier series</h2>
+<ul>
+<li><p>Fourier’s assumption</p>
+<ul>
+<li><p>For a periodic signal with period <span class="math inline">\(T\)</span> (or frequency <span class="math inline">\(\xi = \frac{1}{T}\)</span>)</p></li>
+<li><p>and with <span class="math inline">\(n\)</span> an integer.</p>
+<p><span class="math inline">\(f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack\)</span> (1)</p></li>
+</ul></li>
+<li><p>As explained in the <a href="../../posts/fourier-transform/index.html#representations-of-an-oscillation">Representations of an oscillation</a> section of the <a href="../../posts/fourier-transform/index.html">Fourier transform</a> blog post, complex exponentials are easier to manipulate.</p></li>
+<li><p>As shown in the <a href="#from-sinecosine-to-complex-exponentials">From sine/cosine to complex exponentials</a> section below, expression (1) above be rewritten as</p>
+<p><span class="math inline">\(f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}\)</span> (2)</p></li>
+</ul>
+</section>
+<section id="fourier-series-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="fourier-series-coefficients">Fourier series coefficients</h2>
+<ul>
+<li><p>The <a href="#from-fourier-series-intuition-to-fourier-series-coefficients">From Fourier series intuition to Fourier series coefficients</a> shows that</p>
+<p><span class="math inline">\(c_{n} = \frac{1}{T}\int_{0}^{T}f(t)\ e^{- i2\pi n\xi t}dt\)</span></p></li>
+</ul>
+</section>
+</section>
+<section id="from-the-fourier-series-to-the-fourier-transform" class="level1">
+<h1>From the Fourier Series to the Fourier Transform</h1>
+<ul>
+<li><p>This section explains how the Fourier transform can then be derived from the Fourier series.</p></li>
+<li><p>In expression (2) above, the infinite sum is discrete.</p>
+<ul>
+<li><p>It is the sum over the integer multiples of <span class="math inline">\(\xi\)</span>.</p></li>
+<li><p>All the terms in the sum are evenly spaced every <span class="math inline">\(\xi\)</span>.</p></li>
+<li><p>Where <span class="math inline">\(\xi = \frac{1}{T}\)</span> and <span class="math inline">\(T\)</span> is the period of the periodic signal.</p></li>
+</ul></li>
+<li><p>A non-periodic signal can be seen as the limit of a periodic signal as its period <span class="math inline">\(T \rightarrow \infty\)</span>.</p>
+<ul>
+<li><p>As <span class="math inline">\(T \rightarrow \infty\)</span>,</p></li>
+<li><p><span class="math inline">\(\xi = \frac{1}{T} \rightarrow 0\)</span>.</p></li>
+<li><p>Hence, the spacing between the terms in the sum tends toward <span class="math inline">\(0\)</span>,</p></li>
+<li><p>and the sum becomes an integral.</p></li>
+<li><p>This gives</p>
+<p><span class="math inline">\(f(t) = \int_{- \infty}^{\infty}c_{\xi}e^{i2\pi\xi t}d\xi\)</span></p></li>
+</ul></li>
+<li><p>If <span class="math inline">\(c_{\xi}\)</span> is written as <span class="math inline">\(F(\xi)\)</span> instead, this gives</p>
+<p><span class="math inline">\(f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi\)</span> (3)</p></li>
+<li><p>Which is the same as expression (2) in the <a href="../../posts/fourier-transform/index.html">Fourier transform</a> blog post.</p></li>
+<li><p>Note that even though expression (3) is the limit of the Fourier series (expression (2)) as <span class="math inline">\(T \rightarrow \infty\)</span>, it is <strong>not</strong> called the Fourier transform.</p>
+<ul>
+<li><p>In fact, it is the inverse Fourier transform instead.</p></li>
+<li><p>The Fourier transform is the function <span class="math inline">\(F(\xi)\)</span> of <span class="math inline">\(\xi\)</span> (i.e.&nbsp;the Fourier transform coefficients).</p></li>
+</ul></li>
+<li><p>Hence, moving from periodic to non-periodic signals</p>
+<ul>
+<li><p>Let <span class="math inline">\(T \rightarrow \infty\)</span>,</p></li>
+<li><p>Moves from the Fourier series to the Fourier transform,</p></li>
+<li><p>Moves from discrete frequencies to continuous frequencies,</p></li>
+<li><p>Moves from sums to integrals.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="from-sinecosine-to-complex-exponentials" class="level1">
+<h1>From sine/cosine to complex exponentials</h1>
+<section id="fourier-series-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="fourier-series-intuition">Fourier series intuition</h2>
+<ul>
+<li><span class="math inline">\(f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack\)</span> (1)</li>
+</ul>
+</section>
+<section id="eulers-formula" class="level2">
+<h2 class="anchored" data-anchor-id="eulers-formula">Euler’s formula</h2>
+<ul>
+<li><p><span class="math inline">\(e^{ix} = cos(x) + i\ sin(x)\)</span></p></li>
+<li><p>Thus,</p>
+<ul>
+<li><p><span class="math inline">\(cos(x) = \frac{e^{ix} + \ e^{- ix}}{2}\)</span></p></li>
+<li><p><span class="math inline">\(sin(x) = \frac{e^{ix} - \ e^{- ix}}{2i}\)</span></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="plug-into-fourier-series-intuition" class="level2">
+<h2 class="anchored" data-anchor-id="plug-into-fourier-series-intuition">Plug into <strong>Fourier series intuition</strong></h2>
+<ul>
+<li><p><span class="math inline">\(f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack\)</span> (1)</p>
+<p><span class="math inline">\(f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}\frac{e^{i2\pi n\xi} + \ e^{- i2\pi n\xi}}{2} + b_{n}\frac{e^{i2\pi n\xi} - \ e^{- i2\pi n\xi}}{2i} \right\rbrack\)</span></p>
+<p><span class="math inline">\(f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack (\frac{a_{n}}{2} + \frac{b_{n}}{2i})e^{i2\pi n\xi} + (\frac{a_{n}}{2} - \frac{b_{n}}{2i})e^{- i2\pi n\xi} \right\rbrack\)</span></p>
+<p><span class="math inline">\(f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}\)</span> (2)</p></li>
+<li><p>For</p>
+<p><span class="math inline">\(c_{n} = (\frac{a_{n}}{2} + \frac{b_{n}}{2i})\)</span> for <span class="math inline">\(n &gt; 0\)</span></p>
+<p><span class="math inline">\(c_{- n} = (\frac{a_{n}}{2} - \frac{b_{n}}{2i})\)</span> for <span class="math inline">\(n &gt; 0\)</span></p>
+<p><span class="math inline">\(c_{0} = \frac{a_{0}}{2}\)</span></p></li>
+</ul>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<ul>
+<li><p><span class="math inline">\(f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack\)</span> (1)</p>
+<p>is simplified to</p>
+<p><span class="math inline">\(f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}\)</span> (2)</p></li>
+<li><p>Complex exponentials appear.</p></li>
+<li><p>Positive and negative frequencies appear.</p></li>
+</ul>
+</section>
+</section>
+<section id="from-fourier-series-intuition-to-fourier-series-coefficients" class="level1">
+<h1>From Fourier series intuition to Fourier series coefficients</h1>
+<ul>
+<li><p><span class="math inline">\(f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}\)</span> (2)</p></li>
+<li><p>Multiply by <span class="math inline">\(e^{- i2\pi m\xi t}\)</span> and take the integral on both sides</p>
+<p><span class="math inline">\(\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt = \int_{0}^{T}\sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi(n - m)\xi t}dt\)</span></p>
+<p><span class="math inline">\(\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt = \sum_{n = - \infty}^{\infty}c_{n}\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt\)</span></p></li>
+<li><p>Observe that <span class="math inline">\(\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt = T\)</span> for <span class="math inline">\(n \neq m\)</span> else <span class="math inline">\(0\)</span> (orthogonality of the <span class="math inline">\(e^{i2\pi k\xi t}\)</span> functions)</p>
+<ul>
+<li><p>If <span class="math inline">\(n \neq m\)</span></p>
+<p><span class="math inline">\(\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt\)</span></p>
+<p><span class="math inline">\(= \left\lbrack \frac{1}{i2\pi(n - m)\xi}e^{i2\pi(n - m)\xi t} \right\rbrack_{0}^{T}\)</span></p>
+<p><span class="math inline">\(= \frac{1}{i2\pi(n - m)\xi}(e^{i2\pi(n - m)\xi T} - 1)\)</span></p>
+<p><span class="math inline">\(= \frac{1}{i2\pi(n - m)\xi}(e^{i2\pi(n - m)} - 1)\)</span> because <span class="math inline">\(\xi = \frac{1}{T}\)</span></p>
+<p><span class="math inline">\(= \frac{1}{i2\pi(n - m)\xi}(1 - 1)\)</span></p>
+<p><span class="math inline">\(= 0\)</span></p></li>
+<li><p>if <span class="math inline">\(n = m\)</span></p>
+<p><span class="math inline">\(\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt\)</span></p>
+<p><span class="math inline">\(= \int_{0}^{T}1\ dt\)</span></p>
+<p><span class="math inline">\(= T\)</span></p></li>
+</ul></li>
+<li><p>Thus,</p>
+<p><span class="math inline">\(\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt = \sum_{n = - \infty}^{\infty}c_{n}\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt = c_{m}\ T\)</span></p>
+<p><span class="math inline">\(c_{m} = \frac{1}{T}\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt\)</span></p></li>
+</ul>
+</section>
+<section id="from-fourier-decomposition-to-fourier-transform-coefficients" class="level1">
+<h1>From Fourier decomposition to Fourier transform coefficients</h1>
+<ul>
+<li><p><span class="math inline">\(f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi\)</span> (3)</p></li>
+<li><p>Multiply by <span class="math inline">\(e^{- i2\pi\nu t}\)</span> and take the integral on both sides</p>
+<p><span class="math inline">\(\int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt = \int_{- \infty}^{\infty}\left( \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi \right)e^{- i2\pi\nu t}dt\)</span></p>
+<p><span class="math inline">\(\int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt = \int_{- \infty}^{\infty}F(\xi)\left( \int_{- \infty}^{\infty}e^{i2\pi(\xi - \nu)t}dt \right)d\xi\)</span></p></li>
+<li><p>Observe that <span class="math inline">\(\int_{- \infty}^{\infty}e^{i2\pi(\xi - \nu)t}dt = \delta(\xi - \nu)\)</span> (orthogonality of the <span class="math inline">\(e^{i2\pi\xi t}\)</span> functions)</p></li>
+<li><p>Thus,</p>
+<p><span class="math inline">\(\int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt = \int_{- \infty}^{\infty}F(\xi)\left( \int_{- \infty}^{\infty}e^{i2\pi(\xi - \nu)t}dt \right)d\xi = F(\nu)\)</span></p>
+<p><span class="math inline">\(F(\nu) = \int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt\)</span></p></li>
+</ul>
 </section>
 <section id="sources" class="level1">
 <h1>Sources</h1>
-<p><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss"><u>https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss</u></a></p>
+<ul>
+<li><a href="https://proofwiki.org/wiki/Definition:Fourier_Series/Historical_Note">https://proofwiki.org/wiki/Definition:Fourier_Series/Historical_Note</a></li>
+</ul>
 
 
 </section>

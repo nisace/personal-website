@@ -182,6 +182,258 @@
     "text": "Dilated convolutions\nhttps://medium.com/data-science/types-of-convolutions-in-deep-learning-717013397f4d\nhttps://medium.com/@akp83540/dilation-rate-in-a-convolution-operation-a7143e437654"
   },
   {
+    "objectID": "posts/inner-product-convolution-correlation/index.html",
+    "href": "posts/inner-product-convolution-correlation/index.html",
+    "title": "Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients",
+    "section": "",
+    "text": "Conjugate of \\(f\\)\n\n\\(\\overline{f}\\)\n\nTime-flipped \\(f\\)\n\n\\(f_{- t}(t) = f( - t)\\)\n\nTime-flipped conjugate of \\(f\\)\n\n\\(\\widehat{f}(t) = \\overline{f( - t)}\\)"
+  },
+  {
+    "objectID": "posts/inner-product-convolution-correlation/index.html#definitions",
+    "href": "posts/inner-product-convolution-correlation/index.html#definitions",
+    "title": "Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients",
+    "section": "Definitions",
+    "text": "Definitions\n\n\n\n\n\n\n\n\n\n\n\nFormula\nConjugate \\(\\overline{g}\\)\nTime-flip \\(g_{- t}\\)\nType\n\n\nCross-correlation (Definition 1)\n\\((f \\star g)(t) = \\int_{- \\infty}^{\\infty}f(\\tau)\\overline{g(\\tau + t)}\\ d\\tau\\)\n✅\n❌\nFunction\n\n\nCorrelation\n\\((f \\star g)(0) = \\int_{- \\infty}^{\\infty}f(\\tau)\\overline{g(\\tau)}\\ d\\tau\\)\n✅\n❌\nScalar\n\n\nConvolution\n\\((f \\ast g)(t) = \\int_{- \\infty}^{\\infty}f(\\tau)g(t - \\tau)\\ d\\tau\\)\n❌\n✅\nFunction\n\n\nInner product\n\\(\\langle f,g\\rangle = \\int_{- \\infty}^{\\infty}f(\\tau)\\overline{g(\\tau)}\\ d\\tau\\)\n✅\n❌\nScalar\n\n\nFourier coefficients.\n\\(F(\\xi) = \\int_{- \\infty}^{\\infty}f(\\tau)e^{- i2\\pi\\xi\\tau}d\\tau\\)\n-\n-\nScalar"
+  },
+  {
+    "objectID": "posts/inner-product-convolution-correlation/index.html#relationships",
+    "href": "posts/inner-product-convolution-correlation/index.html#relationships",
+    "title": "Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients",
+    "section": "Relationships",
+    "text": "Relationships\n\n\n\n\n\n\n\n\n\nInner product and convolution\nCross-correlation\n\n\nGeneral case\n\\(\\langle f,g\\rangle = (f \\ast \\widehat{g})(0)\\)\n\\(= (f \\star g)(0)\\)\nunder (Definition 1) only\n\n\nReal-valued functions\n\\(\\langle f,g\\rangle = (f \\ast \\widehat{g})(0) = (f \\ast g_{- t})(0)\\)\n\\(= (f \\star g)(0)\\)\nalways\n\n\nFourier coefficients\n\\(F(\\xi) = \\langle f,e^{i2\\pi\\xi\\tau}\\rangle = (f \\ast e^{i2\\pi\\xi\\tau})(0)\\)\nbecause \\(\\widehat{e^{i2\\pi\\xi\\tau}} = e^{i2\\pi\\xi\\tau}\\)\n\\(= (f \\star e^{i2\\pi\\xi\\tau})(0)\\)\nunder (Definition 1) only\n\n\n\n\nThe inner product is equal to\n\nThe convolution with the time-flipped conjugate at \\(t = 0\\),\nThe cross-correlation under (Definition 1) at \\(t = 0\\),\n\ni.e. the correlation under (Definition 1).\n\n\\(\\langle f,g\\rangle = (f \\ast \\widehat{g})(0) = (f \\star g)(0)\\)\n\nThe Fourier coefficient of \\(\\xi\\) is equal to\n\nThe inner product,\nThe convolution at \\(t = 0\\),\n\nbecause \\(\\widehat{e^{i2\\pi\\xi\\tau}} = \\overline{e^{- i2\\pi\\xi\\tau}} = e^{i2\\pi\\xi\\tau}\\).\n\nThe cross-correlation under (Definition 1) at \\(t = 0\\),\n\ni.e. the correlation under (Definition 1).\n\nwith \\(e^{i2\\pi\\xi\\tau}\\).\n\\(F(\\xi) = \\langle f,e^{i2\\pi\\xi\\tau}\\rangle = (f \\ast e^{i2\\pi\\xi\\tau})(0) = (f \\star e^{i2\\pi\\xi\\tau})(0)\\)"
+  },
+  {
+    "objectID": "posts/fourier-transform/index.html",
+    "href": "posts/fourier-transform/index.html",
+    "title": "The Fourier transform",
+    "section": "",
+    "text": "This blog post is about the Fourier transform. It is organized as follows:\n\nUsage\n\nFirst explain why the Fourier series and the Fourier transform are useful and the possibilities they offer.\n\nDifferences between the Fourier series and the Fourier transform\n\nThen, explain the differences between the Fourier series and the Fourier transform.\n\nRepresentations of an oscillation\n\nThis section explains the different ways to represent oscillations (sine/cosine vs complex exponentials).\n\nModern Fourier analysis\n\nIntroduce the Fourier transform.\nThis is the most frequent way to perform Fourier analysis nowadays.\nThis section gives the definition of the Fourier transform.\nBut it does not explain where it comes from.\nSee the From the Fourier series to the Fourier transform blog post to see where the Fourier transform comes from."
+  },
+  {
+    "objectID": "posts/fourier-transform/index.html#sine-and-cosine-representation",
+    "href": "posts/fourier-transform/index.html#sine-and-cosine-representation",
+    "title": "The Fourier transform",
+    "section": "Sine and cosine representation",
+    "text": "Sine and cosine representation\n\nEither as a linear combination of a sine function \\(sin(2\\pi\\xi t)\\) and a cosine function \\(cos(2\\pi\\xi t)\\).\n\nBoth functions are thus real valued."
+  },
+  {
+    "objectID": "posts/fourier-transform/index.html#complex-exponentials-representation",
+    "href": "posts/fourier-transform/index.html#complex-exponentials-representation",
+    "title": "The Fourier transform",
+    "section": "Complex exponentials representation",
+    "text": "Complex exponentials representation\n\nOr as a linear combination of two complex exponentials \\(e^{- i2\\pi\\xi t}\\) and \\(e^{i2\\pi\\xi t}\\).\n\nBoth functions are thus complex valued.\n\nThese two representations are mathematically equivalent.\n\nHistorically, the sine and cosine functions were used first.\nHowever, the complex exponentials simplify the notation and are easier to manipulate.\nThe From sine/cosine to complex exponentials section from the From the Fourier series to the Fourier transform blog post explains the relationship between these two representations.\n\nIn both representations, the linear combination accounts for the phase of the signal.\n\nIf an oscillation of frequency \\(f\\) is present in the signal, the relative weights given to \\(sin(2\\pi\\xi t)\\) and \\(cos(2\\pi\\xi t)\\) or \\(e^{- i2\\pi\\xi t}\\) and \\(e^{i2\\pi\\xi t}\\) allow to produce an oscillation of frequency \\(f\\) with the same phase as the oscillation of frequency \\(f\\) present in the signal.\n\nThe weights of the linear combinations at the different frequencies are called the coefficients (Fourier series coefficients and Fourier transform coefficients)."
+  },
+  {
+    "objectID": "posts/fourier-transform/index.html#fourier-transform",
+    "href": "posts/fourier-transform/index.html#fourier-transform",
+    "title": "The Fourier transform",
+    "section": "Fourier Transform",
+    "text": "Fourier Transform\n\nDefinition\n\nThe Fourier transform usually represents oscillations with complex exponentials.\nThe Fourier transform coefficients are thus complex numbers.\nAt frequency \\(\\xi\\), the Fourier transform coefficient is computed as follows:\n\\(F(\\xi) = \\int_{- \\infty}^{\\infty}f(t)e^{- i2\\pi\\xi t}dt\\) (1)\nThe amplitude \\(\\left| F(\\xi) \\right|\\) indicates how strongly the oscillation of frequency \\(\\xi\\) is present in the signal.\nThe phase \\(arg(F(\\xi))\\) indicates the phase of the oscillation of frequency \\(\\xi\\) present in the signal.\n\n\n\nInterpretation\n\n\\(F(\\xi)\\) is equal to\n\nThe correlation between \\(f(t)\\) and \\(e^{i2\\pi\\xi t}\\).\nThe \\(L^{2}\\) inner product between \\(f(t)\\) and \\(e^{i2\\pi\\xi t}\\).\nSee the Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients post for more details.\n\n\n\n\nSignal decomposition\n\nAny signal with finite energy (i.e. \\(\\in L^{2}(R)\\)) can be expressed and decomposed as an infinite sum (integral) of oscillations at all frequencies.\n\nThe finite energy condition is always met in practice as real-world signals cannot have infinite energy.\n\nEach oscillation of frequency \\(\\xi\\) is weighted by its Fourier transform coefficient \\(F(\\xi)\\).\n\\(f(t) = \\int_{- \\infty}^{\\infty}F(\\xi)e^{i2\\pi\\xi t}d\\xi\\) (2)\n\n\n\nPractical note\n\nThe DFT / FFT / STFT post explains how the Fourier transform coefficients are computed in practice."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html",
+    "href": "posts/expectation-and-derivative/index.html",
+    "title": "Expectation and derivative",
+    "section": "",
+    "text": "In this document, we explore how to compute the gradient of an expectation or in other terms, the gradient of a stochastic process.\nIn the most general form, let’s define:\n\n\\(x\\) in a random variable\nwhich follows a distribution \\(p_{\\theta}(x)\\) parametrized by \\(\\theta\\)\n\\(f_{\\theta}\\) is a function of \\(x\\) and is also parametrized by \\(\\theta\\)\n\nThe question is then how to compute\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
+    "href": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
+    "title": "Expectation and derivative",
+    "section": "Fixed distribution proof",
+    "text": "Fixed distribution proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\n\n\\(= \\int_{}^{}p(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n(because \\(p(x)\\) does not depend on \\(\\theta\\))\n\n\n\\(= E_{p(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#introduction-1",
+    "href": "posts/expectation-and-derivative/index.html#introduction-1",
+    "title": "Expectation and derivative",
+    "section": "Introduction",
+    "text": "Introduction\nIn the general setting where the probability distribution depends on the parameters \\(\\theta\\) of the gradient, the general form is\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\nsee Distribution dependent on \\(\\theta\\) proof below.\n\nNotice that if the distribution is fixed, i.e. \\(p_{\\theta}\\) does not depend on \\(\\theta\\) (\\(p_{\\theta} = p\\)), the first term disappears and we find back the formula from the previous Fixed distribution section.\nThe general form above can also be estimated with Monte Carlo.\n\nDistribution dependent on \\(\\theta\\) proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p_{\\theta}(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n\\(= \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\n(see Log derivative trick)\n\n\n\\(= E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\nLog derivative trick\n\nThe log derivative trick above is the fact that \\(\\nabla_{\\theta}\\ p_{\\theta}(x) = p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\).\nThis comes from the application of the chain rule to the \\(\\log\\) function:\n\n\\(\\nabla_{x}\\ log(f(x))\\)\n\n\\(= \\nabla_{f}\\ log(f)\\ \\nabla_{x}\\ f(x)\\)\n\\(= \\frac{1}{f(x)}\\ \\nabla_{x}\\ f(x)\\)\nThus, \\(\\nabla_{x}\\ f(x) = f(x){\\ \\nabla}_{x}\\ log(f(x))\\)\n\nFor the following, let us simplify our problem by making the function \\(f_{\\theta}\\) independent on \\(\\theta\\) (i.e. \\(f_{\\theta} = f\\)). This independence is verified in common use cases such as variational autoencoders or reinforcement learning.\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\nThe term above (or the first term in the general form if we keep \\(f_{\\theta}\\) dependent on \\(\\theta\\)) can be estimated with Monte Carlo but it has high variance (see Score function estimator vs Reparameterization trick).\nThis leaves us with two choices in order to compute the gradient of an expectation when the probability distribution depends on the parameters \\(\\theta\\) of the gradient:\n\nUse this Monte Carlo estimator anyway. This is known as the Score function estimator.\nUse another technique. One of them is called the Reparameterization trick.\n\nWe explore both techniques in the Score function estimator and Reparameterization trick sections below."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator",
+    "href": "posts/expectation-and-derivative/index.html#score-function-estimator",
+    "title": "Expectation and derivative",
+    "section": "Score function estimator",
+    "text": "Score function estimator\nIn this technique, the Monte Carlo estimator from the previous section is used directly.\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\nwith \\(x \\sim p_{\\theta}(x)\\)\n\nThis estimator is called (see Glossary)\n\nThe score function estimator\nThe likelihood ratio\nThe REINFORCE estimator\n\nThe name comes from the fact that in statistics, \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) is called the score or the score function (see Glossary).\nThis is the technique used in reinforcement learning and in the REINFORCE algorithm.\nIt is obtained using the log derivative trick (see Distribution dependent on \\(\\theta\\) proof)."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#reparameterization-trick",
+    "href": "posts/expectation-and-derivative/index.html#reparameterization-trick",
+    "title": "Expectation and derivative",
+    "section": "Reparameterization trick",
+    "text": "Reparameterization trick\n\nAlso called the pathwise estimator.\n\nAs a reminder, the goal is to compute \\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\) but because the probability distribution depends on \\(\\theta\\), we cannot directly swap \\(\\nabla_{\\theta}\\) and \\(E_{p_{\\theta}(x)}\\).\nIn the reparametrization trick, the Law of the Unconscious Statistician (LOTUS) is used to reformulate the problem in such a way that the gradient parameters \\(\\theta\\) are moved out of the expectation.\nWe can\n\nExpress our random variable \\(x\\)\n\n\\(x \\sim p_{\\theta}(x)\\)\n\nAs a function \\(g_{\\theta}\\) of another random variable \\(\\varepsilon\\)\n\n\\(x = g_{\\theta}(\\varepsilon)\\) with \\(\\varepsilon \\sim q(\\varepsilon)\\)\n\n\nThen the Law of the Unconscious Statistician (LOTUS) tells us that\n\nThe expectation of \\(x\\) can be computed with the distribution of \\(\\varepsilon\\)\n\n\\(E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack f(g_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\nWith this new formulation, the distribution no longer depends on \\(\\theta\\). Thus we are again in a Fixed distribution setting.\nThus,\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\n\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f{(\\ g}_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\n(LOTUS)\n\n\n\n\n\\(= E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\n(\\(q\\) does not depend on \\(\\theta\\))\n\n\nwhich can be estimated with Monte Carlo\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\\(\\simeq \\frac{1}{N}\\sum_{i = 1}^{N}\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon_{i})))\\) with \\(\\varepsilon_{i} \\sim q(\\varepsilon)\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
+    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
+    "title": "Expectation and derivative",
+    "section": "Score function estimator vs Reparameterization trick",
+    "text": "Score function estimator vs Reparameterization trick\n\n\n\n\n\n\n\nScore function estimator\nReparameterization trick\n\n\n\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack f(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\nCan work with a non-differentiable model.\nThus, often used in reinforcement learning where the environment dynamics are usually non-differentiable.\nRequires \\(f\\) and \\(g_{\\theta}\\) to be differentiable.\nThus, requires a differentiable model.\n\n\nGradient has high variance because the gradient term \\(\\nabla_{\\theta}\\) is multiplied by an unrelated quantity \\(f(x)\\).\n- \\(f(x)\\) might be large, noisy or high-variance.\n- the gradient term \\(\\nabla_{\\theta}\\) gets scaled unpredictably by \\(f(x)\\).\nGradient has low variance because it only contains gradient terms \\(\\nabla_{\\theta}\\).\n\n\n\nBelow is a graphical comparison of the score function estimator vs the reparameterization trick.\n\n\n\n\n\nWe can see that the gradient obtained with reparameterization trick is direct while the one obtained with the score function estimator contains one part with \\(\\nabla_{\\theta}\\) but can be perturbed by the other part \\(f(x)\\)."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-score-function",
+    "href": "posts/expectation-and-derivative/index.html#score-score-function",
+    "title": "Expectation and derivative",
+    "section": "Score / Score function",
+    "text": "Score / Score function\nGradient of the log-likelihood \\(= \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\)"
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
+    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
+    "title": "Expectation and derivative",
+    "section": "Score function estimator / Likelihood ratio / REINFORCE estimator",
+    "text": "Score function estimator / Likelihood ratio / REINFORCE estimator\nMonte Carlo estimator of the gradient of an expectation (when the distribution depends on the gradient parameters).\n\\({\\nabla_{\\theta}E}_{p(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\) with \\(x \\sim p_{\\theta}(x)\\)\nThe name comes from the fact that the score function \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) appears in the formula."
+  },
+  {
+    "objectID": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
+    "href": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
+    "title": "Expectation and derivative",
+    "section": "Score function vs reparametrization trick",
+    "text": "Score function vs reparametrization trick\nhttps://stillbreeze.github.io/REINFORCE-vs-Reparameterization-trick/\nhttps://mpatacchiola.github.io/blog/2021/02/08/intro-variational-inference-2.html\nhttps://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html",
+    "href": "posts/derivatives-and-backpropagation/index.html",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)\n\n\n\n\n\n\n\n\nFor a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension.\n\n\n\n\n\n\n\n\nThe partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
+    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
+    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "For a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension."
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
+    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "",
+    "text": "The partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
+    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Univariate scalar function",
+    "text": "Univariate scalar function\nWhen univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.\n\n\n\n\n\n\\(\\frac{df}{d\\theta} = \\frac{df}{dz}\\frac{dz}{d\\theta}\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
+    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Multivariate scalar function",
+    "text": "Multivariate scalar function\n\n\n\n\n\n\\(f:\\ R^{n} \\rightarrow R\\) is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\)\nFor each input dimension \\(\\theta_{i}\\), the chain rule is applied to each intermediate dimension \\(z_{j}\\) and the derivative is the sum over \\(j\\).\nThus,\n\\(\\frac{\\partial f}{\\partial\\theta_{i}} = \\sum_{j = 1}^{m}\\frac{\\partial f}{\\partial z_{j}}\\frac{\\partial z_{j}}{\\partial\\theta_{i}}\\)\nThe expression of \\({\\nabla_{\\theta}}^{T}f\\) above can also be expressed with:\n\nThe Jacobian of \\(z\\) with respect to \\(\\theta\\): \\(\\frac{\\partial z}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\)\nThe gradient of \\(f\\) with respect to \\(z\\): \\(\\nabla_{z}f \\in R^{m}\\)\n\n\\(\\nabla_{\\theta}f = \\left( \\frac{\\partial z}{\\partial\\theta} \\right)^{T}\\nabla_{z}f\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
+    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Derivative with respect to \\(a^{l}\\)",
+    "text": "Derivative with respect to \\(a^{l}\\)\nTo compute the derivative of \\(E\\) with respect to \\(a^{l}\\), the activation of layer \\(l\\), we express \\(E\\) as the composition of \\(E(z^{l + 1})\\) and \\(z^{l + 1}(a^{l},W^{l + 1})\\):\n\\(E(\\widehat{y},\\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))\\)\n\\(E(a^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l + 1}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{a^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial a_{i}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\frac{\\partial E}{\\partial z^{l + 1}}\\frac{\\partial z^{l + 1}}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}\\frac{\\partial z_{k}^{l + 1}}{\\partial a_{i}^{l}}\\) Multivariate chain rule\nMoreover, \\(z_{j}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\\), thus \\(\\frac{\\partial z_{j}^{l}}{\\partial a_{i}^{l - 1}} = w_{ij}^{l}\\) and the expression above becomes:\n\\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}{\\ w}_{ik}^{l + 1}\\)"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
+    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Derivative with respect to \\(z^{l}\\)",
+    "text": "Derivative with respect to \\(z^{l}\\)\nSimilarly, we can express \\(E\\) as the composition of \\(E(a^{l})\\) and \\(a^{l}(z^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l + 1})))\\)\n\\(E(z^{l})\\) is thus a multivariate scalar function and its derivative is given by its gradient:\n\\(\\nabla_{z^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial z_{i}^{l}},\\ ... \\right\\rbrack\\)\nNotice also that each function \\(E(z_{i}^{l})\\) can be expressed as the composition of \\(E(a_{i}^{l})\\) and \\(a_{i}^{l}(z_{i}^{l})\\).\nThus, the chain rule for univariate scalar functions can be applied:\n\\(\\frac{\\partial E}{\\partial z_{i}^{l}} = \\frac{\\partial E}{\\partial a_{i}^{l}}\\frac{\\partial a_{i}^{l}}{\\partial z_{i}^{l}}\\) Scalar chain rule"
+  },
+  {
+    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
+    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
+    "title": "Derivatives, chain rule and backpropagation",
+    "section": "Derivative with respect to \\(w_{ij}^{l}\\)",
+    "text": "Derivative with respect to \\(w_{ij}^{l}\\)\nFinally we can express \\(E\\) as the composition of \\(E(z^{l})\\) and \\(z^{l}(a^{l - 1},W^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l}(a^{l - 1},W^{l})))\\)\n\\(E(W^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{W^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial w_{ij}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z^{l}}\\frac{\\partial z^{l}}{\\partial w_{ij}^{l}} = \\sum_{k = 1}^{N^{l}}\\frac{\\partial E}{\\partial z_{k}^{l}}\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\) Multivariate chain rule\n\n\n\n\n\nMoreover, \\(z_{k}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}\\)\nThus \\(\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = 0\\) for \\(k \\neq j\\)\nAnd the expression above becomes:\n\\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform\n\n\n\n\n\n\nSignal Processing\n\n\n\nDiscrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFrom the Fourier series to the Fourier transform\n\n\n\n\n\n\nSignal Processing\n\n\n\nHow to go from the Fourier series to the Fourier transform.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe Fourier transform\n\n\n\n\n\n\nSignal Processing\n\n\n\nDefinition and motivations of the Fourier transform.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCross-correlation, Correlation, Convolution, Inner product and Fourier coefficients\n\n\n\n\n\n\nSignal Processing\n\nAlgebra\n\n\n\nRelationships between Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSoundStream\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Codec\n\n\n\nIntroduction to the SoundStream Neural Audio Codec.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVector Quantization (VQ)\n\n\n\n\n\n\nMachine Learning\n\n\n\nIntroduction to Vector Quantization (VQ).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStreamable Neural Audio Synthesis With Non-Causal Convolutions\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nPost about how to perform streamable neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA short introduction to the RAVE model\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nA short introduction to RAVE model proposed by the paper RAVE: A variational autoencoder for fast and high-quality neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpectation and derivative\n\n\n\n\n\n\nProbabilites\n\nCalculus\n\n\n\nExplore how to handle derivative when expectation is involved.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariational autoencoders\n\n\n\n\n\n\nMachine Learning\n\n\n\nA deep dive into variational autoencoders.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInformation theory\n\n\n\n\n\n\nInformation theory\n\n\n\nIntroduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMaximum Likelihood Estimation and loss functions\n\n\n\n\n\n\nStatistics\n\n\n\nIntroduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDerivatives, chain rule and backpropagation\n\n\n\n\n\n\nCalculus\n\n\n\nThis post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/dft-fft-stft/index.html",
+    "href": "posts/dft-fft-stft/index.html",
+    "title": "Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform",
+    "section": "",
+    "text": "The Fourier transform coefficients are\n\n\\(F(\\xi) = \\int_{- \\infty}^{\\infty}f(t)e^{- i2\\pi\\xi t}dt\\)\n\nHowever, continuous signals can't be handled on a computer.\nThe Discrete Time Fourier Transform (DTFT) discretizes the signal (i.e. discretizes time, samples the signal).\n\n\\(F(e^{i\\omega}) = \\sum_{n = - \\infty}^{\\infty}f\\lbrack n\\rbrack e^{- i\\omega n}\\)\n\nWith the DTFT, the time is now discrete but\n\nThere is an infinite sum (not possible in practice).\nFrequency is still continuous.\n\nThe Discrete Fourier Transform (DFT) solves these issues by\n\nTruncating time, i.e. looking at a finite time window of N samples.\nDiscretizing frequency, i.e. calculating frequency bins at specific intervals.\n\nThe DFT is computable but it is very slow. Its complexity is \\(O(N^{2})\\)."
+  },
+  {
+    "objectID": "posts/dft-fft-stft/index.html#uncertainty-principle",
+    "href": "posts/dft-fft-stft/index.html#uncertainty-principle",
+    "title": "Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform",
+    "section": "Uncertainty principle",
+    "text": "Uncertainty principle\n\nDefinition\n\nThe uncertainty principle is a trade-off with respect to the window size.\nNarrow windows offer a great time resolution because each window represents a precise location in time.\n\nHowever, the frequency resolution is poor.\n\nConversely, wide windows offer a great frequency resolution but a poor time resolution.\nThe relation between the frequency and the time resolutions is \\(\\Delta f \\simeq \\frac{1}{T}\\) with\n\n\\(\\Delta f\\) the frequency resolution in \\(Hz\\).\n\\(T\\) the window length in \\(s\\)."
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html",
+    "href": "posts/fourier-series-to-fourier-transform/index.html",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "",
+    "text": "The Fourier transform blog post gives the definition of the Fourier transform.\nBut it does not explain where it comes from.\nThis blog post explains where the Fourier transform comes from."
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html#fouriers-intuition",
+    "href": "posts/fourier-series-to-fourier-transform/index.html#fouriers-intuition",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "Fourier’s intuition",
+    "text": "Fourier’s intuition\n\nFourier had the intuition that any periodic signal with period \\(T\\) (or frequency \\(\\xi = \\frac{1}{T}\\)) can be decomposed as an infinite sum of oscillations at frequencies that are integer multiples of \\(\\xi\\).\nHe did not prove this intuition.\nHe used it as an assumption and derived the Fourier series coefficients from this assumption.\nThe empirical success suggested that the assumption was correct.\nBut mathematical proof came later.\n\nDirichlet provided the first rigorous proof in 1829, valid under certain conditions now called the Dirichlet conditions.\nThis proof is only valid for Fourier series / periodic signals.\nHence, this proof does not apply to modern Fourier analysis of non-periodic signals.\nOne must refer to the convergence proof of the inverse Fourier transform instead (see the Signal decomposition section of The Fourier transform blog post)."
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html#fourier-series-1",
+    "href": "posts/fourier-series-to-fourier-transform/index.html#fourier-series-1",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "Fourier series",
+    "text": "Fourier series\n\nFourier’s assumption\n\nFor a periodic signal with period \\(T\\) (or frequency \\(\\xi = \\frac{1}{T}\\))\nand with \\(n\\) an integer.\n\\(f(t) = \\frac{a_{0}}{2} + \\sum_{n = 1}^{\\infty}\\left\\lbrack a_{n}cos(2\\pi n\\xi t) + b_{n}sin(2\\pi n\\xi t) \\right\\rbrack\\) (1)\n\nAs explained in the Representations of an oscillation section of the Fourier transform blog post, complex exponentials are easier to manipulate.\nAs shown in the From sine/cosine to complex exponentials section below, expression (1) above be rewritten as\n\\(f(t) = \\sum_{n = - \\infty}^{\\infty}c_{n}e^{i2\\pi n\\xi t}\\) (2)"
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html#fourier-series-coefficients",
+    "href": "posts/fourier-series-to-fourier-transform/index.html#fourier-series-coefficients",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "Fourier series coefficients",
+    "text": "Fourier series coefficients\n\nThe From Fourier series intuition to Fourier series coefficients shows that\n\\(c_{n} = \\frac{1}{T}\\int_{0}^{T}f(t)\\ e^{- i2\\pi n\\xi t}dt\\)"
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html#fourier-series-intuition",
+    "href": "posts/fourier-series-to-fourier-transform/index.html#fourier-series-intuition",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "Fourier series intuition",
+    "text": "Fourier series intuition\n\n\\(f(t) = \\frac{a_{0}}{2} + \\sum_{n = 1}^{\\infty}\\left\\lbrack a_{n}cos(2\\pi n\\xi t) + b_{n}sin(2\\pi n\\xi t) \\right\\rbrack\\) (1)"
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html#eulers-formula",
+    "href": "posts/fourier-series-to-fourier-transform/index.html#eulers-formula",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "Euler’s formula",
+    "text": "Euler’s formula\n\n\\(e^{ix} = cos(x) + i\\ sin(x)\\)\nThus,\n\n\\(cos(x) = \\frac{e^{ix} + \\ e^{- ix}}{2}\\)\n\\(sin(x) = \\frac{e^{ix} - \\ e^{- ix}}{2i}\\)"
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html#plug-into-fourier-series-intuition",
+    "href": "posts/fourier-series-to-fourier-transform/index.html#plug-into-fourier-series-intuition",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "Plug into Fourier series intuition",
+    "text": "Plug into Fourier series intuition\n\n\\(f(t) = \\frac{a_{0}}{2} + \\sum_{n = 1}^{\\infty}\\left\\lbrack a_{n}cos(2\\pi n\\xi t) + b_{n}sin(2\\pi n\\xi t) \\right\\rbrack\\) (1)\n\\(f(t) = \\frac{a_{0}}{2} + \\sum_{n = 1}^{\\infty}\\left\\lbrack a_{n}\\frac{e^{i2\\pi n\\xi} + \\ e^{- i2\\pi n\\xi}}{2} + b_{n}\\frac{e^{i2\\pi n\\xi} - \\ e^{- i2\\pi n\\xi}}{2i} \\right\\rbrack\\)\n\\(f(t) = \\frac{a_{0}}{2} + \\sum_{n = 1}^{\\infty}\\left\\lbrack (\\frac{a_{n}}{2} + \\frac{b_{n}}{2i})e^{i2\\pi n\\xi} + (\\frac{a_{n}}{2} - \\frac{b_{n}}{2i})e^{- i2\\pi n\\xi} \\right\\rbrack\\)\n\\(f(t) = \\sum_{n = - \\infty}^{\\infty}c_{n}e^{i2\\pi n\\xi t}\\) (2)\nFor\n\\(c_{n} = (\\frac{a_{n}}{2} + \\frac{b_{n}}{2i})\\) for \\(n &gt; 0\\)\n\\(c_{- n} = (\\frac{a_{n}}{2} - \\frac{b_{n}}{2i})\\) for \\(n &gt; 0\\)\n\\(c_{0} = \\frac{a_{0}}{2}\\)"
+  },
+  {
+    "objectID": "posts/fourier-series-to-fourier-transform/index.html#conclusion",
+    "href": "posts/fourier-series-to-fourier-transform/index.html#conclusion",
+    "title": "From the Fourier series to the Fourier transform",
+    "section": "Conclusion",
+    "text": "Conclusion\n\n\\(f(t) = \\frac{a_{0}}{2} + \\sum_{n = 1}^{\\infty}\\left\\lbrack a_{n}cos(2\\pi n\\xi t) + b_{n}sin(2\\pi n\\xi t) \\right\\rbrack\\) (1)\nis simplified to\n\\(f(t) = \\sum_{n = - \\infty}^{\\infty}c_{n}e^{i2\\pi n\\xi t}\\) (2)\nComplex exponentials appear.\nPositive and negative frequencies appear."
+  },
+  {
     "objectID": "posts/information-theory/index.html",
     "href": "posts/information-theory/index.html",
     "title": "Information theory",
@@ -252,139 +504,6 @@
     "text": "Reversed Kullback-Leibler divergence\n\n\\(D_{KL}(q\\ ||\\ p) = \\sum_{\\chi}^{}q(x)\\ log(\\frac{q(x)}{p(x)})\\)\nThe sum or expectation is weighted by the distribution \\(q\\).\nDifferences between \\(p\\) and \\(q\\) produce large \\(D_{KL}\\) on the mass of \\(q\\) (where \\(q &gt; 0\\)) but not where \\(q\\) is small (\\(q \\simeq 0\\)).\nMinimizing the reversed Kullback-Leibler divergence \\(D_{KL}(q\\ ||\\ p)\\) encourages \\(q\\) not to put its mass outside the mass of \\(p\\) (missing parts of the mass \\(p\\) is not penalized).\nThis results in mode seeking behavior."
   },
   {
-    "objectID": "posts/derivatives-and-backpropagation/index.html",
-    "href": "posts/derivatives-and-backpropagation/index.html",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)\n\n\n\n\n\n\n\n\nFor a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension.\n\n\n\n\n\n\n\n\nThe partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
-    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "For a univariate scalar function, the derivative is simply defined as the derivative of the function.\n\\(\\frac{df}{d\\theta} \\in R\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
-    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "For a multivariate scalar function, the partial derivatives of \\(f:\\ R^{n} \\rightarrow R\\) can be arranged in its gradient:\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\).\nThe gradient is a column vector where each element is the partial derivative of \\(f\\) with respect to the corresponding input dimension."
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
-    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-vector-valued-function",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "",
-    "text": "The partial derivatives of \\(f:\\ R^{n} \\rightarrow R^{m}\\) can be arranged in its Jacobian matrix \\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\).\n\\(\\frac{\\partial f}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\) contains\n\nIn its rows, \\({\\nabla_{\\theta}}^{T}f_{i} \\in R^{n}\\) the transpose of the gradient of the components \\(f_{i}\\) of \\(f\\).\n\nEach row \\(i\\) contains the derivative of the component \\(f_{i}\\) with respect to all the input dimensions.\n\nIn its columns, \\(\\frac{\\partial f}{\\partial\\theta_{j}}\\) the partial derivatives of \\(f\\) with respect to \\(\\theta_{j}\\).\n\nEach column \\(j\\) contains the derivation of all the components of \\(f\\) with respect to \\(\\theta_{j}\\) (the input dimension \\(j\\)).\n\n\n\\(\\frac{\\partial f}{\\partial\\theta}^{T} = \\left\\lbrack \\nabla_{\\theta}f_{1},\\ \\nabla_{\\theta}f_{2},\\ ...,\\ \\nabla_{\\theta}f_{m} \\right\\rbrack \\in R^{n\\  \\times \\ m}\\)\n\n\n\\(f\\) is a multivariate scalar function and its Jacobian is the transpose of its gradient.\n\n\n\n\\(f\\) is an univariate scalar function."
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
-    "href": "posts/derivatives-and-backpropagation/index.html#univariate-scalar-function-1",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Univariate scalar function",
-    "text": "Univariate scalar function\nWhen univariate scalar functions are composed, the derivative is the product of the intermediate derivatives.\n\n\n\n\n\n\\(\\frac{df}{d\\theta} = \\frac{df}{dz}\\frac{dz}{d\\theta}\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
-    "href": "posts/derivatives-and-backpropagation/index.html#multivariate-scalar-function-1",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Multivariate scalar function",
-    "text": "Multivariate scalar function\n\n\n\n\n\n\\(f:\\ R^{n} \\rightarrow R\\) is a multivariate scalar function. Its partial derivatives can be arranged in its gradient.\n\\({\\nabla_{\\theta}}^{T}f = \\left\\lbrack \\frac{\\partial f}{\\partial\\theta_{1}},\\ \\frac{\\partial f}{\\partial\\theta_{2}},\\ ...,\\ \\frac{\\partial f}{\\partial\\theta_{n}} \\right\\rbrack \\in R^{n}\\)\nFor each input dimension \\(\\theta_{i}\\), the chain rule is applied to each intermediate dimension \\(z_{j}\\) and the derivative is the sum over \\(j\\).\nThus,\n\\(\\frac{\\partial f}{\\partial\\theta_{i}} = \\sum_{j = 1}^{m}\\frac{\\partial f}{\\partial z_{j}}\\frac{\\partial z_{j}}{\\partial\\theta_{i}}\\)\nThe expression of \\({\\nabla_{\\theta}}^{T}f\\) above can also be expressed with:\n\nThe Jacobian of \\(z\\) with respect to \\(\\theta\\): \\(\\frac{\\partial z}{\\partial\\theta} \\in R^{m\\  \\times \\ n}\\)\nThe gradient of \\(f\\) with respect to \\(z\\): \\(\\nabla_{z}f \\in R^{m}\\)\n\n\\(\\nabla_{\\theta}f = \\left( \\frac{\\partial z}{\\partial\\theta} \\right)^{T}\\nabla_{z}f\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
-    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-al",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Derivative with respect to \\(a^{l}\\)",
-    "text": "Derivative with respect to \\(a^{l}\\)\nTo compute the derivative of \\(E\\) with respect to \\(a^{l}\\), the activation of layer \\(l\\), we express \\(E\\) as the composition of \\(E(z^{l + 1})\\) and \\(z^{l + 1}(a^{l},W^{l + 1})\\):\n\\(E(\\widehat{y},\\ y) = E(...(z^{l + 1}(a^{l},W^{l + 1})))\\)\n\\(E(a^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l + 1}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{a^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial a_{i}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\frac{\\partial E}{\\partial z^{l + 1}}\\frac{\\partial z^{l + 1}}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}\\frac{\\partial z_{k}^{l + 1}}{\\partial a_{i}^{l}}\\) Multivariate chain rule\nMoreover, \\(z_{j}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ij}^{l}a_{i}^{l - 1}\\), thus \\(\\frac{\\partial z_{j}^{l}}{\\partial a_{i}^{l - 1}} = w_{ij}^{l}\\) and the expression above becomes:\n\\(\\frac{\\partial E}{\\partial a_{i}^{l}} = \\sum_{k = 1}^{N^{l + 1}}\\frac{\\partial E}{\\partial z_{k}^{l + 1}}{\\ w}_{ik}^{l + 1}\\)"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
-    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-zl",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Derivative with respect to \\(z^{l}\\)",
-    "text": "Derivative with respect to \\(z^{l}\\)\nSimilarly, we can express \\(E\\) as the composition of \\(E(a^{l})\\) and \\(a^{l}(z^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l + 1}(a^{l}(z^{l}),W^{l + 1})))\\)\n\\(E(z^{l})\\) is thus a multivariate scalar function and its derivative is given by its gradient:\n\\(\\nabla_{z^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial z_{i}^{l}},\\ ... \\right\\rbrack\\)\nNotice also that each function \\(E(z_{i}^{l})\\) can be expressed as the composition of \\(E(a_{i}^{l})\\) and \\(a_{i}^{l}(z_{i}^{l})\\).\nThus, the chain rule for univariate scalar functions can be applied:\n\\(\\frac{\\partial E}{\\partial z_{i}^{l}} = \\frac{\\partial E}{\\partial a_{i}^{l}}\\frac{\\partial a_{i}^{l}}{\\partial z_{i}^{l}}\\) Scalar chain rule"
-  },
-  {
-    "objectID": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
-    "href": "posts/derivatives-and-backpropagation/index.html#derivative-with-respect-to-w_ijl",
-    "title": "Derivatives, chain rule and backpropagation",
-    "section": "Derivative with respect to \\(w_{ij}^{l}\\)",
-    "text": "Derivative with respect to \\(w_{ij}^{l}\\)\nFinally we can express \\(E\\) as the composition of \\(E(z^{l})\\) and \\(z^{l}(a^{l - 1},W^{l})\\):\n\\(E(\\widehat{y},\\ y) = E(...z^{l}(a^{l - 1},W^{l})))\\)\n\\(E(W^{l})\\) is thus a multivariate scalar function with intermediate variables \\(z^{l}\\).\n\n\n\n\n\nAccording to the chain rule for a multivariate scalar function, its derivative is given by its gradient:\n\\(\\nabla_{W^{l}}\\ E = \\left\\lbrack \\frac{\\partial E}{\\partial w_{ij}^{l}},\\ ... \\right\\rbrack\\)\nwhere \\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z^{l}}\\frac{\\partial z^{l}}{\\partial w_{ij}^{l}} = \\sum_{k = 1}^{N^{l}}\\frac{\\partial E}{\\partial z_{k}^{l}}\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\) Multivariate chain rule\n\n\n\n\n\nMoreover, \\(z_{k}^{l} = \\sum_{i = 1}^{N^{l - 1}}w_{ik}^{l}a_{i}^{l - 1}\\)\nThus \\(\\frac{\\partial z_{k}^{l}}{\\partial w_{ij}^{l}} = 0\\) for \\(k \\neq j\\)\nAnd the expression above becomes:\n\\(\\frac{\\partial E}{\\partial w_{ij}^{l}} = \\frac{\\partial E}{\\partial z_{j}^{l}}\\frac{\\partial z_{j}^{l}}{\\partial w_{ij}^{l}}\\)"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blog",
-    "section": "",
-    "text": "SoundStream\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Codec\n\n\n\nIntroduction to the SoundStream Neural Audio Codec.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVector Quantization (VQ)\n\n\n\n\n\n\nMachine Learning\n\n\n\nIntroduction to Vector Quantization (VQ).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nStreamable Neural Audio Synthesis With Non-Causal Convolutions\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nPost about how to perform streamable neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA short introduction to the RAVE model\n\n\n\n\n\n\nMachine Learning\n\nNeural Audio Synthesis\n\n\n\nA short introduction to RAVE model proposed by the paper RAVE: A variational autoencoder for fast and high-quality neural audio synthesis.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExpectation and derivative\n\n\n\n\n\n\nProbabilites\n\nCalculus\n\n\n\nExplore how to handle derivative when expectation is involved.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nVariational autoencoders\n\n\n\n\n\n\nMachine Learning\n\n\n\nA deep dive into variational autoencoders.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInformation theory\n\n\n\n\n\n\nInformation theory\n\n\n\nIntroduction to information theory, entropy, cross-entropy and Kullback–Leibler divergence.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMaximum Likelihood Estimation and loss functions\n\n\n\n\n\n\nStatistics\n\n\n\nIntroduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDerivatives, chain rule and backpropagation\n\n\n\n\n\n\nCalculus\n\n\n\nThis post is a brief summary of how derivatives and chain rule are defined for scalar functions and vector-valued functions with univariate or multivariate inputs and how they are applied to the backpropagation algorithm.\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html",
-    "href": "posts/expectation-and-derivative/index.html",
-    "title": "Expectation and derivative",
-    "section": "",
-    "text": "In this document, we explore how to compute the gradient of an expectation or in other terms, the gradient of a stochastic process.\nIn the most general form, let’s define:\n\n\\(x\\) in a random variable\nwhich follows a distribution \\(p_{\\theta}(x)\\) parametrized by \\(\\theta\\)\n\\(f_{\\theta}\\) is a function of \\(x\\) and is also parametrized by \\(\\theta\\)\n\nThe question is then how to compute\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
-    "href": "posts/expectation-and-derivative/index.html#fixed-distribution-proof",
-    "title": "Expectation and derivative",
-    "section": "Fixed distribution proof",
-    "text": "Fixed distribution proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\n\n\\(= \\int_{}^{}p(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n(because \\(p(x)\\) does not depend on \\(\\theta\\))\n\n\n\\(= E_{p(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#introduction-1",
-    "href": "posts/expectation-and-derivative/index.html#introduction-1",
-    "title": "Expectation and derivative",
-    "section": "Introduction",
-    "text": "Introduction\nIn the general setting where the probability distribution depends on the parameters \\(\\theta\\) of the gradient, the general form is\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\nsee Distribution dependent on \\(\\theta\\) proof below.\n\nNotice that if the distribution is fixed, i.e. \\(p_{\\theta}\\) does not depend on \\(\\theta\\) (\\(p_{\\theta} = p\\)), the first term disappears and we find back the formula from the previous Fixed distribution section.\nThe general form above can also be estimated with Monte Carlo.\n\nDistribution dependent on \\(\\theta\\) proof\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f_{\\theta}(x)\\rbrack\\)\n\\(= \\nabla_{\\theta}\\int_{}^{}p_{\\theta}(x)\\ f_{\\theta}(x)\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ \\lbrack p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack\\ dx\\)\n\\(= \\int_{}^{}\\nabla_{\\theta}\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ f_{\\theta}(x)\\ dx\\)\n\n\n\\(= \\int_{}^{}p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\ dx + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\n(see Log derivative trick)\n\n\n\\(= E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ log\\ p_{\\theta}(x){\\ f}_{\\theta}(x)\\rbrack + E_{p_{\\theta}(x)}\\lbrack\\nabla_{\\theta}\\ f_{\\theta}(x)\\rbrack\\)\n\n\nLog derivative trick\n\nThe log derivative trick above is the fact that \\(\\nabla_{\\theta}\\ p_{\\theta}(x) = p_{\\theta}(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\).\nThis comes from the application of the chain rule to the \\(\\log\\) function:\n\n\\(\\nabla_{x}\\ log(f(x))\\)\n\n\\(= \\nabla_{f}\\ log(f)\\ \\nabla_{x}\\ f(x)\\)\n\\(= \\frac{1}{f(x)}\\ \\nabla_{x}\\ f(x)\\)\nThus, \\(\\nabla_{x}\\ f(x) = f(x){\\ \\nabla}_{x}\\ log(f(x))\\)\n\nFor the following, let us simplify our problem by making the function \\(f_{\\theta}\\) independent on \\(\\theta\\) (i.e. \\(f_{\\theta} = f\\)). This independence is verified in common use cases such as variational autoencoders or reinforcement learning.\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\nThe term above (or the first term in the general form if we keep \\(f_{\\theta}\\) dependent on \\(\\theta\\)) can be estimated with Monte Carlo but it has high variance (see Score function estimator vs Reparameterization trick).\nThis leaves us with two choices in order to compute the gradient of an expectation when the probability distribution depends on the parameters \\(\\theta\\) of the gradient:\n\nUse this Monte Carlo estimator anyway. This is known as the Score function estimator.\nUse another technique. One of them is called the Reparameterization trick.\n\nWe explore both techniques in the Score function estimator and Reparameterization trick sections below."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator",
-    "href": "posts/expectation-and-derivative/index.html#score-function-estimator",
-    "title": "Expectation and derivative",
-    "section": "Score function estimator",
-    "text": "Score function estimator\nIn this technique, the Monte Carlo estimator from the previous section is used directly.\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\nwith \\(x \\sim p_{\\theta}(x)\\)\n\nThis estimator is called (see Glossary)\n\nThe score function estimator\nThe likelihood ratio\nThe REINFORCE estimator\n\nThe name comes from the fact that in statistics, \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) is called the score or the score function (see Glossary).\nThis is the technique used in reinforcement learning and in the REINFORCE algorithm.\nIt is obtained using the log derivative trick (see Distribution dependent on \\(\\theta\\) proof)."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#reparameterization-trick",
-    "href": "posts/expectation-and-derivative/index.html#reparameterization-trick",
-    "title": "Expectation and derivative",
-    "section": "Reparameterization trick",
-    "text": "Reparameterization trick\n\nAlso called the pathwise estimator.\n\nAs a reminder, the goal is to compute \\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\) but because the probability distribution depends on \\(\\theta\\), we cannot directly swap \\(\\nabla_{\\theta}\\) and \\(E_{p_{\\theta}(x)}\\).\nIn the reparametrization trick, the Law of the Unconscious Statistician (LOTUS) is used to reformulate the problem in such a way that the gradient parameters \\(\\theta\\) are moved out of the expectation.\nWe can\n\nExpress our random variable \\(x\\)\n\n\\(x \\sim p_{\\theta}(x)\\)\n\nAs a function \\(g_{\\theta}\\) of another random variable \\(\\varepsilon\\)\n\n\\(x = g_{\\theta}(\\varepsilon)\\) with \\(\\varepsilon \\sim q(\\varepsilon)\\)\n\n\nThen the Law of the Unconscious Statistician (LOTUS) tells us that\n\nThe expectation of \\(x\\) can be computed with the distribution of \\(\\varepsilon\\)\n\n\\(E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack f(g_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\nWith this new formulation, the distribution no longer depends on \\(\\theta\\). Thus we are again in a Fixed distribution setting.\nThus,\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\n\n\\(= \\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f{(\\ g}_{\\theta}(\\varepsilon))\\rbrack\\)\n\n\n(LOTUS)\n\n\n\n\n\\(= E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\n(\\(q\\) does not depend on \\(\\theta\\))\n\n\nwhich can be estimated with Monte Carlo\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack\\)\n\\(\\simeq \\frac{1}{N}\\sum_{i = 1}^{N}\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon_{i})))\\) with \\(\\varepsilon_{i} \\sim q(\\varepsilon)\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
-    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-vs-reparameterization-trick",
-    "title": "Expectation and derivative",
-    "section": "Score function estimator vs Reparameterization trick",
-    "text": "Score function estimator vs Reparameterization trick\n\n\n\n\n\n\n\nScore function estimator\nReparameterization trick\n\n\n\n\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{p_{\\theta}(x)}\\lbrack f(x)\\ \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\)\n\\(\\nabla_{\\theta}E_{p_{\\theta}(x)}\\lbrack f(x)\\rbrack = E_{q(\\varepsilon)}\\lbrack\\nabla_{\\theta}(f{(\\ g}_{\\theta}(\\varepsilon)))\\rbrack\\)\n\n\nCan work with a non-differentiable model.\nThus, often used in reinforcement learning where the environment dynamics are usually non-differentiable.\nRequires \\(f\\) and \\(g_{\\theta}\\) to be differentiable.\nThus, requires a differentiable model.\n\n\nGradient has high variance because the gradient term \\(\\nabla_{\\theta}\\) is multiplied by an unrelated quantity \\(f(x)\\).\n- \\(f(x)\\) might be large, noisy or high-variance.\n- the gradient term \\(\\nabla_{\\theta}\\) gets scaled unpredictably by \\(f(x)\\).\nGradient has low variance because it only contains gradient terms \\(\\nabla_{\\theta}\\).\n\n\n\nBelow is a graphical comparison of the score function estimator vs the reparameterization trick.\n\n\n\n\n\nWe can see that the gradient obtained with reparameterization trick is direct while the one obtained with the score function estimator contains one part with \\(\\nabla_{\\theta}\\) but can be perturbed by the other part \\(f(x)\\)."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-score-function",
-    "href": "posts/expectation-and-derivative/index.html#score-score-function",
-    "title": "Expectation and derivative",
-    "section": "Score / Score function",
-    "text": "Score / Score function\nGradient of the log-likelihood \\(= \\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\)"
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
-    "href": "posts/expectation-and-derivative/index.html#score-function-estimator-likelihood-ratio-reinforce-estimator",
-    "title": "Expectation and derivative",
-    "section": "Score function estimator / Likelihood ratio / REINFORCE estimator",
-    "text": "Score function estimator / Likelihood ratio / REINFORCE estimator\nMonte Carlo estimator of the gradient of an expectation (when the distribution depends on the gradient parameters).\n\\({\\nabla_{\\theta}E}_{p(x)}\\lbrack f(x)\\rbrack \\simeq \\frac{1}{N}\\sum_{i = 1}^{N}{f(x)\\ \\nabla}_{\\theta}\\ log\\ p_{\\theta}(x)\\rbrack\\) with \\(x \\sim p_{\\theta}(x)\\)\nThe name comes from the fact that the score function \\(\\nabla_{\\theta}\\ log\\ p_{\\theta}(x)\\) appears in the formula."
-  },
-  {
-    "objectID": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
-    "href": "posts/expectation-and-derivative/index.html#score-function-vs-reparametrization-trick",
-    "title": "Expectation and derivative",
-    "section": "Score function vs reparametrization trick",
-    "text": "Score function vs reparametrization trick\nhttps://stillbreeze.github.io/REINFORCE-vs-Reparameterization-trick/\nhttps://mpatacchiola.github.io/blog/2021/02/08/intro-variational-inference-2.html\nhttps://gabrielhuang.gitbooks.io/machine-learning/content/reparametrization-trick.html"
-  },
-  {
     "objectID": "posts/likelihood-loss/index.html",
     "href": "posts/likelihood-loss/index.html",
     "title": "Maximum Likelihood Estimation and loss functions",
@@ -417,7 +536,7 @@
     "href": "posts/likelihood-loss/index.html#regression-setting",
     "title": "Maximum Likelihood Estimation and loss functions",
     "section": "Regression setting",
-    "text": "Regression setting\nIn a regression setting\n\nThe label is \\(y_{i}\\) for sample \\(i\\).\nThe model outputs a prediction \\(\\widehat{y_{i}} = f(x_{i})\\).\n\nIf we assume that the error follows a normal distribution, we have\n\\(y_{i} \\sim N(\\widehat{y_{i}},\\sigma^{2})\\)\nand\n\\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\  = \\frac{1}{}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\n\nThus, \\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}\\frac{1}{}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\nAnd maximizing the expression above is equivalent to minimizing \\({(y_{i} - \\widehat{y_{i}})}^{2}\\)\nTaking the \\(\\log\\) of the expression above gives\n\\(\\sum_{i = 1}^{n}\\log\\frac{1}{} - \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}\\)\nFinally, because only \\(\\widehat{y_{i}}\\) depends on \\(\\theta\\), maximizing the expression above is equivalent to minimizing\n\\(\\sum_{i = 1}^{n}{(y_{i} - \\widehat{y_{i}})}^{2}\\)\nWe can recognize above the expression of the mean squared error (MSE).\nThus, in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error."
+    "text": "Regression setting\nIn a regression setting\n\nThe label is \\(y_{i}\\) for sample \\(i\\).\nThe model outputs a prediction \\(\\widehat{y_{i}} = f(x_{i})\\).\n\nIf we assume that the error follows a normal distribution, we have\n\\(y_{i} \\sim N(\\widehat{y_{i}},\\sigma^{2})\\)\nand\n\\(p(y_{i}\\ |\\ x_{i},\\ \\theta)\\  = \\frac{1}{\\sqrt{2\\pi\\sigma^{2}}}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\n\nThus, \\(L(\\theta)\\  \\propto \\ \\prod_{i = 1}^{n}\\frac{1}{\\sqrt{2\\pi\\sigma^{2}}}e^{- \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}}\\)\nAnd maximizing the expression above is equivalent to minimizing \\({(y_{i} - \\widehat{y_{i}})}^{2}\\)\nTaking the \\(\\log\\) of the expression above gives\n\\(\\sum_{i = 1}^{n}\\log\\frac{1}{\\sqrt{2\\pi\\sigma^{2}}} - \\frac{{(y_{i} - \\widehat{y_{i}})}^{2}}{2\\sigma^{2}}\\)\nFinally, because only \\(\\widehat{y_{i}}\\) depends on \\(\\theta\\), maximizing the expression above is equivalent to minimizing\n\\(\\sum_{i = 1}^{n}{(y_{i} - \\widehat{y_{i}})}^{2}\\)\nWe can recognize above the expression of the mean squared error (MSE).\nThus, in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error."
   },
   {
     "objectID": "posts/soundstream/index.html",

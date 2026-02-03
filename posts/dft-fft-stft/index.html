@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-11">
-<meta name="description" content="Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.">
+<meta name="dcterms.date" content="2026-02-03">
+<meta name="description" content="Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform.">
 
-<title>Maximum Likelihood Estimation and loss functions – Nisace’s website</title>
+<title>Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform – Nisace’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -140,17 +140,15 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#maximum-likelihood-estimation" id="toc-maximum-likelihood-estimation" class="nav-link active" data-scroll-target="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a>
+  <li><a href="#discrete-fourier-transform-dft" id="toc-discrete-fourier-transform-dft" class="nav-link active" data-scroll-target="#discrete-fourier-transform-dft">Discrete Fourier Transform (DFT)</a></li>
+  <li><a href="#fast-fourier-transform-fft" id="toc-fast-fourier-transform-fft" class="nav-link" data-scroll-target="#fast-fourier-transform-fft">Fast Fourier Transform (FFT)</a></li>
+  <li><a href="#short-term-fourier-transform-stft" id="toc-short-term-fourier-transform-stft" class="nav-link" data-scroll-target="#short-term-fourier-transform-stft">Short-Term Fourier Transform (STFT)</a>
   <ul class="collapse">
-  <li><a href="#general-setting" id="toc-general-setting" class="nav-link" data-scroll-target="#general-setting">General setting</a></li>
-  <li><a href="#supervised-learning-setting" id="toc-supervised-learning-setting" class="nav-link" data-scroll-target="#supervised-learning-setting">Supervised learning setting</a></li>
-  </ul></li>
-  <li><a href="#relationship-to-loss-functions" id="toc-relationship-to-loss-functions" class="nav-link" data-scroll-target="#relationship-to-loss-functions">Relationship to loss functions</a>
+  <li><a href="#uncertainty-principle" id="toc-uncertainty-principle" class="nav-link" data-scroll-target="#uncertainty-principle">Uncertainty principle</a>
   <ul class="collapse">
-  <li><a href="#classification-setting" id="toc-classification-setting" class="nav-link" data-scroll-target="#classification-setting">Classification setting</a></li>
-  <li><a href="#regression-setting" id="toc-regression-setting" class="nav-link" data-scroll-target="#regression-setting">Regression setting</a></li>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
   </ul></li>
-  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -159,15 +157,15 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Maximum Likelihood Estimation and loss functions</h1>
+<h1 class="title">Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Statistics</div>
+    <div class="quarto-category">Signal Processing</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    <p>Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.</p>
+    <p>Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform.</p>
   </div>
 </div>
 
@@ -178,7 +176,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 11, 2025</p>
+      <p class="date">February 3, 2026</p>
     </div>
   </div>
   
@@ -190,101 +188,71 @@ window.Quarto = {
 </header>
 
 
-<p>In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we will show that in a supervised learning setting, maximizing the likelihood (MLE) of the observed data <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> is equivalent to:</p>
+<section id="discrete-fourier-transform-dft" class="level1">
+<h1>Discrete Fourier Transform (DFT)</h1>
 <ul>
-<li><p>Maximizing <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span>.</p></li>
-<li><p>Minimizing the cross entropy loss in a classification setting.</p></li>
-<li><p>Minimizing the mean squared error (MSE) in a regression setting and under the assumption of normally distributed errors.</p></li>
-</ul>
-<section id="maximum-likelihood-estimation" class="level1">
-<h1>Maximum Likelihood Estimation</h1>
-<section id="general-setting" class="level2">
-<h2 class="anchored" data-anchor-id="general-setting">General setting</h2>
-<p>The Maximum Likelihood Estimation (MLE) seeks to find the parameters <span class="math inline">\(\theta\)</span> of a probabilistic model that maximize the likelihood <span class="math inline">\(L\)</span> of the observed data <span class="math inline">\(x\)</span>. If we consider that <span class="math inline">\(x\)</span> is composed of <span class="math inline">\(n\)</span> independent and identically distributed samples <span class="math inline">\(x_{i}\)</span>, <span class="math inline">\(L\)</span> can be expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i}\ |\ \theta)\)</span></p>
-<p>By convenience and for numerical stability reasons, the <span class="math inline">\(\log\)</span> of <span class="math inline">\(L(\theta)\)</span> is often maximized instead of <span class="math inline">\(L(\theta)\)</span> directly.</p>
-<p><span class="math inline">\(log(L(\theta)) = \sum_{i = 1}^{n}log\ p(x_{i}\ |\ \theta)\)</span></p>
-</section>
-<section id="supervised-learning-setting" class="level2">
-<h2 class="anchored" data-anchor-id="supervised-learning-setting">Supervised learning setting</h2>
-<p>In a supervised learning setting:</p>
+<li><p>The <a href="../../posts/fourier-transform/index.html">Fourier transform</a> coefficients are</p>
 <ul>
-<li>The samples are pairs <span class="math inline">\((x_{i},y_{i})\)</span> of observed sample <span class="math inline">\(x_{i}\)</span> and label <span class="math inline">\(y_{i}\)</span>.</li>
-</ul>
-<p>Thus, the likelihood is expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i},\ y_{i}\ |\ \theta)\)</span></p>
-<p>which can be rearranged as</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span></p>
-<ul>
-<li>Moreover, in a supervised learning setting, the model does not try to model the data <span class="math inline">\(x_{i}\)</span> but only the label <span class="math inline">\(y_{i}\)</span> based on <span class="math inline">\(x_{i}\)</span>.</li>
-</ul>
-<p>Thus, <span class="math inline">\(p(x_{i})\)</span> does not depend on <span class="math inline">\(\theta\)</span> and maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span> with respect to <span class="math inline">\(\theta\)</span> is equivalent to maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\)</span>.</p>
-<p><span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\)</span></p>
-<p>In other terms, in a supervised learning setting, <strong>maximizing the likelihood</strong> <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> <strong>is equivalent to maximizing</strong> <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span><strong>.</strong></p>
-</section>
-</section>
-<section id="relationship-to-loss-functions" class="level1">
-<h1>Relationship to loss functions</h1>
-<section id="classification-setting" class="level2">
-<h2 class="anchored" data-anchor-id="classification-setting">Classification setting</h2>
-<p>In a classification setting with <span class="math inline">\(C\)</span> classes:</p>
-<ul>
-<li><p>The label <span class="math inline">\(c_{i}\)</span> is the class index for sample <span class="math inline">\(i\)</span>.</p>
-<ul>
-<li><p>We note <span class="math inline">\(y_{i}\)</span> the corresponding one-hot vector of size <span class="math inline">\(C\)</span> with elements</p>
-<ul>
-<li><p><span class="math inline">\(y_{i,k} = 1\)</span> for <span class="math inline">\(k = c_{i}\)</span></p></li>
-<li><p><span class="math inline">\(y_{i,k} = 0\)</span> for <span class="math inline">\(k \neq c_{i}\)</span></p></li>
+<li><span class="math inline">\(F(\xi) = \int_{- \infty}^{\infty}f(t)e^{- i2\pi\xi t}dt\)</span></li>
 </ul></li>
-</ul></li>
-<li><p>The model outputs the estimated probabilities of each class in a vector <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span> of size <span class="math inline">\(C\)</span>, i.e.</p>
+<li><p>However, continuous signals can't be handled on a computer.</p></li>
+<li><p>The Discrete Time Fourier Transform (DTFT) discretizes the signal (i.e.&nbsp;discretizes time, samples the signal).</p>
 <ul>
-<li><p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  \triangleq \ \widehat{y_{i,c_{i}}}\)</span></p></li>
-<li><p>Which can also be written as</p>
-<p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  = \prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
+<li><span class="math inline">\(F(e^{i\omega}) = \sum_{n = - \infty}^{\infty}f\lbrack n\rbrack e^{- i\omega n}\)</span></li>
 </ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>Finally, maximizing the expression above is equivalent to minimizing its negative, i.e</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>We can recognize above the expression of the <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss">cross entropy loss</a>.</p>
+<li><p>With the DTFT, the time is now discrete but</p>
 <ul>
-<li><p>Using the fact that <span class="math inline">\(y_{i,k} = 1\)</span> if <span class="math inline">\(k = c_{i}\)</span> and <span class="math inline">\(y_{i,k} = O\)</span> for <span class="math inline">\(k \neq c_{i}\)</span>, the expression can be simplified to</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}log\ \widehat{y_{i,c_{i}}}\)</span></p></li>
+<li><p>There is an infinite sum (not possible in practice).</p></li>
+<li><p>Frequency is still continuous.</p></li>
 </ul></li>
-<li><p>Thus, <strong>in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss</strong>.</p></li>
-<li><p>To understand why the formula <span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span> is called the cross entropy loss, refer to the <a href="../../posts/information-theory/index.html#where-does-the-name-of-the-cross-entropy-loss-come-from">dedicated section</a> in the <a href="../../posts/information-theory/index.html">Information Theory</a> blog post.</p></li>
+<li><p>The Discrete Fourier Transform (DFT) solves these issues by</p>
+<ul>
+<li><p>Truncating time, i.e.&nbsp;looking at a finite time window of N samples.</p></li>
+<li><p>Discretizing frequency, i.e.&nbsp;calculating frequency bins at specific intervals.</p></li>
+</ul></li>
+<li><p>The DFT is computable but it is very slow. Its complexity is <span class="math inline">\(O(N^{2})\)</span>.</p></li>
 </ul>
 </section>
-<section id="regression-setting" class="level2">
-<h2 class="anchored" data-anchor-id="regression-setting">Regression setting</h2>
-<p>In a regression setting</p>
+<section id="fast-fourier-transform-fft" class="level1">
+<h1>Fast Fourier Transform (FFT)</h1>
 <ul>
-<li><p>The label is <span class="math inline">\(y_{i}\)</span> for sample <span class="math inline">\(i\)</span>.</p></li>
-<li><p>The model outputs a prediction <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span>.</p>
-<ul>
-<li><p>If we assume that the error follows a normal distribution, we have</p>
-<p><span class="math inline">\(y_{i} \sim N(\widehat{y_{i}},\sigma^{2})\)</span></p>
-<p>and</p>
-<p><span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\  = \frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
-</ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
-<li><p>And maximizing the expression above is equivalent to minimizing <span class="math inline">\({(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\log\frac{1}{\sqrt{2\pi\sigma^{2}}} - \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}\)</span></p></li>
-<li><p>Finally, because only <span class="math inline">\(\widehat{y_{i}}\)</span> depends on <span class="math inline">\(\theta\)</span>, maximizing the expression above is equivalent to minimizing</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}{(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>We can recognize above the expression of the mean squared error (MSE).</p></li>
-<li><p>Thus, <strong>in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error</strong>.</p></li>
+<li><p>The Fast Fourier Transform (FFT) is an algorithm that implements the DFT in an efficient way.</p></li>
+<li><p>It uses a divide and conquer strategy.</p></li>
+<li><p>It reduces the complexity to <span class="math inline">\(O(N\ log\ N)\)</span>.</p></li>
+<li><p>It is an efficient algorithm, not a new kind of transform compared to DFT.</p></li>
 </ul>
 </section>
-</section>
-<section id="sources" class="level1">
-<h1>Sources</h1>
-<p><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss"><u>https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss</u></a></p>
+<section id="short-term-fourier-transform-stft" class="level1">
+<h1>Short-Term Fourier Transform (STFT)</h1>
+<ul>
+<li><p>The Fourier Transform, DFT and FFT tell which frequencies exist in the signal, but not when they happen.</p></li>
+<li><p>The Short-Term Fourier Transform (STFT) adds this information by</p>
+<ul>
+<li><p>Chopping the signal in short time windows (or frames).</p></li>
+<li><p>Running FFT on each window.</p></li>
+</ul></li>
+</ul>
+<section id="uncertainty-principle" class="level2">
+<h2 class="anchored" data-anchor-id="uncertainty-principle">Uncertainty principle</h2>
+<section id="definition" class="level3">
+<h3 class="anchored" data-anchor-id="definition">Definition</h3>
+<ul>
+<li><p>The uncertainty principle is a trade-off with respect to the window size.</p></li>
+<li><p>Narrow windows offer a great time resolution because each window represents a precise location in time.</p>
+<ul>
+<li>However, the frequency resolution is poor.</li>
+</ul></li>
+<li><p>Conversely, wide windows offer a great frequency resolution but a poor time resolution.</p></li>
+<li><p>The relation between the frequency and the time resolutions is <span class="math inline">\(\Delta f \simeq \frac{1}{T}\)</span> with</p>
+<ul>
+<li><p><span class="math inline">\(\Delta f\)</span> the frequency resolution in <span class="math inline">\(Hz\)</span>.</p></li>
+<li><p><span class="math inline">\(T\)</span> the window length in <span class="math inline">\(s\)</span>.</p></li>
+</ul></li>
+</ul>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->

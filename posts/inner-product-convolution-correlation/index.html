@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-11">
-<meta name="description" content="Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.">
+<meta name="dcterms.date" content="2026-02-03">
+<meta name="description" content="Relationships between Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients.">
 
-<title>Maximum Likelihood Estimation and loss functions – Nisace’s website</title>
+<title>Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients – Nisace’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -140,17 +140,17 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#maximum-likelihood-estimation" id="toc-maximum-likelihood-estimation" class="nav-link active" data-scroll-target="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a>
+  <li><a href="#notations" id="toc-notations" class="nav-link active" data-scroll-target="#notations">Notations</a></li>
+  <li><a href="#cross-correlation" id="toc-cross-correlation" class="nav-link" data-scroll-target="#cross-correlation">Cross-correlation</a></li>
+  <li><a href="#correlation" id="toc-correlation" class="nav-link" data-scroll-target="#correlation">Correlation</a></li>
+  <li><a href="#convolution" id="toc-convolution" class="nav-link" data-scroll-target="#convolution">Convolution</a></li>
+  <li><a href="#l2-functions-inner-product" id="toc-l2-functions-inner-product" class="nav-link" data-scroll-target="#l2-functions-inner-product"><span class="math inline">\(L^{2}\)</span> functions inner product</a></li>
+  <li><a href="#fourier-coefficients" id="toc-fourier-coefficients" class="nav-link" data-scroll-target="#fourier-coefficients">Fourier coefficients</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
   <ul class="collapse">
-  <li><a href="#general-setting" id="toc-general-setting" class="nav-link" data-scroll-target="#general-setting">General setting</a></li>
-  <li><a href="#supervised-learning-setting" id="toc-supervised-learning-setting" class="nav-link" data-scroll-target="#supervised-learning-setting">Supervised learning setting</a></li>
+  <li><a href="#definitions" id="toc-definitions" class="nav-link" data-scroll-target="#definitions">Definitions</a></li>
+  <li><a href="#relationships" id="toc-relationships" class="nav-link" data-scroll-target="#relationships">Relationships</a></li>
   </ul></li>
-  <li><a href="#relationship-to-loss-functions" id="toc-relationship-to-loss-functions" class="nav-link" data-scroll-target="#relationship-to-loss-functions">Relationship to loss functions</a>
-  <ul class="collapse">
-  <li><a href="#classification-setting" id="toc-classification-setting" class="nav-link" data-scroll-target="#classification-setting">Classification setting</a></li>
-  <li><a href="#regression-setting" id="toc-regression-setting" class="nav-link" data-scroll-target="#regression-setting">Regression setting</a></li>
-  </ul></li>
-  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul>
 </nav>
     </div>
@@ -159,15 +159,16 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Maximum Likelihood Estimation and loss functions</h1>
+<h1 class="title">Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Statistics</div>
+    <div class="quarto-category">Signal Processing</div>
+    <div class="quarto-category">Algebra</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    <p>Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.</p>
+    <p>Relationships between Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients.</p>
   </div>
 </div>
 
@@ -178,7 +179,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 11, 2025</p>
+      <p class="date">February 3, 2026</p>
     </div>
   </div>
   
@@ -190,101 +191,243 @@ window.Quarto = {
 </header>
 
 
-<p>In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we will show that in a supervised learning setting, maximizing the likelihood (MLE) of the observed data <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> is equivalent to:</p>
+<section id="notations" class="level1">
+<h1>Notations</h1>
 <ul>
-<li><p>Maximizing <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span>.</p></li>
-<li><p>Minimizing the cross entropy loss in a classification setting.</p></li>
-<li><p>Minimizing the mean squared error (MSE) in a regression setting and under the assumption of normally distributed errors.</p></li>
-</ul>
-<section id="maximum-likelihood-estimation" class="level1">
-<h1>Maximum Likelihood Estimation</h1>
-<section id="general-setting" class="level2">
-<h2 class="anchored" data-anchor-id="general-setting">General setting</h2>
-<p>The Maximum Likelihood Estimation (MLE) seeks to find the parameters <span class="math inline">\(\theta\)</span> of a probabilistic model that maximize the likelihood <span class="math inline">\(L\)</span> of the observed data <span class="math inline">\(x\)</span>. If we consider that <span class="math inline">\(x\)</span> is composed of <span class="math inline">\(n\)</span> independent and identically distributed samples <span class="math inline">\(x_{i}\)</span>, <span class="math inline">\(L\)</span> can be expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i}\ |\ \theta)\)</span></p>
-<p>By convenience and for numerical stability reasons, the <span class="math inline">\(\log\)</span> of <span class="math inline">\(L(\theta)\)</span> is often maximized instead of <span class="math inline">\(L(\theta)\)</span> directly.</p>
-<p><span class="math inline">\(log(L(\theta)) = \sum_{i = 1}^{n}log\ p(x_{i}\ |\ \theta)\)</span></p>
-</section>
-<section id="supervised-learning-setting" class="level2">
-<h2 class="anchored" data-anchor-id="supervised-learning-setting">Supervised learning setting</h2>
-<p>In a supervised learning setting:</p>
+<li><p>Conjugate of <span class="math inline">\(f\)</span></p>
 <ul>
-<li>The samples are pairs <span class="math inline">\((x_{i},y_{i})\)</span> of observed sample <span class="math inline">\(x_{i}\)</span> and label <span class="math inline">\(y_{i}\)</span>.</li>
-</ul>
-<p>Thus, the likelihood is expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i},\ y_{i}\ |\ \theta)\)</span></p>
-<p>which can be rearranged as</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span></p>
-<ul>
-<li>Moreover, in a supervised learning setting, the model does not try to model the data <span class="math inline">\(x_{i}\)</span> but only the label <span class="math inline">\(y_{i}\)</span> based on <span class="math inline">\(x_{i}\)</span>.</li>
-</ul>
-<p>Thus, <span class="math inline">\(p(x_{i})\)</span> does not depend on <span class="math inline">\(\theta\)</span> and maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span> with respect to <span class="math inline">\(\theta\)</span> is equivalent to maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\)</span>.</p>
-<p><span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\)</span></p>
-<p>In other terms, in a supervised learning setting, <strong>maximizing the likelihood</strong> <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> <strong>is equivalent to maximizing</strong> <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span><strong>.</strong></p>
-</section>
-</section>
-<section id="relationship-to-loss-functions" class="level1">
-<h1>Relationship to loss functions</h1>
-<section id="classification-setting" class="level2">
-<h2 class="anchored" data-anchor-id="classification-setting">Classification setting</h2>
-<p>In a classification setting with <span class="math inline">\(C\)</span> classes:</p>
-<ul>
-<li><p>The label <span class="math inline">\(c_{i}\)</span> is the class index for sample <span class="math inline">\(i\)</span>.</p>
-<ul>
-<li><p>We note <span class="math inline">\(y_{i}\)</span> the corresponding one-hot vector of size <span class="math inline">\(C\)</span> with elements</p>
-<ul>
-<li><p><span class="math inline">\(y_{i,k} = 1\)</span> for <span class="math inline">\(k = c_{i}\)</span></p></li>
-<li><p><span class="math inline">\(y_{i,k} = 0\)</span> for <span class="math inline">\(k \neq c_{i}\)</span></p></li>
+<li><span class="math inline">\(\overline{f}\)</span></li>
 </ul></li>
-</ul></li>
-<li><p>The model outputs the estimated probabilities of each class in a vector <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span> of size <span class="math inline">\(C\)</span>, i.e.</p>
+<li><p>Time-flipped <span class="math inline">\(f\)</span></p>
 <ul>
-<li><p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  \triangleq \ \widehat{y_{i,c_{i}}}\)</span></p></li>
-<li><p>Which can also be written as</p>
-<p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  = \prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
+<li><span class="math inline">\(f_{- t}(t) = f( - t)\)</span></li>
 </ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>Finally, maximizing the expression above is equivalent to minimizing its negative, i.e</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>We can recognize above the expression of the <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss">cross entropy loss</a>.</p>
+<li><p>Time-flipped conjugate of <span class="math inline">\(f\)</span></p>
 <ul>
-<li><p>Using the fact that <span class="math inline">\(y_{i,k} = 1\)</span> if <span class="math inline">\(k = c_{i}\)</span> and <span class="math inline">\(y_{i,k} = O\)</span> for <span class="math inline">\(k \neq c_{i}\)</span>, the expression can be simplified to</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}log\ \widehat{y_{i,c_{i}}}\)</span></p></li>
+<li><span class="math inline">\(\widehat{f}(t) = \overline{f( - t)}\)</span></li>
 </ul></li>
-<li><p>Thus, <strong>in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss</strong>.</p></li>
-<li><p>To understand why the formula <span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span> is called the cross entropy loss, refer to the <a href="../../posts/information-theory/index.html#where-does-the-name-of-the-cross-entropy-loss-come-from">dedicated section</a> in the <a href="../../posts/information-theory/index.html">Information Theory</a> blog post.</p></li>
 </ul>
 </section>
-<section id="regression-setting" class="level2">
-<h2 class="anchored" data-anchor-id="regression-setting">Regression setting</h2>
-<p>In a regression setting</p>
+<section id="cross-correlation" class="level1">
+<h1>Cross-correlation</h1>
 <ul>
-<li><p>The label is <span class="math inline">\(y_{i}\)</span> for sample <span class="math inline">\(i\)</span>.</p></li>
-<li><p>The model outputs a prediction <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span>.</p>
+<li><p>The cross correlation is a function.</p>
 <ul>
-<li><p>If we assume that the error follows a normal distribution, we have</p>
-<p><span class="math inline">\(y_{i} \sim N(\widehat{y_{i}},\sigma^{2})\)</span></p>
-<p>and</p>
-<p><span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\  = \frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
+<li><p>The <a href="#correlation">correlation</a> is the value of the cross-correlation function at <span class="math inline">\(t = 0\)</span>, i.e.&nbsp;at <span class="math inline">\(lag = 0\)</span>.</p></li>
+<li><p>But the cross-correlation and correlation terms are often used interchangeably.</p></li>
 </ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
-<li><p>And maximizing the expression above is equivalent to minimizing <span class="math inline">\({(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\log\frac{1}{\sqrt{2\pi\sigma^{2}}} - \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}\)</span></p></li>
-<li><p>Finally, because only <span class="math inline">\(\widehat{y_{i}}\)</span> depends on <span class="math inline">\(\theta\)</span>, maximizing the expression above is equivalent to minimizing</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}{(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>We can recognize above the expression of the mean squared error (MSE).</p></li>
-<li><p>Thus, <strong>in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error</strong>.</p></li>
+<li><p>It takes the conjugate of one of its arguments.</p></li>
+<li><p>Two conventions exist depending on where the conjugate is.</p>
+<ul>
+<li><p><span class="math inline">\((f \star g)(t) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau + t)}\ d\tau\)</span> (Definition 1)</p></li>
+<li><p><span class="math inline">\((f \star g)(t) = \int_{- \infty}^{\infty}\overline{f(\tau)}\ g(\tau + t)\ d\tau\)</span> (Definition 2, used by <a href="https://en.wikipedia.org/wiki/Cross-correlation">Wikipedia</a>)</p></li>
+</ul></li>
+<li><p>The two conventions are equal for real-valued functions.</p></li>
+<li><p>We will use definition 1 in this blog post.</p></li>
 </ul>
 </section>
+<section id="correlation" class="level1">
+<h1>Correlation</h1>
+<ul>
+<li><p>The correlation is a scalar.</p></li>
+<li><p>The correlation is the value of the cross-correlation function at <span class="math inline">\(t = 0\)</span>, i.e.&nbsp;at <span class="math inline">\(lag = 0\)</span>.</p>
+<ul>
+<li><span class="math inline">\((f \star g)(0) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau\)</span></li>
+</ul></li>
+<li><p>It’s affected by the convention of the <a href="#cross-correlation">cross-correlation</a>.</p></li>
+</ul>
 </section>
-<section id="sources" class="level1">
-<h1>Sources</h1>
-<p><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss"><u>https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss</u></a></p>
+<section id="convolution" class="level1">
+<h1>Convolution</h1>
+<ul>
+<li><p>The convolution is a function.</p></li>
+<li><p>It time-flips its second arguments.</p></li>
+<li><p><span class="math inline">\((f \ast g)(t) = \int_{- \infty}^{\infty}f(\tau)g(t - \tau)\ d\tau\)</span></p></li>
+<li><p>If (Definition 1) is used, it’s equal to the <a href="#cross-correlation">cross-correlation</a> between <span class="math inline">\(f\)</span> and <span class="math inline">\(\widehat{g}\)</span>.</p>
+<ul>
+<li><span class="math inline">\((f \ast g) = (f \star \widehat{g})\)</span></li>
+</ul></li>
+<li><p>Equivalently</p>
+<ul>
+<li><span class="math inline">\((f \star g) = (f \ast \widehat{g})\)</span></li>
+</ul></li>
+<li><p>For real-valued functions</p>
+<ul>
+<li><p>The time-flip is enough for the equivalence:</p>
+<ul>
+<li><p><span class="math inline">\((f \ast g) = (f \star g_{- t})\)</span></p></li>
+<li><p><span class="math inline">\((f \star g) = (f \ast g_{- t})\)</span></p></li>
+</ul></li>
+<li><p>The equivalence does not depend on the <a href="#cross-correlation">cross-correlation</a> convention.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="l2-functions-inner-product" class="level1">
+<h1><span class="math inline">\(L^{2}\)</span> functions inner product</h1>
+<ul>
+<li><p>The <span class="math inline">\(L^{2}\)</span> functions inner product is a scalar.</p>
+<ul>
+<li><span class="math inline">\(\langle f,g\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau\)</span></li>
+</ul></li>
+<li><p>It’s equal to the convolution between <span class="math inline">\(f\)</span> and <span class="math inline">\(\widehat{g}\)</span> at <span class="math inline">\(t = 0\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\langle f,g\rangle = (f \ast \widehat{g})(0)\)</span></li>
+</ul></li>
+<li><p>If (Definition 1) is used for the <a href="#cross-correlation">cross-correlation</a></p>
+<ul>
+<li><p>It’s equal to the <a href="#correlation">correlation</a></p></li>
+<li><p><span class="math inline">\(\langle f,g\rangle = (f \star g)(0)\)</span></p></li>
+</ul></li>
+<li><p>For real-valued functions</p>
+<ul>
+<li><p>The equivalence does not depend on the <a href="#cross-correlation">cross-correlation</a> convention.</p></li>
+<li><p>The time-flip is enough for the equivalence:</p></li>
+<li><p><span class="math inline">\(\langle f,g\rangle = (f \star g)(0) = (f \ast g_{- t})(0)\)</span></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="fourier-coefficients" class="level1">
+<h1>Fourier coefficients</h1>
+<ul>
+<li><p><span class="math inline">\(F(\xi) = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau\)</span></p></li>
+<li><p>If <span class="math inline">\(\tau\)</span> is time in seconds, <span class="math inline">\(\xi\)</span> is frequency in Hertz.</p></li>
+<li><p><span class="math inline">\(F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle\)</span></p>
+<ul>
+<li><span class="math inline">\(\langle f,e^{i2\pi\xi\tau}\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{e^{i2\pi\xi\tau}}d\tau = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau = F(\xi)\)</span></li>
+</ul></li>
+<li><p>Note that <span class="math inline">\(\widehat{e^{i2\pi\xi\tau}} = \overline{e^{- i2\pi\xi\tau}} = e^{i2\pi\xi\tau}\)</span></p></li>
+<li><p>It’s equal to the convolution between <span class="math inline">\(f\)</span> and <span class="math inline">\(\widehat{e^{i2\pi\xi\tau}} = e^{i2\pi\xi\tau}\)</span> at <span class="math inline">\(t = 0\)</span>.</p>
+<ul>
+<li><span class="math inline">\(F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle = (f \ast e^{i2\pi\xi\tau})(0)\)</span></li>
+</ul></li>
+<li><p>If (Definition 1) is used for the <a href="#cross-correlation">cross-correlation</a></p>
+<ul>
+<li><p>It’s equal to the <a href="#correlation">correlation</a></p></li>
+<li><p><span class="math inline">\(F(\xi) = (f \star e^{i2\pi\xi t})(0)\)</span></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<section id="definitions" class="level2">
+<h2 class="anchored" data-anchor-id="definitions">Definitions</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 45%">
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 6%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Formula</td>
+<td>Conjugate <span class="math inline">\(\overline{g}\)</span></td>
+<td>Time-flip <span class="math inline">\(g_{- t}\)</span></td>
+<td>Type</td>
+</tr>
+<tr class="even">
+<td>Cross-correlation (Definition 1)</td>
+<td><span class="math inline">\((f \star g)(t) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau + t)}\ d\tau\)</span></td>
+<td>✅</td>
+<td>❌</td>
+<td>Function</td>
+</tr>
+<tr class="odd">
+<td>Correlation</td>
+<td><span class="math inline">\((f \star g)(0) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau\)</span></td>
+<td>✅</td>
+<td>❌</td>
+<td>Scalar</td>
+</tr>
+<tr class="even">
+<td>Convolution</td>
+<td><span class="math inline">\((f \ast g)(t) = \int_{- \infty}^{\infty}f(\tau)g(t - \tau)\ d\tau\)</span></td>
+<td>❌</td>
+<td>✅</td>
+<td>Function</td>
+</tr>
+<tr class="odd">
+<td>Inner product</td>
+<td><span class="math inline">\(\langle f,g\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau\)</span></td>
+<td>✅</td>
+<td>❌</td>
+<td>Scalar</td>
+</tr>
+<tr class="even">
+<td>Fourier coefficients.</td>
+<td><span class="math inline">\(F(\xi) = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau\)</span></td>
+<td>-</td>
+<td>-</td>
+<td>Scalar</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="relationships" class="level2">
+<h2 class="anchored" data-anchor-id="relationships">Relationships</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 58%">
+<col style="width: 27%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Inner product and convolution</td>
+<td>Cross-correlation</td>
+</tr>
+<tr class="even">
+<td>General case</td>
+<td><span class="math inline">\(\langle f,g\rangle = (f \ast \widehat{g})(0)\)</span></td>
+<td><p><span class="math inline">\(= (f \star g)(0)\)</span></p>
+<p>under (Definition 1) only</p></td>
+</tr>
+<tr class="odd">
+<td>Real-valued functions</td>
+<td><span class="math inline">\(\langle f,g\rangle = (f \ast \widehat{g})(0) = (f \ast g_{- t})(0)\)</span></td>
+<td><p><span class="math inline">\(= (f \star g)(0)\)</span></p>
+<p>always</p></td>
+</tr>
+<tr class="even">
+<td>Fourier coefficients</td>
+<td><p><span class="math inline">\(F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle = (f \ast e^{i2\pi\xi\tau})(0)\)</span></p>
+<p>because <span class="math inline">\(\widehat{e^{i2\pi\xi\tau}} = e^{i2\pi\xi\tau}\)</span></p></td>
+<td><p><span class="math inline">\(= (f \star e^{i2\pi\xi\tau})(0)\)</span></p>
+<p>under (Definition 1) only</p></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The inner product is equal to</p>
+<ul>
+<li><p>The convolution with the time-flipped conjugate at <span class="math inline">\(t = 0\)</span>,</p></li>
+<li><p>The cross-correlation under (Definition 1) at <span class="math inline">\(t = 0\)</span>,</p>
+<ul>
+<li>i.e.&nbsp;the correlation under (Definition 1).</li>
+</ul></li>
+<li><p><span class="math inline">\(\langle f,g\rangle = (f \ast \widehat{g})(0) = (f \star g)(0)\)</span></p></li>
+</ul></li>
+<li><p>The Fourier coefficient of <span class="math inline">\(\xi\)</span> is equal to</p>
+<ul>
+<li><p>The inner product,</p></li>
+<li><p>The convolution at <span class="math inline">\(t = 0\)</span>,</p>
+<ul>
+<li>because <span class="math inline">\(\widehat{e^{i2\pi\xi\tau}} = \overline{e^{- i2\pi\xi\tau}} = e^{i2\pi\xi\tau}\)</span>.</li>
+</ul></li>
+<li><p>The cross-correlation under (Definition 1) at <span class="math inline">\(t = 0\)</span>,</p>
+<ul>
+<li>i.e.&nbsp;the correlation under (Definition 1).</li>
+</ul></li>
+<li><p>with <span class="math inline">\(e^{i2\pi\xi\tau}\)</span>.</p></li>
+<li><p><span class="math inline">\(F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle = (f \ast e^{i2\pi\xi\tau})(0) = (f \star e^{i2\pi\xi\tau})(0)\)</span></p></li>
+</ul></li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

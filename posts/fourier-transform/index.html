@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-11">
-<meta name="description" content="Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.">
+<meta name="dcterms.date" content="2026-02-03">
+<meta name="description" content="Definition and motivations of the Fourier transform.">
 
-<title>Maximum Likelihood Estimation and loss functions – Nisace’s website</title>
+<title>The Fourier transform – Nisace’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -140,17 +140,24 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#maximum-likelihood-estimation" id="toc-maximum-likelihood-estimation" class="nav-link active" data-scroll-target="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#differences-between-the-fourier-series-and-the-fourier-transform" id="toc-differences-between-the-fourier-series-and-the-fourier-transform" class="nav-link" data-scroll-target="#differences-between-the-fourier-series-and-the-fourier-transform">Differences between the Fourier series and the Fourier transform</a></li>
+  <li><a href="#representations-of-an-oscillation" id="toc-representations-of-an-oscillation" class="nav-link" data-scroll-target="#representations-of-an-oscillation">Representations of an oscillation</a>
   <ul class="collapse">
-  <li><a href="#general-setting" id="toc-general-setting" class="nav-link" data-scroll-target="#general-setting">General setting</a></li>
-  <li><a href="#supervised-learning-setting" id="toc-supervised-learning-setting" class="nav-link" data-scroll-target="#supervised-learning-setting">Supervised learning setting</a></li>
+  <li><a href="#sine-and-cosine-representation" id="toc-sine-and-cosine-representation" class="nav-link" data-scroll-target="#sine-and-cosine-representation">Sine and cosine representation</a></li>
+  <li><a href="#complex-exponentials-representation" id="toc-complex-exponentials-representation" class="nav-link" data-scroll-target="#complex-exponentials-representation">Complex exponentials representation</a></li>
   </ul></li>
-  <li><a href="#relationship-to-loss-functions" id="toc-relationship-to-loss-functions" class="nav-link" data-scroll-target="#relationship-to-loss-functions">Relationship to loss functions</a>
+  <li><a href="#modern-fourier-analysis" id="toc-modern-fourier-analysis" class="nav-link" data-scroll-target="#modern-fourier-analysis">Modern Fourier analysis</a>
   <ul class="collapse">
-  <li><a href="#classification-setting" id="toc-classification-setting" class="nav-link" data-scroll-target="#classification-setting">Classification setting</a></li>
-  <li><a href="#regression-setting" id="toc-regression-setting" class="nav-link" data-scroll-target="#regression-setting">Regression setting</a></li>
+  <li><a href="#fourier-transform" id="toc-fourier-transform" class="nav-link" data-scroll-target="#fourier-transform">Fourier Transform</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
+  <li><a href="#signal-decomposition" id="toc-signal-decomposition" class="nav-link" data-scroll-target="#signal-decomposition">Signal decomposition</a></li>
+  <li><a href="#practical-note" id="toc-practical-note" class="nav-link" data-scroll-target="#practical-note">Practical note</a></li>
   </ul></li>
-  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -159,15 +166,15 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Maximum Likelihood Estimation and loss functions</h1>
+<h1 class="title">The Fourier transform</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Statistics</div>
+    <div class="quarto-category">Signal Processing</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    <p>Introduction to Maximum Likelihood Estimation (MLE) and its relationship with the cross-entropy and mean squared error (MSE) loss functions.</p>
+    <p>Definition and motivations of the Fourier transform.</p>
   </div>
 </div>
 
@@ -178,7 +185,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 11, 2025</p>
+      <p class="date">February 3, 2026</p>
     </div>
   </div>
   
@@ -190,101 +197,144 @@ window.Quarto = {
 </header>
 
 
-<p>In this blog post, we will introduce the concept of Maximum Likelihood Estimation (MLE) and we will show that in a supervised learning setting, maximizing the likelihood (MLE) of the observed data <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> is equivalent to:</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>This blog post is about the Fourier transform. It is organized as follows:</p>
 <ul>
-<li><p>Maximizing <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span>.</p></li>
-<li><p>Minimizing the cross entropy loss in a classification setting.</p></li>
-<li><p>Minimizing the mean squared error (MSE) in a regression setting and under the assumption of normally distributed errors.</p></li>
-</ul>
-<section id="maximum-likelihood-estimation" class="level1">
-<h1>Maximum Likelihood Estimation</h1>
-<section id="general-setting" class="level2">
-<h2 class="anchored" data-anchor-id="general-setting">General setting</h2>
-<p>The Maximum Likelihood Estimation (MLE) seeks to find the parameters <span class="math inline">\(\theta\)</span> of a probabilistic model that maximize the likelihood <span class="math inline">\(L\)</span> of the observed data <span class="math inline">\(x\)</span>. If we consider that <span class="math inline">\(x\)</span> is composed of <span class="math inline">\(n\)</span> independent and identically distributed samples <span class="math inline">\(x_{i}\)</span>, <span class="math inline">\(L\)</span> can be expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i}\ |\ \theta)\)</span></p>
-<p>By convenience and for numerical stability reasons, the <span class="math inline">\(\log\)</span> of <span class="math inline">\(L(\theta)\)</span> is often maximized instead of <span class="math inline">\(L(\theta)\)</span> directly.</p>
-<p><span class="math inline">\(log(L(\theta)) = \sum_{i = 1}^{n}log\ p(x_{i}\ |\ \theta)\)</span></p>
-</section>
-<section id="supervised-learning-setting" class="level2">
-<h2 class="anchored" data-anchor-id="supervised-learning-setting">Supervised learning setting</h2>
-<p>In a supervised learning setting:</p>
+<li><p><a href="#usage">Usage</a></p>
 <ul>
-<li>The samples are pairs <span class="math inline">\((x_{i},y_{i})\)</span> of observed sample <span class="math inline">\(x_{i}\)</span> and label <span class="math inline">\(y_{i}\)</span>.</li>
-</ul>
-<p>Thus, the likelihood is expressed as:</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(x_{i},\ y_{i}\ |\ \theta)\)</span></p>
-<p>which can be rearranged as</p>
-<p><span class="math inline">\(L(\theta) = \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span></p>
-<ul>
-<li>Moreover, in a supervised learning setting, the model does not try to model the data <span class="math inline">\(x_{i}\)</span> but only the label <span class="math inline">\(y_{i}\)</span> based on <span class="math inline">\(x_{i}\)</span>.</li>
-</ul>
-<p>Thus, <span class="math inline">\(p(x_{i})\)</span> does not depend on <span class="math inline">\(\theta\)</span> and maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\ p(x_{i}\ |\ \theta)\)</span> with respect to <span class="math inline">\(\theta\)</span> is equivalent to maximizing <span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\)</span>.</p>
-<p><span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}p(y_{i}\ |\ x_{i},\ \theta)\)</span></p>
-<p>In other terms, in a supervised learning setting, <strong>maximizing the likelihood</strong> <span class="math inline">\(p(x,\ y\ |\ \theta)\)</span> <strong>is equivalent to maximizing</strong> <span class="math inline">\(p(y\ |\ x,\ \theta)\)</span><strong>.</strong></p>
-</section>
-</section>
-<section id="relationship-to-loss-functions" class="level1">
-<h1>Relationship to loss functions</h1>
-<section id="classification-setting" class="level2">
-<h2 class="anchored" data-anchor-id="classification-setting">Classification setting</h2>
-<p>In a classification setting with <span class="math inline">\(C\)</span> classes:</p>
-<ul>
-<li><p>The label <span class="math inline">\(c_{i}\)</span> is the class index for sample <span class="math inline">\(i\)</span>.</p>
-<ul>
-<li><p>We note <span class="math inline">\(y_{i}\)</span> the corresponding one-hot vector of size <span class="math inline">\(C\)</span> with elements</p>
-<ul>
-<li><p><span class="math inline">\(y_{i,k} = 1\)</span> for <span class="math inline">\(k = c_{i}\)</span></p></li>
-<li><p><span class="math inline">\(y_{i,k} = 0\)</span> for <span class="math inline">\(k \neq c_{i}\)</span></p></li>
+<li>First explain why the Fourier series and the Fourier transform are useful and the possibilities they offer.</li>
 </ul></li>
-</ul></li>
-<li><p>The model outputs the estimated probabilities of each class in a vector <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span> of size <span class="math inline">\(C\)</span>, i.e.</p>
+<li><p><a href="#differences-between-the-fourier-series-and-the-fourier-transform">Differences between the Fourier series and the Fourier transform</a></p>
 <ul>
-<li><p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  \triangleq \ \widehat{y_{i,c_{i}}}\)</span></p></li>
-<li><p>Which can also be written as</p>
-<p><span class="math inline">\(p(c_{i}\ |\ x_{i},\ \theta)\  = \prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
+<li>Then, explain the differences between the Fourier series and the Fourier transform.</li>
 </ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\prod_{k = 1}^{C}\ {\widehat{y_{i,k}}}^{{\ y}_{i,k}}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>Finally, maximizing the expression above is equivalent to minimizing its negative, i.e</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span></p></li>
-<li><p>We can recognize above the expression of the <a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss">cross entropy loss</a>.</p>
+<li><p><a href="#representations-of-an-oscillation">Representations of an oscillation</a></p>
 <ul>
-<li><p>Using the fact that <span class="math inline">\(y_{i,k} = 1\)</span> if <span class="math inline">\(k = c_{i}\)</span> and <span class="math inline">\(y_{i,k} = O\)</span> for <span class="math inline">\(k \neq c_{i}\)</span>, the expression can be simplified to</p>
-<p><span class="math inline">\(- \sum_{i = 1}^{n}log\ \widehat{y_{i,c_{i}}}\)</span></p></li>
+<li>This section explains the different ways to represent oscillations (sine/cosine vs complex exponentials).</li>
 </ul></li>
-<li><p>Thus, <strong>in the supervised classification setting, maximizing the likelihood (MLE) is equivalent to minimizing the cross entropy loss</strong>.</p></li>
-<li><p>To understand why the formula <span class="math inline">\(- \sum_{i = 1}^{n}\sum_{k = 1}^{C}y_{i,k}\ log\ \widehat{y_{i,k}}\)</span> is called the cross entropy loss, refer to the <a href="../../posts/information-theory/index.html#where-does-the-name-of-the-cross-entropy-loss-come-from">dedicated section</a> in the <a href="../../posts/information-theory/index.html">Information Theory</a> blog post.</p></li>
+<li><p><a href="#modern-fourier-analysis">Modern Fourier analysis</a></p>
+<ul>
+<li><p>Introduce the Fourier transform.</p></li>
+<li><p>This is the most frequent way to perform Fourier analysis nowadays.</p></li>
+<li><p>This section gives the definition of the Fourier transform.</p></li>
+<li><p>But it does not explain where it comes from.</p></li>
+<li><p>See the <a href="../../posts/fourier-series-to-fourier-transform/index.html">From the Fourier series to the Fourier transform</a> blog post to see where the Fourier transform comes from.</p></li>
+</ul></li>
 </ul>
 </section>
-<section id="regression-setting" class="level2">
-<h2 class="anchored" data-anchor-id="regression-setting">Regression setting</h2>
-<p>In a regression setting</p>
+<section id="usage" class="level1">
+<h1>Usage</h1>
 <ul>
-<li><p>The label is <span class="math inline">\(y_{i}\)</span> for sample <span class="math inline">\(i\)</span>.</p></li>
-<li><p>The model outputs a prediction <span class="math inline">\(\widehat{y_{i}} = f(x_{i})\)</span>.</p>
+<li><p>The Fourier series and the Fourier transform allow the analysis of the content of a signal.</p></li>
+<li><p>This analysis is referred to as the Fourier analysis.</p></li>
+<li><p>More specifically, they decompose the signal into oscillations at different frequencies.</p>
 <ul>
-<li><p>If we assume that the error follows a normal distribution, we have</p>
-<p><span class="math inline">\(y_{i} \sim N(\widehat{y_{i}},\sigma^{2})\)</span></p>
-<p>and</p>
-<p><span class="math inline">\(p(y_{i}\ |\ x_{i},\ \theta)\  = \frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
+<li>See the <a href="#representations-of-an-oscillation">Representations of an oscillation</a> section below to see how these oscillations can be represented.</li>
 </ul></li>
-<li><p>Thus, <span class="math inline">\(L(\theta)\  \propto \ \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{- \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}}\)</span></p></li>
-<li><p>And maximizing the expression above is equivalent to minimizing <span class="math inline">\({(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>Taking the <span class="math inline">\(\log\)</span> of the expression above gives</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}\log\frac{1}{\sqrt{2\pi\sigma^{2}}} - \frac{{(y_{i} - \widehat{y_{i}})}^{2}}{2\sigma^{2}}\)</span></p></li>
-<li><p>Finally, because only <span class="math inline">\(\widehat{y_{i}}\)</span> depends on <span class="math inline">\(\theta\)</span>, maximizing the expression above is equivalent to minimizing</p>
-<p><span class="math inline">\(\sum_{i = 1}^{n}{(y_{i} - \widehat{y_{i}})}^{2}\)</span></p></li>
-<li><p>We can recognize above the expression of the mean squared error (MSE).</p></li>
-<li><p>Thus, <strong>in the regression setting and under the assumption of normally distributed errors, maximizing the likelihood (MLE) is equivalent to minimizing the mean squared error</strong>.</p></li>
+<li><p>This decomposition into oscillations at different frequencies gives information about the structure of the signal in terms of pitch, harmonics or timbre for example.</p></li>
+</ul>
+</section>
+<section id="differences-between-the-fourier-series-and-the-fourier-transform" class="level1">
+<h1>Differences between the Fourier series and the Fourier transform</h1>
+<ul>
+<li><p>The Fourier series applies to periodic signals.</p></li>
+<li><p>The Fourier transform applies to non-periodic signals.</p></li>
+<li><p>Both describe the signal as a sum (or integral) of oscillations at different frequencies.</p></li>
+<li><p>The <a href="../../posts/fourier-series-to-fourier-transform/index.html#from-the-fourier-series-to-the-fourier-transform">From the Fourier Series to the Fourier</a> section in the <a href="../../posts/fourier-series-to-fourier-transform/index.html">blog post</a> of the same name explains how the Fourier transform can be derived from the Fourier series.</p></li>
+</ul>
+</section>
+<section id="representations-of-an-oscillation" class="level1">
+<h1>Representations of an oscillation</h1>
+<ul>
+<li>At each frequency, the oscillation of frequency <span class="math inline">\(f\)</span> can be represented in different ways.</li>
+</ul>
+<section id="sine-and-cosine-representation" class="level2">
+<h2 class="anchored" data-anchor-id="sine-and-cosine-representation">Sine and cosine representation</h2>
+<ul>
+<li><p>Either as a linear combination of a sine function <span class="math inline">\(sin(2\pi\xi t)\)</span> and a cosine function <span class="math inline">\(cos(2\pi\xi t)\)</span>.</p>
+<ul>
+<li>Both functions are thus real valued.</li>
+</ul></li>
+</ul>
+</section>
+<section id="complex-exponentials-representation" class="level2">
+<h2 class="anchored" data-anchor-id="complex-exponentials-representation">Complex exponentials representation</h2>
+<ul>
+<li><p>Or as a linear combination of two complex exponentials <span class="math inline">\(e^{- i2\pi\xi t}\)</span> and <span class="math inline">\(e^{i2\pi\xi t}\)</span>.</p>
+<ul>
+<li>Both functions are thus complex valued.</li>
+</ul></li>
+<li><p>These two representations are mathematically equivalent.</p>
+<ul>
+<li><p>Historically, the sine and cosine functions were used first.</p></li>
+<li><p>However, the complex exponentials simplify the notation and are easier to manipulate.</p></li>
+<li><p>The <a href="../../posts/fourier-series-to-fourier-transform/index.html#from-sinecosine-to-complex-exponentials">From sine/cosine to complex exponentials</a> section from the <a href="../../posts/fourier-series-to-fourier-transform/index.html">From the Fourier series to the Fourier transform</a> blog post explains the relationship between these two representations.</p></li>
+</ul></li>
+<li><p>In both representations, the linear combination accounts for the phase of the signal.</p>
+<ul>
+<li>If an oscillation of frequency <span class="math inline">\(f\)</span> is present in the signal, the relative weights given to <span class="math inline">\(sin(2\pi\xi t)\)</span> and <span class="math inline">\(cos(2\pi\xi t)\)</span> or <span class="math inline">\(e^{- i2\pi\xi t}\)</span> and <span class="math inline">\(e^{i2\pi\xi t}\)</span> allow to produce an oscillation of frequency <span class="math inline">\(f\)</span> with the same phase as the oscillation of frequency <span class="math inline">\(f\)</span> present in the signal.</li>
+</ul></li>
+<li><p>The weights of the linear combinations at the different frequencies are called the coefficients (Fourier series coefficients and Fourier transform coefficients).</p></li>
 </ul>
 </section>
 </section>
-<section id="sources" class="level1">
-<h1>Sources</h1>
-<p><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss"><u>https://scikit-learn.org/stable/modules/model_evaluation.html#log-loss</u></a></p>
+<section id="modern-fourier-analysis" class="level1">
+<h1>Modern Fourier analysis</h1>
+<ul>
+<li><p>Historically, the Fourier series were developed first by <a href="https://en.wikipedia.org/wiki/Joseph_Fourier">Joseph Fourier</a>.</p></li>
+<li><p>In modern Fourier analysis, the Fourier transform is most often used instead of the Fourier series.</p></li>
+<li><p>The Fourier transform is a generalization of the Fourier series to non-periodic signals.</p></li>
+<li><p>This section gives the definition of the Fourier transform coefficients.</p>
+<ul>
+<li><p>It introduces the definition but does not explain where it comes from.</p></li>
+<li><p>See the <a href="../../posts/fourier-series-to-fourier-transform/index.html">From the Fourier series to the Fourier transform</a> blog post to see where the Fourier transform comes from.</p></li>
+</ul></li>
+</ul>
+<section id="fourier-transform" class="level2">
+<h2 class="anchored" data-anchor-id="fourier-transform">Fourier Transform</h2>
+<section id="definition" class="level3">
+<h3 class="anchored" data-anchor-id="definition">Definition</h3>
+<ul>
+<li><p>The Fourier transform usually represents oscillations with complex exponentials.</p></li>
+<li><p>The Fourier transform coefficients are thus complex numbers.</p></li>
+<li><p>At frequency <span class="math inline">\(\xi\)</span>, the Fourier transform coefficient is computed as follows:</p>
+<p><span class="math inline">\(F(\xi) = \int_{- \infty}^{\infty}f(t)e^{- i2\pi\xi t}dt\)</span> (1)</p></li>
+<li><p>The amplitude <span class="math inline">\(\left| F(\xi) \right|\)</span> indicates how strongly the oscillation of frequency <span class="math inline">\(\xi\)</span> is present in the signal.</p></li>
+<li><p>The phase <span class="math inline">\(arg(F(\xi))\)</span> indicates the phase of the oscillation of frequency <span class="math inline">\(\xi\)</span> present in the signal.</p></li>
+</ul>
+</section>
+<section id="interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation">Interpretation</h3>
+<ul>
+<li><p><span class="math inline">\(F(\xi)\)</span> is equal to</p>
+<ul>
+<li><p>The correlation between <span class="math inline">\(f(t)\)</span> and <span class="math inline">\(e^{i2\pi\xi t}\)</span>.</p></li>
+<li><p>The <span class="math inline">\(L^{2}\)</span> inner product between <span class="math inline">\(f(t)\)</span> and <span class="math inline">\(e^{i2\pi\xi t}\)</span>.</p></li>
+<li><p>See the Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients post for more details.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="signal-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="signal-decomposition">Signal decomposition</h3>
+<ul>
+<li><p>Any signal with finite energy (i.e.&nbsp;<span class="math inline">\(\in L^{2}(R)\)</span>) can be expressed and decomposed as an infinite sum (integral) of oscillations at all frequencies.</p>
+<ul>
+<li>The finite energy condition is always met in practice as real-world signals cannot have infinite energy.</li>
+</ul></li>
+<li><p>Each oscillation of frequency <span class="math inline">\(\xi\)</span> is weighted by its Fourier transform coefficient <span class="math inline">\(F(\xi)\)</span>.</p>
+<p><span class="math inline">\(f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi\)</span> (2)</p></li>
+</ul>
+</section>
+<section id="practical-note" class="level3">
+<h3 class="anchored" data-anchor-id="practical-note">Practical note</h3>
+<ul>
+<li>The <a href="../../posts/dft-fft-stft/index.html">DFT / FFT / STFT</a> post explains how the Fourier transform coefficients are computed in practice.</li>
+</ul>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
