@@ -1,0 +1,185 @@
+---
+title: "Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients"
+description: |
+  Relationships between Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients.
+date: "2026-02-03"
+categories: [Signal Processing, Algebra]
+---
+
+# Notations
+
+- Conjugate of $f$
+
+  - $\overline{f}$
+
+- Time-flipped $f$
+
+  - $f_{- t}(t) = f( - t)$
+
+- Time-flipped conjugate of $f$
+
+  - $\widehat{f}(t) = \overline{f( - t)}$
+
+# Cross-correlation
+
+- The cross correlation is a function.
+
+  - The [correlation](#correlation) is the value of the cross-correlation function at $t = 0$, i.e. at $lag = 0$.
+
+  - But the cross-correlation and correlation terms are often used interchangeably.
+
+- It takes the conjugate of one of its arguments.
+
+- Two conventions exist depending on where the conjugate is.
+
+  - $(f \star g)(t) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau + t)}\ d\tau$ (Definition 1)
+
+  - $(f \star g)(t) = \int_{- \infty}^{\infty}\overline{f(\tau)}\ g(\tau + t)\ d\tau$ (Definition 2, used by [Wikipedia](https://en.wikipedia.org/wiki/Cross-correlation))
+
+- The two conventions are equal for real-valued functions.
+
+- We will use definition 1 in this blog post.
+
+# Correlation
+
+- The correlation is a scalar.
+
+- The correlation is the value of the cross-correlation function at $t = 0$, i.e. at $lag = 0$.
+
+  - $(f \star g)(0) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$
+
+- It's affected by the convention of the [cross-correlation](#cross-correlation).
+
+# Convolution
+
+- The convolution is a function.
+
+- It time-flips its second arguments.
+
+- $(f \ast g)(t) = \int_{- \infty}^{\infty}f(\tau)g(t - \tau)\ d\tau$
+
+- If (Definition 1) is used, it's equal to the [cross-correlation](#cross-correlation) between $f$ and $\widehat{g}$.
+
+  - $(f \ast g) = (f \star \widehat{g})$
+
+- Equivalently
+
+  - $(f \star g) = (f \ast \widehat{g})$
+
+- For real-valued functions
+
+  - The time-flip is enough for the equivalence:
+
+    - $(f \ast g) = (f \star g_{- t})$
+
+    - $(f \star g) = (f \ast g_{- t})$
+
+  - The equivalence does not depend on the [cross-correlation](#cross-correlation) convention.
+
+# $L^{2}$ functions inner product
+
+- The $L^{2}$ functions inner product is a scalar.
+
+  - $\langle f,g\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$
+
+- It's equal to the convolution between $f$ and $\widehat{g}$ at $t = 0$.
+
+  - $\langle f,g\rangle = (f \ast \widehat{g})(0)$
+
+- If (Definition 1) is used for the [cross-correlation](#cross-correlation)
+
+  - It's equal to the [correlation](#correlation)
+
+  - $\langle f,g\rangle = (f \star g)(0)$
+
+- For real-valued functions
+
+  - The equivalence does not depend on the [cross-correlation](#cross-correlation) convention.
+
+  - The time-flip is enough for the equivalence:
+
+  - $\langle f,g\rangle = (f \star g)(0) = (f \ast g_{- t})(0)$
+
+# Fourier coefficients
+
+- $F(\xi) = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau$
+
+- If $\tau$ is time in seconds, $\xi$ is frequency in Hertz.
+
+- $F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle$
+
+  - $\langle f,e^{i2\pi\xi\tau}\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{e^{i2\pi\xi\tau}}d\tau = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau = F(\xi)$
+
+- Note that $\widehat{e^{i2\pi\xi\tau}} = \overline{e^{- i2\pi\xi\tau}} = e^{i2\pi\xi\tau}$
+
+- It's equal to the convolution between $f$ and $\widehat{e^{i2\pi\xi\tau}} = e^{i2\pi\xi\tau}$ at $t = 0$.
+
+  - $F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle = (f \ast e^{i2\pi\xi\tau})(0)$
+
+- If (Definition 1) is used for the [cross-correlation](#cross-correlation)
+
+  - It's equal to the [correlation](#correlation)
+
+  - $F(\xi) = (f \star e^{i2\pi\xi t})(0)$
+
+# Summary
+
+## Definitions 
+
++----------------------------------+---------------------------------------------------------------------------------+--------------------------+---------------------+----------+
+|                                  | Formula                                                                         | Conjugate $\overline{g}$ | Time-flip $g_{- t}$ | Type     |
++----------------------------------+---------------------------------------------------------------------------------+--------------------------+---------------------+----------+
+| Cross-correlation (Definition 1) | $(f \star g)(t) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau + t)}\ d\tau$ | ✅                       | ❌                  | Function |
++----------------------------------+---------------------------------------------------------------------------------+--------------------------+---------------------+----------+
+| Correlation                      | $(f \star g)(0) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$     | ✅                       | ❌                  | Scalar   |
++----------------------------------+---------------------------------------------------------------------------------+--------------------------+---------------------+----------+
+| Convolution                      | $(f \ast g)(t) = \int_{- \infty}^{\infty}f(\tau)g(t - \tau)\ d\tau$             | ❌                       | ✅                  | Function |
++----------------------------------+---------------------------------------------------------------------------------+--------------------------+---------------------+----------+
+| Inner product                    | $\langle f,g\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$ | ✅                       | ❌                  | Scalar   |
++----------------------------------+---------------------------------------------------------------------------------+--------------------------+---------------------+----------+
+| Fourier coefficients.            | $F(\xi) = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau$               | \-                       | \-                  | Scalar   |
++----------------------------------+---------------------------------------------------------------------------------+--------------------------+---------------------+----------+
+
+## Relationships
+
++-----------------+-----------------------------------------------------------------------------+-----------------------------------+
+|                 | Inner product and convolution                                               | Cross-correlation                 |
++-----------------+-----------------------------------------------------------------------------+-----------------------------------+
+| General case    | $\langle f,g\rangle = (f \ast \widehat{g})(0)$                              | $= (f \star g)(0)$                |
+|                 |                                                                             |                                   |
+|                 |                                                                             | under (Definition 1) only         |
++-----------------+-----------------------------------------------------------------------------+-----------------------------------+
+| Real-valued     | $\langle f,g\rangle = (f \ast \widehat{g})(0) = (f \ast g_{- t})(0)$        | $= (f \star g)(0)$                |
+| functions       |                                                                             |                                   |
+|                 |                                                                             | always                            |
++-----------------+-----------------------------------------------------------------------------+-----------------------------------+
+| Fourier         | $F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle = (f \ast e^{i2\pi\xi\tau})(0)$ | $= (f \star e^{i2\pi\xi\tau})(0)$ |
+| coefficients    |                                                                             |                                   |
+|                 | because $\widehat{e^{i2\pi\xi\tau}} = e^{i2\pi\xi\tau}$                     | under (Definition 1) only         |
++-----------------+-----------------------------------------------------------------------------+-----------------------------------+
+
+- The inner product is equal to
+
+  - The convolution with the time-flipped conjugate at $t = 0$,
+
+  - The cross-correlation under (Definition 1) at $t = 0$,
+
+    - i.e. the correlation under (Definition 1).
+
+  - $\langle f,g\rangle = (f \ast \widehat{g})(0) = (f \star g)(0)$
+
+- The Fourier coefficient of $\xi$ is equal to
+
+  - The inner product,
+
+  - The convolution at $t = 0$,
+
+    - because $\widehat{e^{i2\pi\xi\tau}} = \overline{e^{- i2\pi\xi\tau}} = e^{i2\pi\xi\tau}$.
+
+  - The cross-correlation under (Definition 1) at $t = 0$,
+
+    - i.e. the correlation under (Definition 1).
+
+  - with $e^{i2\pi\xi\tau}$.
+
+  - $F(\xi) = \langle f,e^{i2\pi\xi\tau}\rangle = (f \ast e^{i2\pi\xi\tau})(0) = (f \star e^{i2\pi\xi\tau})(0)$
