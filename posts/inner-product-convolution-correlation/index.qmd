@@ -126,19 +126,14 @@ categories: [Signal Processing, Algebra]
 
 ## Definitions 
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                                     Formula                                                                            Conjugate $\overline{g}$   Time-flip $g_{- t}$   Type
-  ---------------------------------- ---------------------------------------------------------------------------------- --------------------------- --------------------- ----------
-  Cross-correlation (Definition 1)   $(f \star g)(t) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau + t)}\ d\tau$   ✅                          ❌                    Function
+| | Formula | Conjugate $\overline{g}$ | Time-flip $g_{- t}$ | Type |
+|---|---|---|---|---|
+| Cross-correlation (Definition 1) | $(f \star g)(t) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau + t)}\ d\tau$ | ✅ | ❌ | Function |
+| Correlation | $(f \star g)(0) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$ | ✅ | ❌ | Scalar |
+| Convolution | $(f \ast g)(t) = \int_{- \infty}^{\infty}f(\tau)g(t - \tau)\ d\tau$ | ❌ | ✅ | Function |
+| Inner product | $\langle f,g\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$ | ✅ | ❌ | Scalar |
+| Fourier coefficients | $F(\xi) = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau$ | - | - | Scalar |
 
-  Correlation                        $(f \star g)(0) = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$       ✅                          ❌                    Scalar
-
-  Convolution                        $(f \ast g)(t) = \int_{- \infty}^{\infty}f(\tau)g(t - \tau)\ d\tau$                ❌                          ✅                    Function
-
-  Inner product                      $\langle f,g\rangle = \int_{- \infty}^{\infty}f(\tau)\overline{g(\tau)}\ d\tau$   ✅                          ❌                    Scalar
-
-  Fourier coefficients               $F(\xi) = \int_{- \infty}^{\infty}f(\tau)e^{- i2\pi\xi\tau}d\tau$                  \-                          \-                    Scalar
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Relationships
 
