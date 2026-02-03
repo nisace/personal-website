@@ -1,0 +1,260 @@
+---
+title: "From the Fourier series to the Fourier transform"
+description: |
+  How to go from the Fourier series to the Fourier transform.
+date: "2026-02-03"
+categories: [Signal Processing]
+---
+
+# Introduction
+
+- [The Fourier transform](/posts/fourier-transform/index.qmd) blog post gives the definition of the Fourier transform.
+
+- But it does not explain where it comes from.
+
+- This blog post explains where the Fourier transform comes from.
+
+# Summary
+
+The post is organized as follows
+
+- The [Fourier series](#fourier-series-1) section explains that
+
+  - Fourier had the intuition (but no proof) for the following equality for periodic signals (see [Fourier's intuition](#fouriers-intuition))
+
+    $f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack$ (1)
+
+- This expression can be rewritten as (see [From sine/cosine to complex exponentials](#from-sinecosine-to-complex-exponentials))
+
+  $f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}$ (2)
+
+- Which makes
+
+  - Complex exponentials appear.
+
+  - Positive and negative frequencies appear.
+
+- The corresponding Fourier series coefficients can be derived from orthogonality as (see [From Fourier series intuition to Fourier series coefficients](#from-fourier-series-intuition-to-fourier-series-coefficients))
+
+  $c_{n} = \frac{1}{T}\int_{0}^{T}f(t)\ e^{- i2\pi n\xi t}dt$
+
+- The [From the Fourier Series to the Fourier Transform](#from-the-fourier-series-to-the-fourier-transform) section explains that
+
+  - The [Fourier series](#fourier-series-1) intuition can be extended to a non-periodic signal by seeing it as the limit of a periodic signal as its period $T \rightarrow \infty$.
+
+  - This leads to (see [From the Fourier Series to the Fourier Transform](#from-the-fourier-series-to-the-fourier-transform))
+
+    $f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi$ (3)
+
+- Note that even though expression (3) is the limit of the Fourier series (expression (2)) as $T \rightarrow \infty$, it is **not** called the Fourier transform.
+
+  - In fact, it is the inverse Fourier transform instead.
+
+  - The Fourier transform is the function $F(\xi)$ of $\xi$ (i.e. the Fourier transform coefficients).
+
+- Similarly to the Fourier series, this leads to the Fourier transform coefficients
+
+  $F(\xi) = \int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\xi t}dt$
+
+# Fourier series
+
+- This section explains Fourier\'s intuition that led to the Fourier series and the Fourier series coefficients.
+
+## Fourier's intuition
+
+- Fourier had the intuition that any periodic signal with period $T$ (or frequency $\xi = \frac{1}{T}$) can be decomposed as an infinite sum of oscillations at frequencies that are integer multiples of $\xi$.
+
+- [He did not prove this intuition](https://proofwiki.org/wiki/Definition:Fourier_Series/Historical_Note).
+
+- He used it as an assumption and derived the Fourier series coefficients from this assumption.
+
+- The empirical success suggested that the assumption was correct.
+
+- But mathematical proof came later.
+
+  - Dirichlet provided the first rigorous proof in 1829, valid under certain conditions now called the Dirichlet conditions.
+
+  - This proof is only valid for Fourier series / periodic signals.
+
+  - Hence, this proof does not apply to modern Fourier analysis of non-periodic signals.
+
+  - One must refer to the convergence proof of the inverse Fourier transform instead (see the [Signal decomposition](/posts/fourier-transform/index.qmd#signal-decomposition) section of [The Fourier transform](/posts/fourier-transform/index.qmd) blog post).
+
+## Fourier series
+
+- Fourier's assumption
+
+  - For a periodic signal with period $T$ (or frequency $\xi = \frac{1}{T}$)
+
+  - and with $n$ an integer.
+
+    $f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack$ (1)
+
+- As explained in the [Representations of an oscillation](/posts/fourier-transform/index.qmd#representations-of-an-oscillation) section of the [Fourier transform](/posts/fourier-transform/index.qmd) blog post, complex exponentials are easier to manipulate.
+
+- As shown in the [From sine/cosine to complex exponentials](#from-sinecosine-to-complex-exponentials) section below, expression (1) above be rewritten as
+
+  $f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}$ (2)
+
+## Fourier series coefficients
+
+- The [From Fourier series intuition to Fourier series coefficients](#from-fourier-series-intuition-to-fourier-series-coefficients) shows that
+
+  $c_{n} = \frac{1}{T}\int_{0}^{T}f(t)\ e^{- i2\pi n\xi t}dt$
+
+# From the Fourier Series to the Fourier Transform
+
+- This section explains how the Fourier transform can then be derived from the Fourier series.
+
+- In expression (2) above, the infinite sum is discrete.
+
+  - It is the sum over the integer multiples of $\xi$.
+
+  - All the terms in the sum are evenly spaced every $\xi$.
+
+  - Where $\xi = \frac{1}{T}$ and $T$ is the period of the periodic signal.
+
+- A non-periodic signal can be seen as the limit of a periodic signal as its period $T \rightarrow \infty$.
+
+  - As $T \rightarrow \infty$,
+
+  - $\xi = \frac{1}{T} \rightarrow 0$.
+
+  - Hence, the spacing between the terms in the sum tends toward $0$,
+
+  - and the sum becomes an integral.
+
+  - This gives
+
+    $f(t) = \int_{- \infty}^{\infty}c_{\xi}e^{i2\pi\xi t}d\xi$
+
+- If $c_{\xi}$ is written as $F(\xi)$ instead, this gives
+
+  $f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi$ (3)
+
+- Which is the same as expression (2) in the [Fourier transform](/posts/fourier-transform/index.qmd) blog post.
+
+
+- Note that even though expression (3) is the limit of the Fourier series (expression (2)) as $T \rightarrow \infty$, it is **not** called the Fourier transform.
+
+  - In fact, it is the inverse Fourier transform instead.
+
+  - The Fourier transform is the function $F(\xi)$ of $\xi$ (i.e. the Fourier transform coefficients).
+
+- Hence, moving from periodic to non-periodic signals
+
+  - Let $T \rightarrow \infty$,
+
+  - Moves from the Fourier series to the Fourier transform,
+
+  - Moves from discrete frequencies to continuous frequencies,
+
+  - Moves from sums to integrals.
+
+# From sine/cosine to complex exponentials
+
+## Fourier series intuition
+
+- $f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack$ (1)
+
+## Euler's formula
+
+- $e^{ix} = cos(x) + i\ sin(x)$
+
+- Thus,
+
+  - $cos(x) = \frac{e^{ix} + \ e^{- ix}}{2}$
+
+  - $sin(x) = \frac{e^{ix} - \ e^{- ix}}{2i}$
+
+## Plug into **Fourier series intuition**
+
+- $f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack$ (1)
+
+  $f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}\frac{e^{i2\pi n\xi} + \ e^{- i2\pi n\xi}}{2} + b_{n}\frac{e^{i2\pi n\xi} - \ e^{- i2\pi n\xi}}{2i} \right\rbrack$
+
+  $f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack (\frac{a_{n}}{2} + \frac{b_{n}}{2i})e^{i2\pi n\xi} + (\frac{a_{n}}{2} - \frac{b_{n}}{2i})e^{- i2\pi n\xi} \right\rbrack$
+
+  $f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}$ (2)
+
+- For
+
+  $c_{n} = (\frac{a_{n}}{2} + \frac{b_{n}}{2i})$ for $n > 0$
+
+  $c_{- n} = (\frac{a_{n}}{2} - \frac{b_{n}}{2i})$ for $n > 0$
+
+  $c_{0} = \frac{a_{0}}{2}$
+
+## Conclusion
+
+- $f(t) = \frac{a_{0}}{2} + \sum_{n = 1}^{\infty}\left\lbrack a_{n}cos(2\pi n\xi t) + b_{n}sin(2\pi n\xi t) \right\rbrack$ (1)
+
+  is simplified to
+
+  $f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}$ (2)
+
+- Complex exponentials appear.
+
+- Positive and negative frequencies appear.
+
+# From Fourier series intuition to Fourier series coefficients
+
+- $f(t) = \sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi n\xi t}$ (2)
+
+- Multiply by $e^{- i2\pi m\xi t}$ and take the integral on both sides
+
+  $\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt = \int_{0}^{T}\sum_{n = - \infty}^{\infty}c_{n}e^{i2\pi(n - m)\xi t}dt$
+
+  $\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt = \sum_{n = - \infty}^{\infty}c_{n}\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt$
+
+- Observe that $\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt = T$ for $n \neq m$ else $0$ (orthogonality of the $e^{i2\pi k\xi t}$ functions)
+
+  - If $n \neq m$
+
+    $\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt$
+
+    $= \left\lbrack \frac{1}{i2\pi(n - m)\xi}e^{i2\pi(n - m)\xi t} \right\rbrack_{0}^{T}$
+
+    $= \frac{1}{i2\pi(n - m)\xi}(e^{i2\pi(n - m)\xi T} - 1)$
+
+    $= \frac{1}{i2\pi(n - m)\xi}(e^{i2\pi(n - m)} - 1)$ because $\xi = \frac{1}{T}$
+
+    $= \frac{1}{i2\pi(n - m)\xi}(1 - 1)$
+
+    $= 0$
+
+  - if $n = m$
+
+    $\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt$
+
+    $= \int_{0}^{T}1\ dt$
+
+    $= T$
+
+- Thus,
+
+  $\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt = \sum_{n = - \infty}^{\infty}c_{n}\int_{0}^{T}e^{i2\pi(n - m)\xi t}dt = c_{m}\ T$
+
+  $c_{m} = \frac{1}{T}\int_{0}^{T}f(t)\ e^{- i2\pi m\xi t}dt$
+
+# From Fourier decomposition to Fourier transform coefficients
+
+- $f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi$ (3)
+
+- Multiply by $e^{- i2\pi\nu t}$ and take the integral on both sides
+
+  $\int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt = \int_{- \infty}^{\infty}\left( \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi \right)e^{- i2\pi\nu t}dt$
+
+  $\int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt = \int_{- \infty}^{\infty}F(\xi)\left( \int_{- \infty}^{\infty}e^{i2\pi(\xi - \nu)t}dt \right)d\xi$
+
+- Observe that $\int_{- \infty}^{\infty}e^{i2\pi(\xi - \nu)t}dt = \delta(\xi - \nu)$ (orthogonality of the $e^{i2\pi\xi t}$ functions)
+
+- Thus,
+
+  $\int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt = \int_{- \infty}^{\infty}F(\xi)\left( \int_{- \infty}^{\infty}e^{i2\pi(\xi - \nu)t}dt \right)d\xi = F(\nu)$
+
+  $F(\nu) = \int_{- \infty}^{\infty}f(t)\ e^{- i2\pi\nu t}dt$
+
+# Sources
+
+- [https://proofwiki.org/wiki/Definition:Fourier_Series/Historical_Note](https://proofwiki.org/wiki/Definition:Fourier_Series/Historical_Note)
