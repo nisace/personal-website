@@ -1,0 +1,145 @@
+---
+title: "The Fourier transform"
+description: |
+  Definition and motivations of the Fourier transform.
+date: "2026-02-03"
+categories: [Signal Processing]
+---
+
+# Introduction
+
+This blog post is about the Fourier transform. It is organized as follows:
+
+- [Usage](#usage)
+
+  - First explain why the Fourier series and the Fourier transform are useful and the possibilities they offer.
+
+- [Differences between the Fourier series and the Fourier transform](#differences-between-the-fourier-series-and-the-fourier-transform)
+
+  - Then, explain the differences between the Fourier series and the Fourier transform.
+
+- [Representations of an oscillation](#representations-of-an-oscillation)
+
+  - This section explains the different ways to represent oscillations (sine/cosine vs complex exponentials).
+
+- [Modern Fourier analysis](#modern-fourier-analysis)
+
+  - Introduce the Fourier transform.
+
+  - This is the most frequent way to perform Fourier analysis nowadays.
+
+  - This section gives the definition of the Fourier transform.
+
+  - But it does not explain where it comes from.
+
+  - See the [From the Fourier series to the Fourier transform](/posts/fourier-series-to-fourier-transform/index.qmd) blog post to see where the Fourier transform comes from.
+
+# Usage
+
+- The Fourier series and the Fourier transform allow the analysis of the content of a signal.
+
+- This analysis is referred to as the Fourier analysis.
+
+- More specifically, they decompose the signal into oscillations at different frequencies.
+
+  - See the [Representations of an oscillation](#representations-of-an-oscillation) section below to see how these oscillations can be represented.
+
+- This decomposition into oscillations at different frequencies gives information about the structure of the signal in terms of pitch, harmonics or timbre for example.
+
+# Differences between the Fourier series and the Fourier transform
+
+- The Fourier series applies to periodic signals.
+
+- The Fourier transform applies to non-periodic signals.
+
+- Both describe the signal as a sum (or integral) of oscillations at different frequencies.
+
+- The [From the Fourier Series to the Fourier](/posts/fourier-series-to-fourier-transform/index.qmd#from-the-fourier-series-to-the-fourier-transform) section in the [blog post](/posts/fourier-series-to-fourier-transform/index.qmd) of the same name explains how the Fourier transform can be derived from the Fourier series.
+
+# Representations of an oscillation
+
+- At each frequency, the oscillation of frequency $f$ can be represented in different ways.
+
+## Sine and cosine representation
+
+- Either as a linear combination of a sine function $sin(2\pi\xi t)$ and a cosine function $cos(2\pi\xi t)$.
+
+  - Both functions are thus real valued.
+
+## Complex exponentials representation
+
+- Or as a linear combination of two complex exponentials $e^{- i2\pi\xi t}$ and $e^{i2\pi\xi t}$.
+
+  - Both functions are thus complex valued.
+
+- These two representations are mathematically equivalent.
+
+  - Historically, the sine and cosine functions were used first.
+
+  - However, the complex exponentials simplify the notation and are easier to manipulate.
+
+  - The [From sine/cosine to complex exponentials](/posts/fourier-series-to-fourier-transform/index.qmd#from-sinecosine-to-complex-exponentials) section from the [From the Fourier series to the Fourier transform](/posts/fourier-series-to-fourier-transform/index.qmd) blog post explains the relationship between these two representations.
+
+- In both representations, the linear combination accounts for the phase of the signal.
+
+  - If an oscillation of frequency $f$ is present in the signal, the relative weights given to $sin(2\pi\xi t)$ and $cos(2\pi\xi t)$ or $e^{- i2\pi\xi t}$ and $e^{i2\pi\xi t}$ allow to produce an oscillation of frequency $f$ with the same phase as the oscillation of frequency $f$ present in the signal.
+
+- The weights of the linear combinations at the different frequencies are called the coefficients (Fourier series coefficients and Fourier transform coefficients).
+
+# Modern Fourier analysis
+
+- Historically, the Fourier series were developed first by [Joseph Fourier](https://en.wikipedia.org/wiki/Joseph_Fourier).
+
+- In modern Fourier analysis, the Fourier transform is most often used instead of the Fourier series.
+
+- The Fourier transform is a generalization of the Fourier series to non-periodic signals.
+
+- This section gives the definition of the Fourier transform coefficients.
+
+  - It introduces the definition but does not explain where it comes from.
+
+  - See the [From the Fourier series to the Fourier transform](/posts/fourier-series-to-fourier-transform/index.qmd) blog post to see where the Fourier transform comes from.
+
+## Fourier Transform
+
+### Definition
+
+- The Fourier transform usually represents oscillations with complex exponentials.
+
+- The Fourier transform coefficients are thus complex numbers.
+
+<!-- -->
+
+- At frequency $\xi$, the Fourier transform coefficient is computed as follows:
+
+$F(\xi) = \int_{- \infty}^{\infty}f(t)e^{- i2\pi\xi t}dt$ (1)
+
+- The amplitude $\left| F(\xi) \right|$ indicates how strongly the oscillation of frequency $\xi$ is present in the signal.
+
+- The phase $arg(F(\xi))$ indicates the phase of the oscillation of frequency $\xi$ present in the signal.
+
+### Interpretation
+
+- $F(\xi)$ is equal to
+
+  - The correlation between $f(t)$ and $e^{i2\pi\xi t}$.
+
+  - The $L^{2}$ inner product between $f(t)$ and $e^{i2\pi\xi t}$.
+
+  - See the Cross-correlation, Correlation, Convolution, Inner product and Fourier coefficients post for more details.
+
+### Signal decomposition
+
+- Any signal with finite energy (i.e. $\in L^{2}(R)$) can be expressed and decomposed as an infinite sum (integral) of oscillations at all frequencies.
+
+  - The finite energy condition is always met in practice as real-world signals cannot have infinite energy.
+
+- Each oscillation of frequency $\xi$ is weighted by its Fourier transform coefficient $F(\xi)$.
+
+$f(t) = \int_{- \infty}^{\infty}F(\xi)e^{i2\pi\xi t}d\xi$ (2)
+
+### Practical note
+
+- The DFT / FFT / STFT post explains how the Fourier transform coefficients are computed in practice.
+
+- The Spectrogram, Mel-spectrogram and MFCC post explains how the Fourier transform coefficients are used in practice.
