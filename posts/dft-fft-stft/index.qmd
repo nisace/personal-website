@@ -1,0 +1,71 @@
+---
+title: "Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform"
+description: |
+  Discrete Fourier Transform, Fast Fourier Transform and Short-Term Fourier Transform.
+date: "2026-02-03"
+categories: [Signal Processing]
+---
+
+# Discrete Fourier Transform (DFT)
+
+- The [Fourier transform](/posts/fourier-transform/index.qmd) coefficients are
+
+  - $F(\xi) = \int_{- \infty}^{\infty}f(t)e^{- i2\pi\xi t}dt$
+
+- However, continuous signals can\'t be handled on a computer.
+
+- The Discrete Time Fourier Transform (DTFT) discretizes the signal (i.e. discretizes time, samples the signal).
+
+  - $F(e^{i\omega}) = \sum_{n = - \infty}^{\infty}f\lbrack n\rbrack e^{- i\omega n}$
+
+- With the DTFT, the time is now discrete but
+
+  - There is an infinite sum (not possible in practice).
+
+  - Frequency is still continuous.
+
+- The Discrete Fourier Transform (DFT) solves these issues by
+
+  - Truncating time, i.e. looking at a finite time window of N samples.
+
+  - Discretizing frequency, i.e. calculating frequency bins at specific intervals.
+
+- The DFT is computable but it is very slow. Its complexity is $O(N^{2})$.
+
+# Fast Fourier Transform (FFT)
+
+- The Fast Fourier Transform (FFT) is an algorithm that implements the DFT in an efficient way.
+
+- It uses a divide and conquer strategy.
+
+- It reduces the complexity to $O(N\ log\ N)$.
+
+- It is an efficient algorithm, not a new kind of transform compared to DFT.
+
+# Short-Term Fourier Transform (STFT)
+
+- The Fourier Transform, DFT and FFT tell which frequencies exist in the signal, but not when they happen.
+
+- The Short-Term Fourier Transform (STFT) adds this information by
+
+  - Chopping the signal in short time windows (or frames).
+
+  - Running FFT on each window.
+
+## Uncertainty principle
+
+### Definition
+
+- The uncertainty principle is a trade-off with respect to the window size.
+
+- Narrow windows offer a great time resolution because each window represents a precise location in time.
+
+  - However, the frequency resolution is poor.
+
+- Conversely, wide windows offer a great frequency resolution but a poor time resolution.
+
+- The relation between the frequency and the time resolutions is $\Delta f \simeq \frac{1}{T}$ with
+
+  - $\Delta f$ the frequency resolution in $Hz$.
+
+  - $T$ the window length in $s$.

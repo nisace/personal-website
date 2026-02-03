@@ -138,4 +138,4 @@ This blog post is about the Fourier transform. It is organized as follows:
 
 ### Practical note
 
-- The DFT / FFT / STFT post explains how the Fourier transform coefficients are computed in practice.
+- The [DFT / FFT / STFT](/posts/dft-fft-stft/index.qmd) post explains how the Fourier transform coefficients are computed in practice.
