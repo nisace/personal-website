@@ -10,6 +10,7 @@
 - [BLOG] Posts:
     - Vector quantization
     - SoundStream
+    - Interpretations of correlation and inner product
 
 #### v0.2.0
 
