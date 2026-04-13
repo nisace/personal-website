@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/inner-prod-corr-interpretation/index.html",
       "/posts/dft-fft-stft/index.html",
       "/posts/fourier-series-to-fourier-transform/index.html",
       "/posts/fourier-transform/index.html",
